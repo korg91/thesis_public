@@ -1,0 +1,500 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[leqno]{amsmath}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[shortlabels]{enumitem}
+\usepackage[hyphens]{url}
+\usepackage[scale=3]{ccicons}  % per le icone creative commons
+\usepackage{hyperref}  % per i link nel pdf
+\usepackage[rmargin=3.0cm,lmargin=3.0cm]{geometry}
+%\usepackage{frontesp}  % prima pagina; il pacchetto frontesp.sty si trova nella stessa cartella del file .tex (deve essere adattato a mano)
+\usepackage{setspace}  % per l'interlinea
+\usepackage[english]{babel}  % per sillabazione
+\usepackage[all]{xy} %diagrammi di funzioni
+\usepackage{xspace} %per assicurare la corretta gestione degli spazi finali quando uso e.g. \AC. NB: sarebbe meglio trovare un'altra soluzione...cfr. http://tex.stackexchange.com/questions/15220/no-space-present-after-ensuremath
+\usepackage{stmaryrd}
+\usepackage{xfrac}
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix,positioning,decorations.pathreplacing}
+\usepackage{graphicx}
+%\usepackage{parskip} %modifica la gestione degli spazi nei paragrafi, in particolare disabilita l'indentazione e aumenta lo spazio verticale tra i paragrafi
+
+
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter] % resetta la numerazione dei teoremi per ogni capitolo
+\newtheorem{corollary}[theorem]{Corollary} % la numerazione delle definizioni dipende da quella dei teoremi
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{Remark}[theorem]{Remark}
+\newtheorem*{addendum}{Addendum}
+\newtheorem*{examples}{Examples}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{remark}{Remark}
+\newtheorem*{remex}{Remarks and Examples}
+
+%%% inizio comandi per stile per teoremi: "numero. Titolo" %%%
+\newtheoremstyle{num.custom-title}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {\thmnumber{#2.}\thmnote{ #3}}
+  
+\theoremstyle{num.custom-title}  
+\newtheorem{teo_custom-title}[theorem]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim#1:}\space}{} %per i claim
+\newenvironment{claimproof}[1]{\par\noindent\underline{Proof:}\space#1}{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad\hbox{$\blacksquare$}} %per le dimostrazioni dei claim
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\tor}{tor}
+\let\o\relax % elimina \o dai comandi già definiti
+\DeclareMathOperator{\o}{\mathsf{o}}
+\let\Im\relax % elimina \o dai comandi già definiti
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Zdv}{Zdv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\A}{\mathcal{A}}
+\DeclareMathOperator{\B}{\mathcal{B}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\Hrtg}{\text{Hrtg}}
+\DeclareMathOperator{\Ord}{\text{Ord}}
+\DeclareMathOperator{\J}{\mathcal{J}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\U}{\mathfrak{U}}
+\DeclareMathOperator{\PPP}{\mathbb{P}}
+\DeclareMathOperator{\V}{\mathcal{V}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\a01}{\{0,1\}^{\star}}
+\DeclareMathOperator{\imp}{\Rightarrow}
+\DeclareMathOperator{\pmi}{\Leftarrow}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\sm}{\setminus}
+\DeclareMathOperator{\sse}{\subseteq}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\q}{\mathsf{q}}
+\DeclareMathOperator{\h}{h}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\type}{type}
+\DeclareMathOperator{\height}{height}
+\DeclareMathOperator{\length}{length}
+\DeclareMathOperator{\restr}{\upharpoonright}
+\DeclareMathOperator{\down}{\downarrow}
+\DeclareMathOperator{\up}{\uparrow}
+\DeclareMathOperator{\cf}{cf}
+%\DeclareMathOperator{\conc}{^\frown}
+%\DeclareMathOperator{\gcd}{GCD}
+
+
+\newcommand{\AC}{\ensuremath{\mathsf{AC}}\xspace}
+\newcommand{\CC}{\ensuremath{\mathsf{CC}}\xspace}
+\newcommand{\DC}{\ensuremath{\mathsf{DC}}\xspace}
+\newcommand{\ZF}{\ensuremath{\mathsf{ZF}}\xspace}
+\newcommand{\ZFC}{\ensuremath{\mathsf{ZFC}}\xspace}
+\newcommand{\LS}{\ensuremath{\mathsf{LS}}\xspace}
+\newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
+\newcommand{\TP}{\ensuremath{\mathsf{TP}}\xspace}
+\newcommand{\GCH}{\ensuremath{\mathsf{GCH}}\xspace}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
+\newcommand{\qedblack}{\hfill $\blacksquare$}
+\newcommand{\ol}{\overline}
+\newcommand{\ul}{\underline}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\m}{\mathfrak{m}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\IFF}{\Longleftrightarrow}
+\newcommand{\conc}{^\frown}
+\newcommand{\ndivides}{%
+  \mathrel{\mkern.5mu % small adjustment
+    % superimpose \nmid to \big|
+    \ooalign{\hidewidth$\big|$\hidewidth\cr$\nmid$\cr}%
+  }%
+}
+\newcommand*{\defeq}{\mathrel{\rlap{%
+                     \raisebox{0.3ex}{$\cdot$}}%
+                     \raisebox{-0.3ex}{$\cdot$}}%
+                     =}
+
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\H}{\mathcal{H}}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\u}{\mathbf{u}}
+\renewcommand{\iff}{\Leftrightarrow}
+
+
+
+%%%% INIZIO COMANDI PER EQUIVALENZE %%%%
+\newcommand{\Implies}[2]{$\text{\ref{statement#1}}\!\implies\!\text{\ref{statement#2}}$}% X => Y
+\newcommand{\punto}[1]{\item \label{statement#1}}
+
+
+\newenvironment{equivalence}
+    {\begin{enumerate}[label=(\arabic*),ref=(\arabic*)]
+    }
+    { 
+	\end{enumerate}
+    }
+%%%% FINE COMANDI PER EQUIVALENZE %%%
+
+
+
+% Interlinea 1.5
+%\onehalfspacing  
+
+
+%per le citazioni
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+%disabilita colore link
+%\hypersetup{%
+%    pdfborder = {0 0 0}
+%}
+
+
+\begin{document}
+
+%template per eventuale numerazione potenziata
+%before
+%\begin{minipage}[t]{0.8\textwidth}
+%    First salkmddddddddddddddddddddddddddddddddddsalkdnsdlknfsldk sdjfslkdjf s djfsdjf osadj osdjf osijdfosijd foids jfosidjf osijfdoiasj fdoiajds foisdjf oai jfdoaisjdf oisdj f
+%\end{minipage}
+
+\chapter*{Preliminaries}
+
+Unless otherwise stated, small greek letters always refer to ordinals.\\
+$\type (X,<)$ is the order type of the well-order $(X,<)$.\\
+Let $X$ be a set and $R$ a binary relation on $X$. If $x \in X$ then $\down x \defeq \{y \in X \mid R(y,x)\}$ and similarly $\up x \defeq \{y \in X \mid R(x,y)\}$.\\
+Let $(X,\lhd)$ be a linearly ordered set. The \emph{lexicographic order} on $^{\omega} X$ is defined by
+\[
+f <_{\text{lex}} g \iff \exists n \in \omega [f(n) \lhd g(n) \text{ and } \forall i < n (f(i)=g(i))].
+\]
+Let $\alpha$ be a limit ordinal. We say that a sequence $\langle \alpha_\xi \mid \xi < \beta \rangle$, with $\beta$ limit ordinal, is \emph{cofinal in $\alpha$} if it's strictly increasing and $\sup_{\xi < \beta} \alpha_\xi = \alpha$.
+
+\chapter{Trees}
+
+The main aim of this chapter is to introduce the basic concepts about trees and to present several results discussed in Jech's paper \cite{Jec1971}, while trying to fill every proof with details.
+
+\begin{defn}
+A \emph{tree} is a partially ordered set $(T,<)$ such that for all $x \in T$ the set $\down x$ is well-ordered by $<$. We define the following basic notions related to trees:
+\begin{itemize}
+\item If $x \in T$, the \emph{order} of $x$ is $o(x) \defeq \type(\down x)$.
+\item The \emph{$\alpha$th level of $T$} is $U_\alpha \defeq \{x \in T \mid o(x)=\alpha\}$.
+\item The \emph{height of $T$} is the least ordinal such that every $x \in T$ has smaller order type, i.e. $\height(T) \defeq \sup\{o(x)+1 \mid x \in T\}$.
+\item A \emph{branch in T} is a maximal linearly ordered subset of $T$. If $b$ is a branch in $T$, of course we can define $\height(b) \defeq \type(b)$.
+\item An $\alpha$-tree is a tree of height $\alpha$, and similarly for an $\alpha$-branch.
+\item $T|\alpha$ is the subset of $T$ which contains every element of order strictly less than $\alpha$, i.e. $T|\alpha \defeq \cup_{\xi < \alpha} U_\xi$. Obviously $T|\alpha$ has height $\alpha$ if $\alpha \leq \height(T)$.
+\item We say that a tree $(T_2,<_2)$ is an \emph{extension} of $(T_1,<_1)$ if ${<_1} = {<_2} \cap (T_1 \times T_1)$, and \emph{end-extension} if $T_1=T_2|\alpha$ for some $\alpha$.
+\end{itemize}
+\end{defn}
+
+\begin{example}
+We consider the family of trees given by all $T$ which satisfy the following properties: for some $\alpha < \omega_1$,
+\begin{enumerate}[(i)]
+\item every element $t \in T$ is a function $t \colon \beta \to \omega$, with $\beta < \alpha$;
+\item $T$ is closed under initial segments, i.e. if $t \in T$ then $t \restr \beta$ is in $T$ as well, for any $\beta$;
+\item if $t \colon \beta \to \omega$ is in T and $\beta+1 < \alpha$, then $t \conc n \in T$ for all $n \in \omega$;
+\item if $t \colon \beta \to \omega$ is in T and $\beta \leq \gamma < \alpha$, then there exists $s \colon \gamma \to \omega$ such that $t \sse s$;
+\item $T \cap {}^{\beta} \omega$ is at most countable for all $\beta < \alpha$.
+\end{enumerate}
+Observe that $T$ is a countable set and the $\beta$th level consists precisely of the function whose length is $\beta$.
+\end{example}
+
+\begin{defn}
+Let $\alpha \leq \omega_1$. An $\alpha$-tree $T$ is \emph{normal} if:.
+\begin{enumerate}[(i)]
+%\item $\height(T)=\alpha$;
+\item $T$ has a unique least point (which we call \emph{root});
+\item every level of $T$ is at most countable;
+\item if $x$ is not maximal in $T$, then are infinitely many $y$ at level $o(x)+1$ (we call these \emph{immediate successors of $x$});
+\item if $x \in T$ then there is $y>x$ at each higher level less than $\alpha$;
+\item the order $<$ is extensional within each level $U_\gamma$ such that $\gamma < \alpha$ is a limit ordinal, that is: for all $x,y \in U_\gamma$, if $\down x = \down y$ then $x=y$.
+\end{enumerate}
+\end{defn}
+
+It is very easy to check that the trees of last example are normal. We shall use them as forcing conditions later because of these nice properties they enjoy.
+
+\section{The tree property}
+
+We start with an easy and well-known fact:
+
+\begin{teo_custom-title}[König's lemma.] If $T$ is an $\omega$-tree whose levels are all finite, then $T$ has an $\omega$-branch.
+\begin{proof}
+Define $T' \defeq \{x \in T \mid \up x \text{ is infinite}\}$. It is immediate to construct an $\omega$-branch in $T'$ by recursion. Such branch is trivially an $\omega$-branch in $T$.
+\end{proof}
+\end{teo_custom-title}
+
+Does König's lemma hold for cardinals greater than $\omega$? More precisely, we say that a cardinal $\kappa$ has \emph{the tree property}, in symbols $\TP(\kappa)$, if the following statement is true:
+\begin{center}
+If $T$ is a $\kappa$-tree and if every level has cardinality $<\kappa$, then $T$ has a $\kappa$-branch.
+\end{center}
+%
+Of course $\TP(\kappa)$ is false if $\kappa$ is singular: if $\langle \alpha_\xi \mid \xi < \lambda \rangle$ is a cofinal sequence in $\kappa$ with $\lambda < \kappa$, then take the tree given by the disjoint union of branches of length $\alpha_\xi$ for all $\xi < \lambda$, where elements of two different branches are incomparable.\\
+We will show now that the tree property fails already at $\omega_1$. This is a classical result due to Aronszajn.
+
+\begin{defn}
+Let $\kappa$ be a cardinal. An \emph{Aronszajn $\kappa$-tree} is a $\kappa$-tree whose levels are of power less than $\kappa$ but has no $\kappa$-branch.
+\end{defn}
+%
+Thus, there exists an Aronszajn $\kappa$-tree if and only if $\TP(\kappa)$ is false.
+
+\begin{theorem}\label{thm-aronszjan}
+There is an Aronszajn $\omega_1$-tree.
+\begin{proof}
+We will construct the tree $T$ in such a way that
+
+\begin{itemize}
+\item every $x \in T$ is a bounded and strictly increasing sequence of rational numbers;
+\item the order on $T$ is defined by: $x \leq y$ iff $y$ extends $x$, i.e. $x \sse y$;
+\item $T$ is closed under inital segments.
+\end{itemize}
+%
+By last condition, the $\alpha$th level will consist precisely of the sequences of length $\alpha$ of $T$. Of course such a tree can't have an uncountable branch, since its union would yield a strictly increasing (and thus injective) sequence of length $\omega_1$ into $\Q$, which is countable. Note that $T$ must be constructed carefully: if we let any sequence be in $T$, then the $\omega$th level would be uncountable already.\\
+We construct $T$ by induction on levels. To make sure that everything works, we will need to preserve the following properties (inductive hypotheses) at each level $\alpha<\omega_1$:
+%
+\begin{align}
+\label{eq:aron_cond1}
+\begin{minipage}[t]{0.8\textwidth}
+$|U_\alpha| \leq \aleph_0$;
+\end{minipage}
+\\
+\label{eq:aron_cond2}
+\begin{minipage}[t]{0.8\textwidth}
+For all $\beta < \alpha$, $x \in U_\beta$ and $q > \sup x$, there is $y \in U_\alpha$ such that $x \sse y$ and $q \geq \sup y$.
+\end{minipage}
+\end{align}
+%
+Define $U_0 \defeq \{\emptyset\}$. For the successor step, suppose that we have already constructed level $U_\alpha$. Then we define
+\[
+U_{\alpha+1} \defeq \{ x \conc r \mid x \in U_\alpha, r \in \Q \text{ with } r > \sup x \}.
+\]
+It's easy to check that also $U_{\alpha+1}$ satisfies \eqref{eq:aron_cond1} and \eqref{eq:aron_cond2} w.r.t. $\alpha+1$ (but note that one needs that $\Q$ is dense).\\
+For the limit step, let $\alpha$ be a limit ordinal and suppose we have already defined $U_\beta$ for all $\beta<\alpha$.
+\begin{claim}{}
+For each $x \in T|\alpha$ and each $q > \sup x$ there exists a strictly increasing $\alpha$-sequence of rationals $y$ such that $y$ extends $x$, $q \geq \sup y$ and $y \restr \beta \in T|\alpha$ for all $\beta<\alpha$.
+\begin{claimproof}
+Since $\alpha < \omega_1$, its cofinality is $\omega$. Let $\langle \alpha_n \mid n \in \omega \rangle$ be cofinal in $\alpha$ and such that $x \in U_{\alpha_0}$. Now let $\langle q_n \mid n \in \omega \rangle$ be a strictly increasing sequence of rationals such that $q_0 = \sup x$ and $\lim_n q_n \leq q$. Using the inductive hypothesis \eqref{eq:aron_cond2} at each step, we can recursively find for each $n \geq 1$ a sequence $y_n \in U_{\alpha_n}$ which extends $y_{n-1}$ and such that $\sup y_n \leq q_n$. By defining $y \defeq \cup_n y_n$ we are done.
+\end{claimproof}
+\end{claim}\\[6pt]
+For all $x \in T|\alpha$ and all $q > \sup x$ we choose an $y$ as provided by the claim, and we define $U_\alpha$ as the set of all such $y$'s. It's clear that \eqref{eq:aron_cond2} holds for $U_\alpha$. Because $\Q$ and $T|\alpha = \bigcup_{\beta < \alpha} U_\beta$ are countable, also \eqref{eq:aron_cond1} is preserved.\\
+Of course $T$ is an Aronszajn $\omega_1$-tree by construction.
+\end{proof}
+\end{theorem}
+
+In the proof of the claim we exploited the fact that all limit ordinals smaller than $\omega_1$ have countable cofinality. Actually, we could use the fact that for every $\alpha < \omega_1$ there is an order-embedding of $\alpha$ into any interval of $\Q$. This makes the proof more involved, but it will be the strategy to prove the following generalization \cite{Spe1951}:
+
+\begin{theorem}\label{thm-aronszajn_k+_tree}
+Let $\kappa$ be an infinite cardinal. If $\kappa^{<\kappa}=\kappa$, then there exists an Aronszajn $k^+$-tree.
+\end{theorem}
+
+First we need some lemmas.
+
+\begin{lemma}\label{lemma-cof_continua}
+Let $\alpha$ be a limit ordinal. There exists a sequence $\langle \alpha_\xi \mid \xi < \cf(\alpha) \rangle$ cofinal in $\alpha$ which is also \emph{continuous}, i.e. $\alpha_\gamma = \sup_{\xi<\gamma} \alpha_\xi$ for all $\gamma < \cf(\alpha)$ limit.
+\begin{proof}
+Let $\langle \beta_\xi \mid \xi < \cf(\alpha) \rangle$ be cofinal in $\alpha$. Define $\langle \alpha_\xi \mid \xi < \cf(\alpha) \rangle$ by
+\[
+\alpha_\xi \defeq
+\begin{cases}
+\beta_\xi, & \text{ if $\xi$ successor} \\
+\cup_{\eta < \xi} \beta_\eta, & \text{ if $\xi$ limit}.
+\end{cases}
+\]
+Of course this sequence is continuous and still cofinal in $\alpha$.
+\end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lemma-embedding_in_finite_sequences}
+\renewcommand{\Q}{\mathcal{Q}}
+Let $\kappa$ be an infinite cardinal. Let $\Q \defeq \{f \in \kappa^\omega \mid f(n)=1$ for finitely-many $n \in \omega \}$. Then every $\alpha < \kappa^+$ embeds in $\Q$, ordered lexicographically.
+\begin{proof}
+We proceed by induction on $\alpha$. Suppose $\phi \colon \alpha \to \Q$ is an order-embedding. Then $\phi^+ \colon \alpha+1 \to \Q$ defined by
+\[
+\phi^+(\xi) \defeq
+\begin{cases}
+0 \conc \varphi(\xi), &\text{if } \xi \in \alpha\\
+1 \conc 0^\omega, &\text{if }\xi=\alpha
+\end{cases}
+\]
+is an order-embedding of $\alpha+1$. Now suppose that $\alpha$ is a limit ordinal and that each $\beta<\alpha$ can be order-embedded in $\Q$. Let $\lambda \defeq \cf(\alpha) \leq \kappa$ and let $\langle \alpha_\xi \mid \xi < \lambda \rangle$ be cofinal in $\alpha$ and such that $\alpha_0=0$. For $\xi<\lambda$ consider the interval $I_\xi=[\alpha_\xi,\alpha_{\xi+1})$; clearly $\type(I_\xi) \leq \alpha_{\xi+1} < \alpha$, so there is an order-embedding $\phi_\xi$ of $I_\xi$ into $\Q$. For $\eta \in \alpha$ let $\xi(\eta) < \lambda$ be such that $\eta\in I_{\xi(\eta)}$. Now define $\phi \colon \alpha \to \Q$ by
+\[
+\phi(\eta) \defeq \xi(\eta) \conc \phi_{\xi(\eta)}(\eta).
+\]
+Clearly $\phi$ order-embeds $\alpha$ in $\Q$.
+\end{proof}
+\end{lemma}
+
+\begin{corollary}\label{corollary-embedding_in_finite_sequences}
+\renewcommand{\Q}{\mathcal{Q}}
+Every $\alpha < \kappa^+$ embeds in any non-trivial open interval of $\Q$.
+\begin{proof}
+Let $f,g \in \Q$ be sequences with $f<g$. Let $n$ be the least such that $f(n)<g(n)$ and let $m>n$ be such that $f(m)=0$. It's immediate to check that $\Q' \defeq \{h \in \Q \mid h(i)=f(i)$ for all $i<m$ and $h(m)=1 \}$ is order-isomorphic to $\Q$. By last lemma every $\alpha < \kappa^+$ embeds in $\Q'$, and since $\Q' \sse (f,g)$ open interval we are done.
+\end{proof}
+\end{corollary}
+
+We can finally proceed with the
+
+\begin{proof}[Proof of Theorem \ref{thm-aronszajn_k+_tree}.]
+\renewcommand{\Q}{\mathcal{Q}}
+We will adapt the proof of Theorem \ref{thm-aronszjan}. Instead of $\mathbb Q$, we shall use $\Q$ of Lemma \ref{lemma-embedding_in_finite_sequences}. The only properties of $\Q$ we will need are that $|\Q|=\kappa$, a well-known fact, and the statement of Corollary \ref{corollary-embedding_in_finite_sequences}. Every $x \in T$ will be a bounded and strictly increasing sequence of elements of $\Q$ such that $\length(x)=\alpha$ for $\alpha < \kappa^+$. As before, $T$ will be such that $o(x)=\length(x)$ for all $x \in T$.\\
+Again, we construct $T$ by induction on levels, preserving for every $\alpha < \kappa^+$ conditions \eqref{eq:aron_cond1} (of course now we require $|U_\alpha| \leq \kappa$) and \eqref{eq:aron_cond2} \footnote{Formally, the supremum here lives in the Dedekind completion of $\Q$.}, plus the following additional condition:
+\begin{equation}\label{eq:aron_cond3}
+\begin{minipage}[t]{0.8\textwidth}
+If $\alpha$ is limit with $\cf(\alpha) < \kappa$ and $\mathfrak{b}$ is a branch in $T|\alpha$, then $\bigcup \mathfrak{b} \in U_\alpha$.
+\end{minipage}
+\end{equation}
+$U_0 \defeq \{\emptyset\}$ and the successor step are just as before:
+\[
+U_{\alpha+1} \defeq \{x \conc q \mid x \in U_\alpha, q \in \Q \text{ with } q > \sup x \},
+\]
+which satisfies \eqref{eq:aron_cond1} and \eqref{eq:aron_cond2}.\\
+For $U_\alpha$ with $\alpha$ limit, we have again the claim:
+\begin{claim}{}
+For each $x \in T|\alpha$ and each $q > \sup x$ there is a strictly increasing $\alpha$-sequence $y$ in $\Q$ such that $y$ extends $x$, $q \geq \sup y$ and $y \restr \beta \in T|\alpha$ for all $\beta<\alpha$.
+\begin{claimproof}
+Let $\lambda \defeq \cf(\alpha) \leq \kappa$. By Corollary \ref{corollary-embedding_in_finite_sequences} there exists $\langle q_\xi \mid 1 \leq \xi < \lambda \rangle$ strictly increasing and contained in the interval $(\sup x, q)$ of $\Q$ \footnote{Actually, $\sup x$ might not be in $\Q$, but in that case we can simply take $q' \in \Q$ such that $\sup x < q' < q$ and consider the interval $(q',q)$.}. By Lemma 	\ref{lemma-cof_continua}, let $\langle \alpha_\xi \mid \xi < \lambda \rangle$ cofinal in $\alpha$, continuous and such that $x \in U_{\alpha_0}$.\\
+As before, we want to recursively define $\langle y_\xi \mid \xi < \lambda \rangle$ such that for all $\xi < \lambda$ the following hold:
+\begin{enumerate}[(i)]
+\item $y_\xi \in U_{\alpha_\xi}$;
+\item if $\eta < \xi$ then $y_\eta \sse y_\xi$;
+\item $\sup y_\xi \leq q_\xi$ (for $\xi \geq 1$).
+\end{enumerate}
+Let $y_0 \defeq x$. Suppose we have already defined $y_\xi$. Then there exists $y_{\xi+1}$ which satisfies our requests by the inductive hypothesis \eqref{eq:aron_cond2}, just as in Theorem \ref{thm-aronszjan}. The limit case is where we finally use the additional condition. Suppose $\xi < \lambda$ is a limit ordinal. First observe that $\cf(\alpha_\xi) \leq \xi < \lambda \leq \kappa$ because we assumed $\langle \alpha_\xi \rangle_{\xi < \lambda}$ continuous. Now suppose we have already defined $y_\gamma$ for every $\gamma < \xi$. Then it's clear that $y \defeq \bigcup_{\gamma < \xi} y_\gamma$ satisfies (ii) and (iii). Condition (i) is also true, 
+%since 
+%\[
+%\height(y_\xi)=\length(y_\xi)=\sup_{\gamma < \xi} (\length(y_\gamma)) = \sup_{\gamma < \xi} \alpha_\gamma = \alpha_\xi
+%\]
+because $\sup_{\gamma < \xi} \alpha_\gamma = \alpha_\xi$ by continuity again, and thus $\langle y_\gamma \rangle_{\gamma < \xi}$ induces a branch in $T|\alpha_\xi$. So $y_\xi \in U_{\alpha_\xi}$ by hypothesis \eqref{eq:aron_cond3}.\\[6pt]
+By defining $y \defeq \bigcup_{\xi < \lambda} y_\xi$ we are done.
+\end{claimproof}
+\end{claim}\\
+
+Now, suppose $\alpha$ is limit and $\cf(\alpha) = \kappa$. For all $x \in T|\alpha$ and all $q > \sup x$ we choose an $y$ as provided by the claim, and we define $U_\alpha$ as the set of all such $y$'s. It's clear that \eqref{eq:aron_cond1} and \eqref{eq:aron_cond2} hold for $U_\alpha$.\\
+The only case left is $\alpha$ limit with $\cf(\alpha) < \kappa$. Then we define $U_\alpha \defeq \{\bigcup \mathfrak{b} \mid \mathfrak{b}$ is a branch in $T|\alpha \}$, so that condition \eqref{eq:aron_cond3} certainly holds. By the claim, also \eqref{eq:aron_cond2} is true, since ``$y \restr \beta \in T|\alpha$ for all $\beta<\alpha$'' means precisely that $\mathfrak{b} \defeq \{y \restr \beta : \beta < \alpha\}$ is a branch in $T|\alpha$, so $y = \bigcup \mathfrak{b} \in U_\alpha$ by definition. Finally, observe that $T|\alpha = \bigcup_{\beta < \alpha} U_\alpha$, so $|T|\alpha| \leq \kappa$. Hence
+\[
+|U_\alpha| \leq |\{\mathfrak{b} : \mathfrak{b} \text{ is a branch in } T|\alpha\}| \leq |{}^\alpha \kappa|.
+\]
+But of course every branch in $T|\alpha$ is completely determined by $\cf(\alpha)$-many entries, therefore $|U_\alpha| \leq \kappa^{\cf(\alpha)}$. Since $\cf(\alpha)<\kappa$ and by hypothesis $\kappa^{<\kappa}=\kappa$, we obtain that $|U_\alpha| \leq \kappa$, i.e. also condition \eqref{eq:aron_cond3} is satisfied.\\[6pt]
+Clearly $T$ is an Aronszajn $\kappa^+$-tree by construction.
+\end{proof}
+
+Last theorem is totally useless for $\kappa$ singular, since in that case the hypothesis is always false: if $\cf(\kappa)<\kappa$ then $\kappa^{<\kappa} = \sup\{\kappa^\lambda \mid \lambda < \kappa, \lambda$ cardinal$\} \geq \kappa^{\cf(\kappa)}$. But $\cf(\kappa^{\cf(\kappa)}) > \cf(\kappa)$ by König's theorem, so $\kappa^{\cf(\kappa)} > \kappa$ and hence $\kappa^{<\kappa} > \kappa$. Nonetheless:
+
+\begin{proposition}
+Let $\kappa$ be a regular cardinal. Suppose that \GCH holds. Then $\kappa^{<\kappa} = \kappa$.
+\begin{proof}
+The following is a well-known fact under \GCH (see \cite{Kun2009}):
+\begin{center}
+Let $\kappa,\lambda \geq 1$ be cardinals with $\max(\kappa,\lambda)$ infinite. Then $\kappa^\lambda = \kappa$ if $\lambda < \cf(\kappa)$.
+\end{center}
+So $\kappa^{<\kappa} = \sup\{\kappa^\lambda \mid \lambda < \kappa = \cf(\kappa), \lambda$ cardinal$\} = \kappa$.
+\end{proof}
+\end{proposition}
+
+Hence, if we assume \GCH we have that for every $\kappa$ regular there exists an Aronszajn $\kappa^+$-tree.
+
+
+\paragraph{Note for Professor Friedman.} While checking everything before sending you this first part, I noticed that in the proof of Theorem \ref{thm-aronszajn_k+_tree} I actually never need that every $\alpha < \kappa^+$ embeds into every interval of $\mathcal{Q}$, but only that $(*)$ every $\alpha \leq \kappa$ does. This is because if $\alpha < \kappa^+$, then $\cf(\alpha) \leq \kappa$, and thus $(*)$ is sufficient to provide the sequence $\langle q_\xi \mid 1 \leq \xi < \cf(\alpha) \rangle$. If my observations are correct, this is the only step where I need Corollary \ref{corollary-embedding_in_finite_sequences}. So I could avoid stating Lemma \ref{lemma-embedding_in_finite_sequences} and Corollary \ref{corollary-embedding_in_finite_sequences} and just state $(*)$ instead, whose proof is immediate. Am I right?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{thebibliography}{9}
+
+\bibitem{Kun2009}
+K. Kunen, \emph{The Foundations of Mathematics}, College Publications, 2009.
+
+\bibitem{Kun2013}
+K. Kunen, \emph{Set Theory}, College Publications, 2013.
+
+\bibitem{Kun1980}
+K. Kunen, \emph{Set Theory}, North-Holland Pub. Co., 1980.
+
+\bibitem{Kun1984}
+K. Kunen and J. Vaughan, \emph{Handbook of Set-theoretic Topology}, North-Holland, 1984.
+
+\bibitem{Jec2003}
+Thomas J. Jech, \emph{Set Theory}, The third millennium edition, Springer-Verlag, 2003.
+
+\bibitem{Jec1971}
+Thomas J. Jech, \emph{Trees}, The Journal of Symbolic Logic, Volume 36, Number 1, March 1971.
+
+\bibitem{Spe1951}
+E. Specker, \emph{Sur un problème de Sikorski}, Colloquium Mathematicum, vol. 2 (1951), pp. 9--12.
+
+\end{thebibliography}
+
+
+
+
+
+
+\end{document}
