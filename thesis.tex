@@ -110,6 +110,8 @@
 \DeclareMathOperator{\down}{\downarrow}
 \DeclareMathOperator{\up}{\uparrow}
 \DeclareMathOperator{\cf}{cf}
+\DeclareMathOperator{\mos}{mos}
+\DeclareMathOperator{\trcl}{trcl}
 %\DeclareMathOperator{\conc}{^\frown}
 %\DeclareMathOperator{\gcd}{GCD}
 
@@ -137,8 +139,16 @@
 \newcommand{\m}{\mathfrak{m}}
 \newcommand{\X}{\mathbf{X}}
 \newcommand{\x}{\mathbf{x}}
+%\newcommand{\b}{\mathfrak{b}}
 \newcommand{\IFF}{\Longleftrightarrow}
 \newcommand{\conc}{^\frown}
+\newcommand{\onto}{\xrightarrow{\text{onto}}}
+\newcommand{\downmapsto}{%
+           \mathrel{\raisebox{.1em}{%
+							\rotatebox[origin=c]{-90}{$\mapsto$}}}}
+\newcommand{\upmapsto}{%
+           \mathrel{\raisebox{.08em}{%
+							\rotatebox[origin=c]{90}{$\mapsto$}}}}           
 \newcommand{\ndivides}{%
   \mathrel{\mkern.5mu % small adjustment
     % superimpose \nmid to \big|
@@ -206,9 +216,15 @@
 
 \chapter*{Preliminaries}
 
+\begin{center}
+TO BE HEAVILY MODIFIED AND EXPANDED
+\end{center}
+
 Unless otherwise stated, small greek letters always refer to ordinals.\\
 $\type (X,<)$ is the order type of the well-order $(X,<)$.\\
-Let $X$ be a set and $R$ a binary relation on $X$. If $x \in X$ then $\down x \defeq \{y \in X \mid R(y,x)\}$ and similarly $\up x \defeq \{y \in X \mid R(x,y)\}$.\\
+Let $(X,<)$ be a partially ordered set. If $A \sse X$, then $\down A \defeq \{y \in X \mid y < a$ for some $ a \in A \}$ and $\downmapsto A \defeq A \cup \down A = \{y \in X \mid y \leq a$ for some $a \in A \}$. If $x \in X$ then $\down x \defeq \down \{x\}$ and $\downmapsto x \defeq \downmapsto \{x\}$. Similarly for $\up A, \upmapsto A, \up x, \upmapsto x$.
+
+If $x \in X$ then $\down x \defeq \{y \in X \mid R(y,x)\}$ and similarly $\up x \defeq \{y \in X \mid R(x,y)\}$. \\
 Let $(X,\lhd)$ be a linearly ordered set. The \emph{lexicographic order} on $^{\omega} X$ is defined by
 \[
 f <_{\text{lex}} g \iff \exists n \in \omega [f(n) \lhd g(n) \text{ and } \forall i < n (f(i)=g(i))].
@@ -220,14 +236,14 @@ Let $\alpha$ be a limit ordinal. We say that a sequence $\langle \alpha_\xi \mid
 The main aim of this chapter is to introduce the basic concepts about trees and to present several results discussed in Jech's paper \cite{Jec1971}, while trying to fill every proof with details.
 
 \begin{defn}
-A \emph{tree} is a partially ordered set $(T,<)$ such that for all $x \in T$ the set $\down x$ is well-ordered by $<$. We define the following basic notions related to trees:
+A \emph{tree} is a partially ordered set $(T,<)$ such that for all $x \in T$ the set $\down x$ is well-ordered by $<$. The elements of $T$ are called \emph{nodes}. We define the following basic notions related to trees:
 \begin{itemize}
 \item If $x \in T$, the \emph{order} of $x$ is $o(x) \defeq \type(\down x)$.
 \item The \emph{$\alpha$th level of $T$} is $U_\alpha \defeq \{x \in T \mid o(x)=\alpha\}$.
-\item The \emph{height of $T$} is the least ordinal such that every $x \in T$ has smaller order type, i.e. $\height(T) \defeq \sup\{o(x)+1 \mid x \in T\}$.
-\item A \emph{branch in T} is a maximal linearly ordered subset of $T$. If $b$ is a branch in $T$, of course we can define $\height(b) \defeq \type(b)$.
+\item The \emph{height of $T$} is the least ordinal such that every $x \in T$ has smaller order type, i.e.\ $\height(T) \defeq \sup\{o(x)+1 \mid x \in T\}$.
+\item A \emph{chain in $T$} is a linearly ordered subset of $T$. A \emph{branch} is a maximal chain. If $b$ is a branch in $T$, of course we can define $\height(b) \defeq \type(b)$.
 \item An $\alpha$-tree is a tree of height $\alpha$, and similarly for an $\alpha$-branch.
-\item $T|\alpha$ is the subset of $T$ which contains every element of order strictly less than $\alpha$, i.e. $T|\alpha \defeq \cup_{\xi < \alpha} U_\xi$. Obviously $T|\alpha$ has height $\alpha$ if $\alpha \leq \height(T)$.
+\item $T|\alpha$ is the subset of $T$ which contains every element of order strictly less than $\alpha$, i.e.\ $T|\alpha \defeq \cup_{\xi < \alpha} U_\xi$. Obviously $T|\alpha$ has height $\alpha$ if $\alpha \leq \height(T)$.
 \item We say that a tree $(T_2,<_2)$ is an \emph{extension} of $(T_1,<_1)$ if ${<_1} = {<_2} \cap (T_1 \times T_1)$, and \emph{end-extension} if $T_1=T_2|\alpha$ for some $\alpha$.
 \end{itemize}
 \end{defn}
@@ -236,7 +252,7 @@ A \emph{tree} is a partially ordered set $(T,<)$ such that for all $x \in T$ the
 We consider the family of trees given by all $T$ which satisfy the following properties: for some $\alpha < \omega_1$,
 \begin{enumerate}[(i)]
 \item every element $t \in T$ is a function $t \colon \beta \to \omega$, with $\beta < \alpha$;
-\item $T$ is closed under initial segments, i.e. if $t \in T$ then $t \restr \beta$ is in $T$ as well, for any $\beta$;
+\item $T$ is closed under initial segments, i.e.\ if $t \in T$ then $t \restr \beta$ is in $T$ as well, for any $\beta$;
 \item if $t \colon \beta \to \omega$ is in T and $\beta+1 < \alpha$, then $t \conc n \in T$ for all $n \in \omega$;
 \item if $t \colon \beta \to \omega$ is in T and $\beta \leq \gamma < \alpha$, then there exists $s \colon \gamma \to \omega$ such that $t \sse s$;
 \item $T \cap {}^{\beta} \omega$ is at most countable for all $\beta < \alpha$.
@@ -246,11 +262,11 @@ Observe that $T$ is a countable set and the $\beta$th level consists precisely o
 
 \begin{defn}
 Let $\alpha \leq \omega_1$. An $\alpha$-tree $T$ is \emph{normal} if:.
-\begin{enumerate}[(i)]
+\begin{enumerate}[(i)]\label{def-normal_tree}
 %\item $\height(T)=\alpha$;
 \item $T$ has a unique least point (which we call \emph{root});
 \item every level of $T$ is at most countable;
-\item if $x$ is not maximal in $T$, then are infinitely many $y$ at level $o(x)+1$ (we call these \emph{immediate successors of $x$});
+\item if $x$ is not maximal in $T$, then are infinitely many $y \geq x$ at level $o(x)+1$ (we call these \emph{immediate successors of $x$});
 \item if $x \in T$ then there is $y>x$ at each higher level less than $\alpha$;
 \item the order $<$ is extensional within each level $U_\gamma$ such that $\gamma < \alpha$ is a limit ordinal, that is: for all $x,y \in U_\gamma$, if $\down x = \down y$ then $x=y$.
 \end{enumerate}
@@ -289,7 +305,7 @@ We will construct the tree $T$ in such a way that
 
 \begin{itemize}
 \item every $x \in T$ is a bounded and strictly increasing sequence of rational numbers;
-\item the order on $T$ is defined by: $x \leq y$ iff $y$ extends $x$, i.e. $x \sse y$;
+\item the order on $T$ is defined by: $x \leq y$ iff $y$ extends $x$, i.e.\ $x \sse y$;
 \item $T$ is closed under inital segments.
 \end{itemize}
 %
@@ -312,7 +328,7 @@ Define $U_0 \defeq \{\emptyset\}$. For the successor step, suppose that we have 
 \[
 U_{\alpha+1} \defeq \{ x \conc r \mid x \in U_\alpha, r \in \Q \text{ with } r > \sup x \}.
 \]
-It's easy to check that also $U_{\alpha+1}$ satisfies \eqref{eq:aron_cond1} and \eqref{eq:aron_cond2} w.r.t. $\alpha+1$ (but note that one needs that $\Q$ is dense).\\
+It's easy to check that also $U_{\alpha+1}$ satisfies \eqref{eq:aron_cond1} and \eqref{eq:aron_cond2} w.r.t.\ $\alpha+1$ (but note that one needs that $\Q$ is dense).\\
 For the limit step, let $\alpha$ be a limit ordinal and suppose we have already defined $U_\beta$ for all $\beta<\alpha$.
 \begin{claim}{}
 For each $x \in T|\alpha$ and each $q > \sup x$ there exists a strictly increasing $\alpha$-sequence of rationals $y$ such that $y$ extends $x$, $q \geq \sup y$ and $y \restr \beta \in T|\alpha$ for all $\beta<\alpha$.
@@ -334,7 +350,7 @@ Let $\kappa$ be an infinite cardinal. If $\kappa^{<\kappa}=\kappa$, then there e
 First we need some lemmas.
 
 \begin{lemma}\label{lemma-cof_continua}
-Let $\alpha$ be a limit ordinal. There exists a sequence $\langle \alpha_\xi \mid \xi < \cf(\alpha) \rangle$ cofinal in $\alpha$ which is also \emph{continuous}, i.e. $\alpha_\gamma = \sup_{\xi<\gamma} \alpha_\xi$ for all $\gamma < \cf(\alpha)$ limit.
+Let $\alpha$ be a limit ordinal. There exists a sequence $\langle \alpha_\xi \mid \xi < \cf(\alpha) \rangle$ cofinal in $\alpha$ which is also \emph{continuous}, i.e.\ $\alpha_\gamma = \sup_{\xi<\gamma} \alpha_\xi$ for all $\gamma < \cf(\alpha)$ limit.
 \begin{proof}
 Let $\langle \beta_\xi \mid \xi < \cf(\alpha) \rangle$ be cofinal in $\alpha$. Define $\langle \alpha_\xi \mid \xi < \cf(\alpha) \rangle$ by
 \[
@@ -350,7 +366,7 @@ Of course this sequence is continuous and still cofinal in $\alpha$.
 
 \begin{lemma}\label{lemma-embedding_in_finite_sequences}
 \renewcommand{\Q}{\mathcal{Q}}
-Let $\kappa$ be an infinite cardinal. Let $\Q \defeq \{f \in \kappa^\omega \mid f(n)=1$ for finitely-many $n \in \omega \}$. Then every $\alpha < \kappa^+$ embeds in $\Q$, ordered lexicographically.
+Let $\kappa$ be an infinite cardinal. Let $\Q \defeq \{f \in \kappa^\omega \mid f(n)>0$ for finitely-many $n \in \omega \}$. Then every $\alpha < \kappa^+$ embeds in $\Q$, ordered lexicographically.
 \begin{proof}
 We proceed by induction on $\alpha$. Suppose $\phi \colon \alpha \to \Q$ is an order-embedding. Then $\phi^+ \colon \alpha+1 \to \Q$ defined by
 \[
@@ -418,7 +434,7 @@ The only case left is $\alpha$ limit with $\cf(\alpha) < \kappa$. Then we define
 \[
 |U_\alpha| \leq |\{\mathfrak{b} : \mathfrak{b} \text{ is a branch in } T|\alpha\}| \leq |{}^\alpha \kappa|.
 \]
-But of course every branch in $T|\alpha$ is completely determined by $\cf(\alpha)$-many entries, therefore $|U_\alpha| \leq \kappa^{\cf(\alpha)}$. Since $\cf(\alpha)<\kappa$ and by hypothesis $\kappa^{<\kappa}=\kappa$, we obtain that $|U_\alpha| \leq \kappa$, i.e. also condition \eqref{eq:aron_cond3} is satisfied.\\[6pt]
+But of course every branch in $T|\alpha$ is completely determined by $\cf(\alpha)$-many entries, therefore $|U_\alpha| \leq \kappa^{\cf(\alpha)}$. Since $\cf(\alpha)<\kappa$ and by hypothesis $\kappa^{<\kappa}=\kappa$, we obtain that $|U_\alpha| \leq \kappa$, i.e.\ also condition \eqref{eq:aron_cond3} is satisfied.\\[6pt]
 Clearly $T$ is an Aronszajn $\kappa^+$-tree by construction.
 \end{proof}
 
@@ -438,7 +454,288 @@ So $\kappa^{<\kappa} = \sup\{\kappa^\lambda \mid \lambda < \kappa = \cf(\kappa),
 Hence, if we assume \GCH we have that for every $\kappa$ regular there exists an Aronszajn $\kappa^+$-tree.
 
 
-\paragraph{Note for Professor Friedman.} While checking everything before sending you this first part, I noticed that in the proof of Theorem \ref{thm-aronszajn_k+_tree} I actually never need that every $\alpha < \kappa^+$ embeds into every interval of $\mathcal{Q}$, but only that $(*)$ every $\alpha \leq \kappa$ does. This is because if $\alpha < \kappa^+$, then $\cf(\alpha) \leq \kappa$, and thus $(*)$ is sufficient to provide the sequence $\langle q_\xi \mid 1 \leq \xi < \cf(\alpha) \rangle$. If my observations are correct, this is the only step where I need Corollary \ref{corollary-embedding_in_finite_sequences}. So I could avoid stating Lemma \ref{lemma-embedding_in_finite_sequences} and Corollary \ref{corollary-embedding_in_finite_sequences} and just state $(*)$ instead, whose proof is immediate. Am I right?
+
+\section{Suslin trees}
+
+\begin{defn}
+Let $(P, \leq)$ be a partially ordered set. An \emph{antichain} in $P$ is a subset $A \sse P$ such that any two distinct elements of $A$ are incomparable, i.e.\ $x,y \in A$ and $x \neq y$ implies $x \nleq y$ and $y \nleq x$. A \emph{maximal antichain} in $P$ is an antichain which is maximal in $P$ w.r.t.\ the inclusion relation between subsets of $P$.
+\end{defn}
+
+\begin{defn}
+A \emph{Suslin tree} is an $\omega_1$-tree such that every branch is at most countable and every antichain is at most countable.
+\end{defn}
+
+Of course any Suslin tree is an Aronszjan tree. Furthermore, observe that if an $\omega_1$-tree $T$ is normal and has no uncountable antichain, then $T$ is a Suslin tree. For, suppose by contradiction that $\mathfrak{b}$ is an $\omega_1$ branch. For all $x \in \mathfrak{b}$, let $f(x)$ be an arbitrary node greater than $x$ which is not in $\mathfrak{b}$. Then $\{f(x) : x \in \mathfrak{b}\}$ would be an uncountable antichain.
+
+\subsection{Suslin lines}
+
+We will show later on that the existence of Suslin trees is independent of \ZFC. The first result in this direction was proven by Jech (1967), who built a forcing model where there is a Suslin tree. In 1971 Solovay and Tennenbaum provided a model where there is no Suslin tree. To do it, they introduced a technique which turned out to be of fundamental importance for set theory: iterated forcing.
+
+Suslin actually never talked about Suslin trees. They were introduced by Kurepa, who showed (1935) that the \emph{Suslin hypothesis} holds if and only if there exists no Suslin tree:
+\\[6pt]
+\textbf{Suslin hypothesis.} Let $R$ be a linearly ordered set without endpoints, which is dense and Dedekind complete. Assume that $R$ satisfies the \emph{countable chain condition}, that is, every collection of mutually disjoint non-empty open intervals in $R$ is countable. Then $R$ is order-isomorphic to the real line.
+\\[6pt]
+It is easily seen that the Suslin hypothesis holds if and only if there exists a \emph{Suslin line}, i.e.\ a dense linearly ordered set that satisfies the countable chain condition but is not separable.
+
+\begin{lemma}
+If there exists a Suslin tree then there exists a normal Suslin tree.
+\begin{proof}
+Let $T$ be a Suslin tree. We turn $T$ into a normal Suslin tree through progressive transformations. In the end every property of Definition \ref{def-normal_tree} will be satisfied. First, define $T_1 := \{x \in T : |\up x| > \aleph_0\}$. Observe that if $x \in T_1$ and $\alpha > o(x)$, then there is $y \in T$ above $x$ which is at level $\alpha$ and such that $|\up y| > \aleph_0$. So $T_1$ satisfies condition (iv). For every set of the form $C = \down y$ for some $y \in T_1$ at limit level, we add an extra node $a_C$ in such a way that $a_C$ is the least node above each element of $C$, i.e.\ $C < a_C$ and $a_C < x$ for all $x > C$. We call the obtained tree $T_2$. Of course any new level is still countable, so $T_2$ satisfies (ii), (iv) and (v). Call a node \emph{branching} if it has at least two immediate successor. Using that $T_2$ has no uncountable chain and satisfies (v), it's easy to see that for each $x \in T_2$, the set $\up x$ contains uncountably many branching points. So $T_3 :=\{$branching points of $T_2\}$ satisfies (ii), (iv) and (v). Also, each $x \in T_3$ is a branching point. Now let $T_4 := \{x \in T_3 : x$ belongs to a limit level of $T_3\}$, where the order in $T_4$ is just the restriction of the one in $T_3$. It's easy to verify that $T_4$ is an $\omega_1$-tree which satisfies (ii), (iii), (iv), (v). Finally, to get a normal Suslin tree we just ``glue'' together the least nodes of $T_4$.
+\end{proof}
+\end{lemma}
+
+\begin{theorem}
+There exists a Suslin line if and only if there exists a Suslin tree.
+\begin{proof}
+Suppose we have a Suslin line $L$. We want to build a Suslin tree $T$ by taking a certain family of closed nonempty intervals on $L$, ordered by reverse inclusion. The construction of $T$ proceeds by induction on $\alpha < \omega_1$. Let $I_0 := [a_0,b_0]$ be arbitrary (with $a_0 < b_0$). Assume we already defined $I_\beta = [a_\beta,b_\beta]$ for all $\beta < \alpha$. The set $C := \{a_\beta : \beta < \alpha\} \cup \{b_\beta : \beta < \alpha\}$ is countable, and thus it can't be dense since $L$ is not separable. So we choose an interval $I_\beta$ which is disjoint from $C$. Of course $T := \{I_\alpha : \alpha < \omega_1\}$ has size $\aleph_1$ and is partially ordered by $\supseteq$. Moreover, $\alpha < \beta$ implies that either $I_\alpha \supsetneq I_\beta$ or $I_\alpha \cap I_\beta = \emptyset$. This means that $I_\alpha \supsetneq I_\beta$ implies $\alpha < \beta$, so every set of the form $\{I \in T : I \supseteq I_\alpha\}$ is well-ordered by $\supseteq$. Hence $T$ is a tree.
+
+We shall show that $T$ has no uncountable branches and no uncountable antichains. Then of course $\height(T) \leq \omega_1$; since every level is an antichain and $|T| = \aleph_1$ we obtain $\height(T) = \omega_1$.
+
+Observe that $I,J \in T$ are incomparable in $T$ if and only if they are disjoint in $L$. By the CCC in $L$ we get that antichains in $T$ are at most countable. Finally, suppose towards a contradiction that $\mathfrak{b}$ is a branch of height $\omega_1$. Then the left endpoints of the intervals $I \in \mathfrak{b}$ form a strictly increasing sequence $\{x_\alpha : \alpha < \omega_1\}$ of points of $L$. Clearly the intervals $(x_\alpha, x_{\alpha+1}), \alpha < \omega_1$ form an uncountable family of mutually disjoint open intervals in $L$, which contradicts the CCC hypothesis.\\[6pt]
+%
+\indent Let $T$ be a Suslin tree. By last lemma we can assume w.l.o.g.\ that $T$ is normal. Let $L := \{\mathfrak{b} : \mathfrak{b}$ is a branch in $T\}$. Each $x \in T$ has $\aleph_0$-many immediate successor, thus we can assume that every set of immediate successor is equipped with a ``local'' order which is isomorphic to the one of the rational numbers. This enables us to define the order on $L$: if $\alpha$ is the least level where two branches $\mathfrak{a}, \mathfrak{b} \in L$ differ, then $\alpha$ is a successor ordinal and the relative points $a_\alpha \in \mathfrak{a}$ and $b_\alpha \in \mathfrak{b}$ are both successors of the same point at level $\alpha-1$. We stipulate that $\mathfrak{a} < \mathfrak{b}$ iff $a_\alpha$ is smaller than $b_\alpha$ in the local order.
+
+It's immediate to check that $L$ is linearly ordered and dense. Also, if $(\mathfrak{a},\mathfrak{b})$ is an open interval in $L$, one easily finds some $x \in T$ such that $B_x \sse (\mathfrak{a},\mathfrak{b})$, where $B_x$ is $B_x := \{\mathfrak{c} \in L : x \in \mathfrak{c}\}$. Observe that if $B_x$ and $B_y$ are disjoint, then $x$ and $y$ are incomparable in $T$. Hence, for some $x,y \in T$,
+\[
+(\mathfrak{a},\mathfrak{b}) \cap (\mathfrak{c},\mathfrak{d}) = \emptyset \imp B_x \cap B_y = \emptyset \imp x \perp y.
+\]
+Since every antichain in $T$ is at most countable, this means that $L$ satisfies the CCC.
+
+Finally, let $S$ be a countable family of branches of $T$ and let $\alpha$ be a countable ordinal greater than the length of any branch $\mathfrak{b} \in S$ (which obviously exists, because every branch of $T$ is countable). Now let $x \in T$ be a node at level $\alpha$. Of course $B_x \cap S = \emptyset$, and since $B_x$ clearly contains some open interval of $L$, we have that $S$ is not dense in $L$. Thus $L$ is not separable and we are done.
+\end{proof}
+\end{theorem}
+
+
+\subsection{Suslin trees in $L$}
+
+In this section we will prove that $V=L$ implies the existence of a Suslin tree. We start with a rather general lemma.
+
+\begin{lemma}\label{lemma-countable_elementary_substructure_of_H(theta)}
+Let $\theta$ be a regular uncountable cardinal. Suppose that $M$ is a countable structure such that $M \preceq H_\theta$. Then the following hold:
+\begin{enumerate}
+\item If $a \in M$ and $a$ is countable, then $a \sse M$.
+\item $M \cap \omega_1 = \beta$, where $\beta$ is a countable limit ordinal.
+\item If $\theta > \omega_1$, then $\omega_1 \nsubseteq M$ but $\omega_1 \in M$, and ``$\omega_1$ is the first uncountable ordinal'' is true in $M$.
+\item Let $T \defeq \mos"M$ and let $\beta = M \cap \omega_1$ by the second point. Then $\mos(\omega_1) = \beta$ and $\mos(\xi) = \xi$ for all $\xi < \beta$.
+\item $\beta = (\omega_1)^T$ and $T \models \mathsf{ZFC-P}$.
+\end{enumerate}
+\begin{proof}
+Recall that $H_\theta$ is a model of $\mathsf{ZFC-P}$. Thus $\omega$ and all $n \in \omega$ are definable in $H_\theta$, so $\omega \in M$ and $\omega \sse M$. Now, if $a=\emptyset$ then trivially $a \sse M$. If $a \neq \emptyset$, then there exists $f \colon \omega \to a$ surjective. It's immediate to check that any such function belongs to $H_\theta$. Since $M \preceq H_\theta$, at least one such $f$ belongs to $M$ as well. Observe that $f,n \in M$ implies $f(n) \in M$ (by $M \preceq H_\theta$ again), and since $a = \{f(n) : n \in \omega\}$ we have $a \sse M$, so (1) is proved.\\
+For (2), note that by the previous point $M \cap \omega_1$ is an initial segment of $\omega_1$. Therefore $M \cap \omega_1 = \beta$ is an ordinal. Of course it can't be uncountable, and it is limit because if $\xi \in \beta$ then $\xi + 1 \in \beta$ by $M \preceq H_\theta$.\\
+Point (3) is trivial by elementarity, because $\omega_1$ is definible in $H_\theta$ as the first uncountable ordinal (and it is absolute between $H_\theta$ and $V$ because any surjective function $f \colon \omega \to (\omega_1)^{H_\theta}$ in $V$ would also belong to $H_\theta$).\\
+Point (4) follows immediately from the previous points, and in particular from $M \cap (\omega_1 \cup \{\omega_1\}) = \beta \cup \{\omega_1\}$.\\
+For point (5), observe that the relation $\in$ is extensional on $H_\theta$ and thus also on $M$ by elementarity. So $\mos$ is an isomorphism, hence $T \simeq M \preceq H_\theta \models \mathsf{ZFC-P}$ + ``$\omega_1$ is the first uncountable cardinal'', and we are done.
+\end{proof}
+\end{lemma}
+
+The reason why last lemma will turn out to be useful is the following:
+
+\begin{lemma}
+If $V=L$, then $L_\kappa = H_\kappa$ for all cardinals $\kappa \geq \omega$.
+\begin{proof}
+See \cite[p. 141]{Kun2013}.
+\end{proof}
+\end{lemma}
+
+Thus we can replace $H_\theta$ with $L_\theta$ in Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} if $V=L$.
+
+\begin{lemma}
+Let $T$ be a tree and $A$ a maximal antichain. Suppose that $A$ is \emph{bounded in $T$}, i.e.\ there is some $\alpha < \height(T)$ such that $o(x) \leq \alpha$ for all $x \in A$. Then $A$ is maximal in every end-extension of $T$.
+\begin{proof}
+Let $T'$ be an end-extension of $T$ and let $\alpha < \height(T)$ such that every element of $A$ is at level $\leq \alpha$. Take $t' \in T' \sm T$. We want to show that $t'$ is comparable with some $a \in A$. Of course $o(t') \geq \height(T) > \alpha$ because $T'$ is an end-extension of $T$. Thus there exists $t<t'$ at level $\alpha$ of $T$. In turn, there exists $a \leq t$ which is an element of $A$.
+\end{proof}
+\end{lemma}
+
+Observe that any subset of a tree $T$ is bounded if the height of $T$ is a successor ordinal. Thus the request that $A$ is bounded in last lemma is always satisfied in that case.
+
+\begin{lemma}[\textbf{Sealing maximal antichains}]\label{lemma-kill_countable_max_antichains}
+Let $\alpha$ be a countable limit ordinal, $T$ a normal $\alpha$-tree and $\A$ a countable family of maximal antichains in $T$. Then there exists a normal end-extension $T'$ of $T$ of height $\alpha+1$ such that every $A \in \A$ is a maximal antichain in $T'$ (and in turn in every end-extension of $T'$ by last lemma).
+\begin{proof}
+Write $\A = \{A_k : k \geq 1 \}$. We want to show that for all $t \in T$ there exist an $\alpha$-branch which hits $t$ and every $A_k$. We build such branch by induction. Let $\langle \alpha_n : n \in \omega \rangle$ be cofinal in $\alpha$. Suppose w.l.o.g.\ that $\alpha_0 = o(t)$ and let $t_0 \defeq t$. Suppose inductively that we have defined $\langle t_i : i < n \rangle$ such that:
+\begin{itemize}
+\item the sequence is (weakly) increasing;
+\item $o(t_i) \geq \alpha_i$ for all $i<n$;
+\item $A_k \cap \downmapsto \{t_0,...,t_{n-1}\} \neq \emptyset$ for all $1 \leq k < n$.
+\end{itemize}
+Since $A_n$ is a maximal antichain, there exists $a_n \in A_n$ comparable with $t_{n-1}$. To define $t_n$, we shall distinguish three cases. If $a_n > t_{n-1}$ and $o(a_n) \geq \alpha_n$, define $t_n \defeq a_n$. If $a_n \leq t_{n-1}$ and $o(t_{n-1}) \geq \alpha_n$, define $t_n \defeq t_{n-1}$. If both $o(t_{n-1}), o(a_n) < \alpha_n$, then choose $t_n > \max(t_{n-1},o(a_n))$ at level $\alpha_n$ (which exists by normality).\\
+In any case, the induction hypothesis is preserved for $\langle t_i : i < n+1 \rangle$, and thus we obtain $\langle t_i : i \in \omega \rangle$ cofinal in $T$. By construction, such sequence induces an $\alpha$-branch $\mathfrak{b}_t$ such that $t \in \mathfrak{b}_t$ and $A_k \cap \mathfrak{b}_t \neq \emptyset$ for all $k \in \omega$.
+
+Finally, we define the extension $T' \defeq T \cup \{ b_t : t \in T\}$, where $b_t$ are new elements which are put on top of the relative branch $\mathfrak{b}_t$. It's easy to check that $T'$ is a normal $(\alpha+1)$-tree and an end-extension of $T$. Every $A \in \A$ is still a maximal antichain in $T'$, because by construction any $b_t$ is greater than some $a \in A$.
+\end{proof}
+\end{lemma}
+
+\begin{theorem}[Jensen]\label{thm-suslin_tree_in_L}
+If $V=L$, then there exists a Suslin tree.
+\begin{proof}
+We construct the Suslin tree $T$ by recursion on levels. As a set, $T$ will simply be the ordinal $\omega_1$. Also, the construction will proceed in such a way that $T|\alpha$ is normal, for all $\alpha < \omega_1$; $T$ will also be normal. If we have already built $U_\alpha$, for the successor level $U_{\alpha+1}$ we just put countably many nodes above each node of $U_\alpha$. We decide to be more precise, even though this wouldn't be strictly necessary. Formally, we let $U_0 \defeq \{0\}$, $U_1 \defeq \omega \sm \{0\}$, $U_{n+1} \defeq \{ \omega \cdot n + k : k \in \omega \}$ for $0<n<\omega$, and $U_\alpha \defeq \{ \omega \cdot \alpha + k : k \in \omega \}$ for $\omega \leq \alpha < \omega_1$. So now we must define the ordering of $T$, recursively. For $U_{\alpha+1}$, we arbitrarily partition $U_{\alpha+1}$ into $\aleph_0$-many countably infinite subsets. Every such set will be the set of immediate successors of one node of $U_\alpha$, so that the normality is preserved. Now comes the hard part: for the limit step, we must choose which branches to extend and which to omit. The idea is to exploit Lemma \ref{lemma-kill_countable_max_antichains} to ``seal'' every maximal antichain in the partial tree $T|\alpha$, for $\alpha$ limit. As one would expect, the viability of this method will rely on some specific properties of the constructible universe. The proof of some facts is rather technical, therefore we believe that it is more convenient to state them here as claims and provide their proofs at the end for the interested reader.\\
+\begin{claim}{ 1}
+There exists a function $f \colon \omega_1 \to \omega_1$ such that for each $\alpha < \omega_1$,
+\[
+\langle L_{f(\alpha)}, \in \rangle \models \alpha \text{ is countable}.
+\]
+Furthermore, $f$ is absolute for $L_{\omega_2}$.
+\end{claim}\\
+
+Now we can define the limit levels: we choose such a function $f$ and for every limit ordinal $\alpha$ we use Lemma \ref{lemma-kill_countable_max_antichains} to seal all maximal antichains of $T|\alpha$ which are elements of $L_{f(\alpha)}$. This is clearly possible because $L_{f(\alpha)}$ is countable. One technical detail: note that we can assume that the elements of the $\alpha$th level of the $(\alpha+1)$-tree produced by Lemma \ref{lemma-kill_countable_max_antichains} are precisely the ones of $U_\alpha \defeq \{ \omega \cdot \alpha + k : k \in \omega \}$. This is because $T|\alpha$ is countable and normal, whereby the the set $\{b_t : t \in T|\alpha\}$ in the proof of \ref{lemma-kill_countable_max_antichains} must have size precisely $\aleph_0$, like $U_\alpha$, which is the only thing we needed to check.
+
+Finally, $T \defeq \cup_{\gamma < \omega_1} U_\gamma$, and the order of $T$ is the one we just defined by recursion.\\
+It's clear that $T$ is an $\omega_1$-tree, so it remains to show that $T$ has no uncountable antichain. Let $A$ be a maximal antichain of $T$.\\[-7pt]
+\begin{claim}{ 2}
+$T$ and $A$ belong to $L_{\omega_2}$, in which they satisfy the same definition as in $V$.
+\end{claim}\\[-7pt]
+
+So we consider the structure
+\[
+\M \defeq \langle L_{\omega_2}, \in, \omega_1, T, A \rangle.
+\]
+By Löwenheim-Skolem Theorem, there exists a countable elementary substructure $\mathcal{N} \preceq \M$ such that $\omega_1, T, A \in \mathcal{N}$. Such structure has the form
+\[
+\mathcal{N} = \langle N, \in, \omega_1, T, A \rangle.
+\]
+By Gödel Condensation Lemma and Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} (and using that $V=L$) it follows that its transitive realization $\mos"\mathcal{N}$ has the form
+\[
+\mathcal{N'} = \langle L_\beta, \in, \alpha, T \cap \alpha, A \cap \alpha \rangle,
+\]
+where $\alpha = \omega_1 \cap N = (\omega_1)^{\mathcal{N'}}$ and $\beta$ is a countable ordinal.\\
+Observe that since $\mathcal{N} \preceq \M$ and $\mos \colon \mathcal{N} \to \mathcal{N'}$ is an isomorphism, we have $T \cap \alpha = T^{\mathcal{N'}}$. In particular, $\mathcal{N'} \models \height(T \cap \alpha)=\alpha$. By absoluteness, $\height(T \cap \alpha)=\alpha$ also in $V$. Looking back at the definition of the levels of $T$, this clearly implies that $T \cap \alpha = T|\alpha$. Similarly, $\mathcal{N'} \models$ ``$A \cap \alpha$ is a maximal antichain of $T \cap \alpha$'', hence by absoluteness $A \cap \alpha$ is a maximal antichain of $T|\alpha$ in $V$ as well.\\
+Now, of course $\mathcal{N'} \models$ ``$\alpha$ is uncountable'', whereas $L_{f(\alpha)} \models$ ``$\alpha$ is countable''. Thus $\beta < f(\alpha)$, which implies $A \cap \alpha \in L_{f(\alpha)}$. This means that $A \cap \alpha$ was sealed at the $\alpha$th step of the recursion, i.e.\ it's still maximal in $T$. Hence $A = A \cap \alpha$, so $A$ is countable.
+\end{proof}
+\end{theorem}
+
+\begin{proof}[Proof of Claim 1.]
+\renewcommand{\qedsymbol}{$\blacksquare$}
+Let $\alpha$ be a countable ordinal. Of course in $V$ there exists $g \colon \omega \to \alpha$ surjective. It is immediate to check that $|{\trcl(g)}| < \omega_1$, i.e.\ $g \in H_{\omega_1}$. Since $V=L$ implies $L_{\omega_1} = H_{\omega_1}$, this means that $g \in L_{\omega_1}$, and an easy absoluteness argument shows that $L_{\omega_1} \models g \colon \omega \onto \alpha$. By an easy application of the Reflection Theorem, there exists $\beta < \omega_1$ such that the formula is true in $L_\beta$. Thus we proved that the statement
+\[
+\forall \alpha < \omega_1 \ \exists \beta < \omega_1 \ [ \langle L_\beta, \in \rangle \models \alpha \text{ is countable}]. \tag{$\sigma$}
+\]
+holds in $V$. Now recall that the relation ``$\models$'' and the function $\gamma \mapsto L_\gamma$ are absolute for transitive models of $\mathsf{ZF-P}$. Hence every notion used in $\sigma$ is absolute for $L_{\omega_2}$, which then satisfies $\sigma$. Thus in $L_{\omega_2}$ there exists a function $f \colon \omega_1 \to \omega_1$ such that for each $\alpha < \omega_1$,
+\[
+\langle L_{f(\alpha)}, \in \rangle \models \alpha \text{ is countable},
+\]
+and such function is absolute.
+\end{proof}
+
+\begin{proof}[Proof of Claim 2.]
+\renewcommand{\qedsymbol}{$\blacksquare$}
+If we show that $T \in L_{\omega_2}$ and it's absolute, then $A \in L_{\omega_2}$ and its absoluteness follow immediately: ``being a maximal antichain'' is absolute for $L_{\omega_2}$ (easy to verify) and $A \sse T \in L_{\omega_2}$ ($= H_{\omega_2}$ since $V=L$) implies $A \in L_{\omega_2}$.\\
+Now, to prove the statement about $T$ we must show that the recursion step $\alpha \mapsto U_\alpha$ is absolute for $L_{\omega_2}$. The case when $\alpha$ is a successor ordinal is easy. For the limit case, observe that $U_\alpha$ is essentially the $\alpha$th level of the tree $H(T|\alpha, \S_\alpha)$, where 
+\[
+\S_\alpha \defeq \{A : (A \text{ is a maximal antichain of } T|\alpha)^{L_{f(\alpha)}}\}
+\]
+and $H$ is a function which takes the tree $T|\alpha$ and the countable family $\S_\alpha$ and returns an $(\alpha+1)$-tree as in the statement of Lemma \ref{lemma-kill_countable_max_antichains}. It's easy to check that $H$ is absolute for $L_{\omega_2}$. Furthermore, by the absoluteness of the notions involved (in particular of $\models$ and $\gamma \mapsto L_\gamma$), we obtain that the formula
+\[
+(A \text{ is a maximal antichain of } T|\alpha)^{L_{f(\alpha)}}
+\]
+is absolute between $L_{\omega_2}$ and $V$. Therefore $(\S_\alpha)^{L_{\omega_2}} = \S_\alpha$, which in turn implies $(H(T|\alpha, \S_\alpha))^{L_{\omega_2}} = H(T|\alpha, \S_\alpha)$. Hence the induction step in the construction of $T$ is absolute, and by the absoluteness of functions defined by recursion we are done.
+\end{proof}
+
+\section{Kurepa trees}
+
+\begin{defn}
+A \emph{Kurepa tree} is an $\omega_1$-tree which has only countable levels and at least $\aleph_2$-many uncountable branches.
+\end{defn}
+
+\begin{defn}
+A \emph{Kurepa family} is $\F \sse \PP(\omega_1)$ such that $|\F| \geq \aleph_2$ and the set $\{X \cap \alpha : X \in \F\}$ is countable for all $\alpha < \omega_1$.
+\end{defn}
+
+In 1942, Kurepa formulated \emph{Kurepa's Hypothesis}, which asserts that there exists a Kurepa tree. He conjectured that such hypothesis doesn't hold, which is false, since it is independent of \ZFC, as we will show in a while. First, as one might expect:
+
+\begin{proposition}
+There exists a Kurepa tree if and only if there exists a Kurepa family.
+\begin{proof}
+Suppose we have a Kurepa tree $T$. $T$ has size $\aleph_1$, so we can assume w.l.o.g.\ that $T = \omega_1$. We can also assume that $\alpha <_T \beta$ implies $\alpha < \beta$, because a simple re-ordering defined by induction on levels gives such a tree. By defining $\F := \{ \mathfrak{b} : \mathfrak{b}$ is an $\omega_1$-branch of $T \}$ we clearly obtain a Kurepa family.
+
+Let $\F$ be a Kurepa family. For any $X \in \F$, define $f_X \colon \omega_1 \to \PP(\omega_1)$ given by $f_X(\alpha) := X \cap \alpha$. Now let $U_\alpha := \{ f_X \restr \alpha : X \in \F \}$ for all $\alpha < \omega_1$ and $T := \bigcup_{\alpha < \omega_1} U_\alpha$. Endowing $T$ with the ``$\sse$'' order we get a tree whose $\alpha$th level is $U_\alpha$, thus countable. Also, every $f_X$ corresponds to an $\omega_1$-branch in $T$. Since there are $\geq \aleph_2$-many $f_X$'s, $T$ is a Kurepa tree.
+\end{proof}
+\end{proposition}
+
+\begin{remark}
+Observe that by the first point of Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)}, it follows immediately that if $M \preceq H_{\omega_1}$ with $M$ countable, then $M$ is transitive.
+\end{remark}
+
+\begin{theorem}[Solovay]
+If $V=L$ then there exists a Kurepa family.
+\begin{proof}
+The general structure of this proof will be very similar to the one of Theorem \ref{thm-suslin_tree_in_L}. Therefore we shall skip some details which were already discussed in the construction of the Suslin tree.\\
+Assume $V=L$. We define the function $f \colon \omega_1 \to \omega_1$ by
+\[
+f(\alpha) := \text{the least $\gamma$ such that } \alpha \in L_\gamma \preceq (L_{\omega_1}, \in).
+\]
+The function $f$ is well-defined: of course there is a smallest elementary substructure $(M,\in)$ of $(L_{\omega_1},\in)$ such that $\alpha \in M$. $M$ is clearly countable, thus by last remark $M$ is transitive\footnote{Here we are using that $V=L$ to ensure that $H_{\omega_1} = L_{\omega_1}$. Actually this is not needed: it's possible to drop the assumption $V=L$ and still prove that any elementary submodel $M \preceq L_{\omega_1}$ is transitive.} and using Gödel Condensation Lemma we obtain that $M=L_\gamma$ for some $\gamma < \omega_1$. Now consider the following family:
+\[
+\F := \{ X \sse \omega_1 \mid X \cap \alpha \in L_{f(\alpha)} \text{ for all } \alpha < \omega_1 \}.
+\]
+Of course $\{ X \cap \alpha : X \in \F \}$ is countable for any $\alpha$, because $L_{f(\alpha)}$ is. If we show that $|\F| \geq \aleph_2$ then $\F$ is a Kurepa family, as wanted.\\
+Assume towards a contradiction that $|\F| \leq \aleph_1$. Then there is an enumeration $C = \langle X_\xi : \xi < \omega_1 \rangle$ of $\F$. Suppose w.l.o.g.\ that $C$ is the $<_L$-least such enumeration.
+
+\begin{claim}{ 1}
+$C$ is absolute for $L_{\omega_2}$.
+\begin{claimproof}
+The fact that $C \in L_{\omega_2}$ is immediate using that $L_{\omega_2} = H_{\omega_2}$. Recalling that the function $\theta \mapsto L_\theta$ and the relation ``$\preceq$'' are absolute (for $L_{\omega_2}$), it's easy to check that $f$ and, in turn, $\F$ are absolute for $L_{\omega_2}$. Thus $L_{\omega_2} \models C \colon \omega_1 \onto \F$.
+\end{claimproof}
+\end{claim}
+
+Now we recursively define a chain of elementary substructures of $(L_{\omega_2},\in)$, which will look like this:
+\[
+N_0 \preceq N_1 \preceq \dots \preceq N_\nu \preceq \dots \preceq (L_{\omega_2},\in)
+\]
+for $\nu < \omega_1$. The chain is defined as follows: $N_0$ is the smallest elementary substructure of $L_{\omega_2}$; $N_{\nu+1}$ is the smallest $N \preceq L_{\omega_2}$ such that $N_\nu \sse N$ and $N_\nu \in N$; for $\eta$ limit, $N_\eta := \bigcup_{\xi < \eta} N_\xi$. Observe that:
+\begin{enumerate}[--]
+\item every $N_\nu$ is countable;
+\item there always exists $N$ as in the successor step, because $N_\nu \in L_{\omega_2}$ since $N_\nu$ is a countable subset of $L_{\omega_2}$ (and $L_{\omega_2} = H_{\omega_2}$);
+\item if $\nu < \mu$ then $N_\nu \preceq N_\mu$ because $N_\nu \sse N_\mu$ and both are elementary substructures of $L_{\omega_2}$;
+\item for each $\nu < \omega_1$, by Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} we have $\omega_1 \cap N_\nu = \alpha_\nu$ for some $\alpha_\nu < \omega_1$.
+\end{enumerate}
+The sequence $\langle \alpha_\nu : \nu < \omega_1 \rangle$ is continuous and strictly increasing. Continuity is straightforward:
+\[
+\omega_1 \cap N_\eta = \omega_1 \cap \bigcup_{\xi < \eta} N_\xi = \bigcup_{\xi < \eta} \omega_1 \cap N_\xi = \sup_{\xi < \eta} \alpha_\xi.
+\]
+It's trivial that the sequence is increasing, but the fact that it is \emph{strictly} increasing is a bit more delicate. Recall that $N_\nu \in N_{\nu+1} \preceq L_{\omega_2}$. By Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)}, also $\omega_1 \in N_{\nu+1}$. So $N_\nu \cap \omega_1 \in N_{\nu+1}$ by elementarity, i.e.\ $\alpha_\nu \in N_{\nu+1}$. But of course $\alpha_{\nu+1} = N_{\nu+1} \cap \omega_1 \not\in N_{\nu+1}$, therefore $\alpha_\nu \neq \alpha_{\nu+1}$, and we are done.
+
+Let $X := \{ \alpha_\nu : \alpha_\nu \not\in X_\nu \}$. Note that $X$ is well-defined because $\langle \alpha_\nu : \nu < \omega_1 \rangle$ is strictly increasing and thus injective. Obviously $X \neq X_\xi$ for all $\xi < \omega_1$. We claim that $X \in \F$, which contradicts the fact that $C$ enumerates all the elements of $\F$.
+
+So we want to show that $X \cap \alpha \in L_{f(\alpha)}$ for all $\alpha < \omega_1$. We prove this by induction on $\alpha$. The case where $\alpha$ is not a limit point of the sequence $\langle \alpha_\nu \rangle_{\nu < \omega_1}$ is easy. For, let $\alpha_\nu$ be the greatest $a_\nu < \alpha$. Then clearly we have either $X \cap \alpha = X \cap \alpha_\nu$ or $X \cap \alpha = (X \cap \alpha_\nu) \cup \{\alpha_\nu\}$. In either case $X \cap \alpha \in L_{f(\alpha)}$, because $\alpha_\nu \in L_{f(\alpha_\nu)}$ and $X \cap \alpha_\nu \in L_{f(\alpha_\nu)} \sse L_{f(\alpha)}$ (the ``$\in$'' is by the induction hypothesis and the ``$\sse$'' is because $f$ is trivially an increasing function)\footnote{Also, note that $X \cap \alpha_\nu \in L_{f(\alpha)}$ and $\alpha_\nu \in L_{f(\alpha)}$ implies $(X \cap \alpha_\nu) \cup \{\alpha_\nu\} \in L_{f(\alpha)}$ because $L_{f(\alpha)}$ is a transitive model of $\mathsf{ZFC-P}$ by definition of $f$.}.\\
+It is left to show that $X \cap \alpha_\eta \in L_{f(\alpha_\eta)}$ if $\eta$ is a limit ordinal.
+\begin{claim}{ 2}
+\begin{enumerate}[(i)]
+\item $\langle \alpha_\nu : \nu < \eta \rangle \in L_{f(\alpha_\eta)}$;
+\item $\langle X_\xi \cap \alpha_\eta : \xi < \alpha_\eta \rangle \in L_{f(\alpha_\eta)}$.
+\end{enumerate}
+\begin{claimproof}
+Let's prove (ii) first. For each $\nu < \omega_1$, let $\mos_\nu$ be the Mostowski collapsing function of $N_\nu$. For every $\nu < \omega_1$, $\mos_\nu "N_\nu = L_{\delta(\nu)}$ for some $\delta(\nu) < \omega_1$ by Gödel Condensation Lemma. Since $\omega_1 \cap N_\nu = \alpha_\nu$, by Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} we have $\mos_\nu(\omega_1) = \alpha_\nu$. By Claim 1, $C$ is a definable element of $L_{\omega_2}$, hence $C \in N_\nu$ for all $\nu < \omega_1$ by elementarity. Using together that $N_\nu \preceq L_{\omega_2}$, $\mos_\nu$ is an isomorphism, Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} and standard absoluteness results, it's not hard to verify that $\mos_\nu(C) = \{ X_\xi \cap \alpha_\nu : \xi < \alpha_\nu \}$.
+
+Of course $\alpha_\eta$ is uncountable in $L_{\delta(\eta)}$, whereas it is countable in $L_{f(\alpha_\eta)}$. This means that $\delta(\eta) < f(\alpha_\eta)$, thus $\mos_\nu(C) \in L_{\delta(\eta)} \sse L_{f(\alpha_\eta)}$ and (ii) is proved.\\[6pt]
+%
+\indent The proof of the first point is more involved. Of course $L_{f(\alpha_\eta)}$ is a model of $\mathsf{ZFC-P}$, and we just showed that $\delta(\eta) < f(\alpha_\eta)$, whereby $L_{\delta(\eta)} \in L_{f(\alpha_\eta)}$. So, as before, we can construct inside $L_{f(\alpha_\eta)}$ a chain $\{N'_\nu\}_{\nu < \eta}$ of elementary substructures of $L_{\delta(\eta)}$: $N'_0$ is the smallest elementary substructure of $L_{\delta(\eta)}$; $N'_{\nu+1}$ is the smallest $N \preceq L_{\delta(\eta)}$ such that $N'_\nu \cup \{N'_\nu\} \sse N$; $N_\gamma := \bigcup_{\xi < \gamma} N'_\gamma$ for $\gamma$ limit. By induction one can show that for all $\nu < \eta$, $N'_\nu$ is isomorphic to $N_\nu$. Then $N'_\nu$ and $N_\nu$ must have the same transitive collapse $L_{\delta(\nu)}$, hence (also using absoluteness of $\mos$) we get 
+\[
+\langle L_{\delta(\nu)} : \nu < \eta \rangle = \langle \mos "N'_\nu : \nu < \eta \rangle \in L_{f(\alpha_\eta)}.
+\]
+In turn, we obtain
+\[
+\langle \alpha_\nu : \nu < \eta \rangle = \langle (\omega_1)^{L_{\delta(\nu)}} : \nu < \eta \rangle \in L_{f(\alpha_\eta)},
+\]
+as wanted.
+\end{claimproof}
+\end{claim}
+
+
+
+
+
+
+
+
+
+
+Observe that
+\[
+X \cap \alpha_\eta = \{ \alpha_\nu \mid \nu < \eta \text{ and } \alpha_\nu \not\in X_\nu \cap \alpha_\eta \}.
+\]
+By last claim, this is a (absolute) definition with parameters in $L_{f(\alpha_\eta)}$. Since $L_{f(\alpha_\eta)}$ is a model of $\mathsf{ZFC-P}$, we obtain $X \cap \alpha_\eta \in L_{f(\alpha_\eta)}$.
+\end{proof}
+\end{theorem}
+
 
 
 
