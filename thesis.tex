@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{report}
+\documentclass[11pt,a4paper]{report}
 
 \usepackage[leqno]{amsmath}
 \usepackage{bbm}
@@ -25,15 +25,23 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{matrix,positioning,decorations.pathreplacing}
 \usepackage{graphicx}
+%\usepackage{./todonotes}
+\usepackage{bm}
 %\usepackage{parskip} %modifica la gestione degli spazi nei paragrafi, in particolare disabilita l'indentazione e aumenta lo spazio verticale tra i paragrafi
 
+\setlength{\marginparwidth}{2.5cm} %per lasciare più spazio a todonotes
 
 
-\theoremstyle{definition}
+
+%\theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[chapter] % resetta la numerazione dei teoremi per ogni capitolo
 \newtheorem{corollary}[theorem]{Corollary} % la numerazione delle definizioni dipende da quella dei teoremi
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{standalone_claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+
+\theoremstyle{definition}
 \newtheorem{defn}[theorem]{Definition}
 \newtheorem{Remark}[theorem]{Remark}
 \newtheorem*{addendum}{Addendum}
@@ -46,7 +54,7 @@
 \newtheoremstyle{num.custom-title}
   {\topsep}   % ABOVESPACE
   {\topsep}   % BELOWSPACE
-  {\normalfont}  % BODYFONT
+  {\itshape}  % BODYFONT
   {0pt}       % INDENT (empty value is the same as 0pt)
   {\bfseries} % HEADFONT
   {}         % HEADPUNCT
@@ -55,6 +63,12 @@
   
 \theoremstyle{num.custom-title}  
 \newtheorem{teo_custom-title}[theorem]{} % per usarlo basta \begin{teo_custom-title}[<Titolo teorema>] (usa automaticamente la numerazione di [teo])
+%%% fine comandi per stile per teoremi: "numero. Titolo" %%%
+
+%%% inizio comandi per stile per teoremi: "Titolo" %%%
+\newtheoremstyle{custom-title}{}{}{\normalfont}{}{\bfseries}{.}{.5em}{\thmnote{#3}#1}
+\theoremstyle{custom-title}
+\newtheorem*{teo_custom-title_nonum}{}
 %%% fine comandi per stile per teoremi: "numero. Titolo" %%%
 
 \newenvironment{claim}[1]{\par\noindent\underline{Claim#1:}\space}{} %per i claim
@@ -74,8 +88,6 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\Ann}{Ann}
-\DeclareMathOperator{\A}{\mathcal{A}}
-\DeclareMathOperator{\B}{\mathcal{B}}
 \DeclareMathOperator{\E}{\mathbb{E}}
 \DeclareMathOperator{\PP}{\mathcal{P}}
 \DeclareMathOperator{\LL}{\mathcal{L}}
@@ -112,6 +124,7 @@
 \DeclareMathOperator{\cf}{cf}
 \DeclareMathOperator{\mos}{mos}
 \DeclareMathOperator{\trcl}{trcl}
+\DeclareMathOperator{\Fn}{Fn}
 %\DeclareMathOperator{\conc}{^\frown}
 %\DeclareMathOperator{\gcd}{GCD}
 
@@ -125,24 +138,36 @@
 \newcommand{\AMC}{\ensuremath{\mathsf{AMC}}\xspace}
 \newcommand{\TP}{\ensuremath{\mathsf{TP}}\xspace}
 \newcommand{\GCH}{\ensuremath{\mathsf{GCH}}\xspace}
+\newcommand{\CH}{\ensuremath{\mathsf{CH}}\xspace}
+\newcommand{\SH}{\ensuremath{\mathsf{SH}}\xspace}
+\newcommand{\nSH}{\ensuremath{\neg\mathsf{SH}}\xspace}
+\newcommand{\MA}{\ensuremath{\mathsf{MA}}\xspace}
+\newcommand{\ST}{\ensuremath{\mathsf{ST}}\xspace}
+\newcommand{\KT}{\ensuremath{\mathsf{KT}}\xspace}
+\newcommand{\KH}{\ensuremath{\mathsf{KH}}\xspace}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %per la prima pagina
 \newcommand{\qedblack}{\hfill $\blacksquare$}
 \newcommand{\ol}{\overline}
 \newcommand{\ul}{\underline}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\Q}{\mathbb{Q}}
+\newcommand{\G}{\mathcal{G}}
 \newcommand{\g}{\mathfrak{g}}
 \newcommand{\p}{\mathfrak{p}}
 \newcommand{\m}{\mathfrak{m}}
+\newcommand{\T}{\mathcal{T}}
 \newcommand{\X}{\mathbf{X}}
 \newcommand{\x}{\mathbf{x}}
 %\newcommand{\b}{\mathfrak{b}}
 \newcommand{\IFF}{\Longleftrightarrow}
 \newcommand{\conc}{^\frown}
 \newcommand{\onto}{\xrightarrow{\text{onto}}}
+\newcommand{\inj}{\xrightarrow{\text{1-1}}}
 \newcommand{\downmapsto}{%
            \mathrel{\raisebox{.1em}{%
 							\rotatebox[origin=c]{-90}{$\mapsto$}}}}
@@ -168,6 +193,7 @@
 \renewcommand{\P}{\mathbb{P}}
 \renewcommand{\u}{\mathbf{u}}
 \renewcommand{\iff}{\Leftrightarrow}
+\newcommand{\forces}{\Vdash}
 
 
 
@@ -208,56 +234,293 @@
 
 \begin{document}
 
-%template per eventuale numerazione potenziata
-%before
-%\begin{minipage}[t]{0.8\textwidth}
-%    First salkmddddddddddddddddddddddddddddddddddsalkdnsdlknfsldk sdjfslkdjf s djfsdjf osadj osdjf osijdfosijd foids jfosidjf osijfdoiasj fdoiajds foisdjf oai jfdoaisjdf oisdj f
-%\end{minipage}
+\thispagestyle{empty}
 
-\chapter*{Preliminaries}
+\centerline {\Large{\textsc{ UNIVERSIT\`A DEGLI STUDI DI TORINO}}}
+\vskip 20 pt
 
+\centerline {\Large{\textsc DIPARTIMENTO DI MATEMATICA GIUSEPPE PEANO}}
+
+\vskip 20 pt
+
+\centerline {{\textsc SCUOLA DI SCIENZE DELLA NATURA}}
+
+\vskip 20 pt
+
+\centerline {\Large{\textsc Corso di Laurea Magistrale in Matematica}}
+\vskip 60 pt
+
+
+
+
+
+%\begin{tabular}{ccc}
+\centerline {\includegraphics[width=4cm]{logo.png}}
+%   \end{tabular}
+
+\vskip 1.2cm
+
+\centerline {\normalsize {Tesi di Laurea  Magistrale}} 
+
+\vskip 0.7cm
+
+\centerline {\Large {\bf Consistency results concerning $\bm{\omega_1}$-trees}}
+
+\vskip 1.7cm
+
+\noindent Relatore: Prof.\ Matteo Viale
+\hfill  {Candidato: Andrea Gadotti}
+\\
+Correlatore: Prof.\ Sy David Friedman
+
+
+
+\vskip 2.7cm
+
+
+\centerline{ANNO ACCADEMICO 2015/16}
+
+
+
+\newpage\null\thispagestyle{empty}\newpage
+
+\setcounter{page}{1}
+
+\pagenumbering{roman}
+
+
+\tableofcontents
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+Trees play an important role in set theory, mainly because of their rather \emph{concrete} nature. This is probably the reason why many fundamental tools and concepts in set theory (most notably, iterated forcing) originated from the study of trees. The starting point can be identified with the following well-known elementary fact, known as König's lemma:
 \begin{center}
-TO BE HEAVILY MODIFIED AND EXPANDED
+\emph{Every infinite tree with finite levels has an infinite branch.}
 \end{center}
+For an infinite cardinal $\kappa$, a \emph{$\kappa$-tree} is a tree of height $\kappa$. The \emph{tree property at $\kappa$}, or $\TP(\kappa)$, asserts that
+\begin{center}
+\emph{Every tree of height $\kappa$ with levels of size ${<} \, \kappa$ has a branch of length $\kappa$.}
+\end{center}
+Any counterexample to $\TP(\kappa)$ is called \emph{Aronszajn $\kappa$-tree}. So König's lemma says that there exists no Aronszajn $\omega$-tree, or equivalently that $\TP(\omega)$ is true.
 
-Unless otherwise stated, small greek letters always refer to ordinals.\\
-$\type (X,<)$ is the order type of the well-order $(X,<)$.\\
-Let $(X,<)$ be a partially ordered set. If $A \sse X$, then $\down A \defeq \{y \in X \mid y < a$ for some $ a \in A \}$ and $\downmapsto A \defeq A \cup \down A = \{y \in X \mid y \leq a$ for some $a \in A \}$. If $x \in X$ then $\down x \defeq \down \{x\}$ and $\downmapsto x \defeq \downmapsto \{x\}$. Similarly for $\up A, \upmapsto A, \up x, \upmapsto x$.
+In 1935, Kurepa conducted the first systematic study of trees, which included the first construction of an Aronszajn tree of height $\omega_1$. In the same work, he introduced the notions of \emph{Suslin tree} and \emph{Kurepa tree}. A Suslin tree (\ST) is an $\omega_1$-tree with no uncountable antichains and no uncountable branches. A Kurepa tree (\KT) is an $\omega_1$-tree with countable levels and at least $\aleph_2$-many uncountable branches. Kurepa's hypothesis (\KH) is the conjecture ``There exists a \KT''. Kurepa characterized in terms of Suslin trees a famous problem originally formulated by Suslin, called \emph{Suslin hypothesis} (\SH), which states:
+\begin{center}
+Every dense linearly ordered set without endpoints which is Dedekind complete and satisfies the countable chain condition\footnote{The \emph{countable chain condition} says that every collection of mutually disjoint non-empty open intervals is countable.} is order-isomorphic to the real line.
+\end{center}
+Kurepa translated \SH into a purely combinatorial problem, by showing that \SH holds iff there exists no \ST. However, he couldn't prove nor refute the existence of Suslin and Kurepa trees. In fact, no much progress was made about this problem until the advent of forcing. But after Cohen established the relative consistency of $\neg\CH$ introducing the method of forcing in 1963, many people began to explore the possibility of applying the same techniques to \SH and \KH. Within a few years, the problem was settled, as both \SH and \KH were proven to be independent of \ZFC. This thesis offers a detailed presentation of such consistency results, together with other interesting theorems about trees.
+\\[10pt]
+\indent In the first chapter we present Kurepa's construction of an Aronszajn $\omega_1$-tree. Then we generalize this result to Aronszajn trees of height the successor of any regular cardinal, under the assumption that \GCH holds.
 
-If $x \in X$ then $\down x \defeq \{y \in X \mid R(y,x)\}$ and similarly $\up x \defeq \{y \in X \mid R(x,y)\}$. \\
+The second chapter is the core of our work. After discussing some easy properties of Suslin trees that hold in \ZFC, we prove the independence of \SH. This is done by presenting Jech's forcing model for \nSH and Solovay-Tennenbaum's model for \SH. We also include a fascinating result by Jensen, which establishes the existence of a \ST in Gödel's constructible universe.
+
+The third chapter is symmetrical to the second, but relative to Kurepa's hypothesis and Kurepa trees. We shall mention that to ``kill'' Kurepa trees via forcing, we will need to assume that inaccessible cardinals exist. In fact, $\neg\KH$ is equiconsistent with the existence of an inaccessible cardinal.
+
+The last chapter contains two ``bonus'' results: we show that using the diamond principle ($\diamondsuit$), one can construct a \emph{homogeneous} \ST (i.e.\ a \ST where any two nodes can be swapped by some automorphism) and a \emph{rigid} \ST (i.e.\ a \ST with no non-trivial automorphisms). These are two enthralling theorems which are also interesting from a historical point of view, although they are much less known compared to the other results presented in the thesis.
+\\[10pt]
+\indent Our work is inspired by Jech's review about trees \cite{Jec1971}. We expand both the mathematical and the historical content of Jech's article, where proofs are explicitly defined as ``sketched'' by the author. This thesis is meant to be a clear and exhaustive introduction to trees, and proofs are filled with details. A peculiarity of our work is the historical perspective we adopted: although modern tools and notation are used, the main theorems are presented and proven in their original form, whereas the standard approach in textbooks is to derive them from later results. More specifically, some technical \emph{focal} principles were formulated to generalize and strengthen the results presented in our thesis. This is for example the case of the diamond principle, introduced by Jensen and extracted from his proof that $V=L$ implies the existence of a \ST. Usually, in textbooks it is proved that $\diamondsuit$ holds in $L$, and then it is noted that $\nSH$ easily follows from $\diamondsuit$. Similarly, Martin's axiom was formulated and studied by Martin by generalizing the methods (i.e.\ iterated forcing) introduced for the first time in the original work of Solovay and Tennenbaum (never published) which produced a model where no \ST exists. The consistency of \SH is usually derived from the one of Martin's axiom. While this approach totally makes sense, we believe that our exposition may result pleasant especially to students who saw only the application of forcing to \CH, because of the good intuition that trees tend to offer.
+
+
+\chapter*{Notation}
+\addcontentsline{toc}{chapter}{Notation}
+
+We list here some elementary definitions with the only purpose to fix non-standard notation.\\
+\\
+Let $(X,<)$ be a partially ordered set. If $A \sse X$, then 
+\[
+\down A \defeq \{y \in X \mid y < a \text{ for some } a \in A \}
+\]
+and 
+\[
+\downmapsto A \defeq A \cup \down A = \{y \in X \mid y \leq a \text{ for some } a \in A \}.
+\]
+If $x \in X$ then $\down x \defeq \down \{x\}$ and $\downmapsto x \defeq \downmapsto \{x\}$. Similarly for $\up A, \upmapsto A, \up x, \upmapsto x$. If we want to avoid confusion about the ordered set we are considering, we may denote $\downmapsto x$ by $X \restr x$.\\
+%If $x \in X$ then $\down x \defeq \{y \in X \mid R(y,x)\}$ and similarly $\up x \defeq \{y \in X \mid R(x,y)\}$. \\
+Let $f \colon A \to B$ and let $S$ be a set. We denote $\{f(s) \mid s \in S\}$ by $f[S]$ or $f"S$. Moreover, $\ran(f)$ means $f[A]$.\\
+$\Ord$ is the class of ordinals. Unless otherwise stated, small Greek letters always refer to ordinals.\\
+If $(X,<)$ is a well-order, $\type (X,<)$ is its order type.\\
+If $A,B$ are sets, ${}^A B$ denotes the set of the functions with domain $A$ and codomain $B$. If $\lambda, \kappa$ are cardinals, $\kappa^\lambda$ is $|{}^\lambda \kappa|$.\\
+Let $\alpha$ be a limit ordinal. We say that a sequence $\langle \alpha_\xi \mid \xi < \beta \rangle$, with $\beta$ limit ordinal, is \emph{cofinal in $\alpha$} if it's strictly increasing (i.e.\ $\xi < \delta \imp \alpha_\xi < \alpha_\delta$) and $\sup_{\xi < \beta} \alpha_\xi = \alpha$.\\
 Let $(X,\lhd)$ be a linearly ordered set. The \emph{lexicographic order} on $^{\omega} X$ is defined by
 \[
 f <_{\text{lex}} g \iff \exists n \in \omega [f(n) \lhd g(n) \text{ and } \forall i < n (f(i)=g(i))].
 \]
-Let $\alpha$ be a limit ordinal. We say that a sequence $\langle \alpha_\xi \mid \xi < \beta \rangle$, with $\beta$ limit ordinal, is \emph{cofinal in $\alpha$} if it's strictly increasing and $\sup_{\xi < \beta} \alpha_\xi = \alpha$.
 
-\chapter{Trees}
 
-The main aim of this chapter is to introduce the basic concepts about trees and to present several results discussed in Jech's paper \cite{Jec1971}, while trying to fill every proof with details.
+
+
+\chapter*{Preliminaries}
+\addcontentsline{toc}{chapter}{Preliminaries}
+
+In this work, we assume that the reader is familiar with concepts and results which are usually covered in graduate set theory courses, in particular: ordinals, transfinite induction and recursion, the constructible hierarchy and forcing. Such topics are extensively described in, e.g., \cite{Jec2003} and \cite{Kun2013}. For convenience, in this chapter we will very briefly summarize some basic results about (relative) constructibility and forcing.
+
+\section*{Constructibility}
+
+%The language of set theory (LST) is the first order language (with equality) with the binary predicate $\in$. 
+If $M$ is a set, we say that $Z \sse M$ is \emph{definable over} $(M,\in)$ if $Z \sse M$ and for some formula $\phi(v_0,\ldots,v_n)$ and some $x_1,\ldots,x_n \in M$ we have $Z = \{z \in M \mid (M,\in) \models \phi(z,x_1,\ldots,x_n)\}$. Then we let 
+\[
+\operatorname{def} (M) \defeq \{ Z \sse M : Z \text{ is definable over } (M, \in) \},
+\]
+The \emph{constructible hierarchy} $\langle L_\alpha \mid \alpha \in \Ord \rangle$ is defined by recursion:
+\begin{align*}
+L_0 & = \emptyset;\\
+L_{\alpha+1} & = \operatorname{def} (L_\alpha);\\
+L_\eta & = \bigcup_{\beta < \eta} L_\beta \quad \text{if $\eta$ is a limit ordinal}
+\end{align*}
+%
+The \emph{constructible universe} is the class $L \defeq \bigcup_{\alpha \in \Ord} L_\alpha$. $L$ is a model of $\ZFC + \mathsf{GCH} + V=L$. $L$ can be well-ordered (we denote the canonical well-order by $<_L$).
+
+We now generalize this definition. Let $A$ be a set. Then we let
+\[
+\operatorname{def}_A (M) \defeq \{ X \sse M : X \text{ is definable over } (M, \in, A \cap M) \},
+\]
+where $A \cap M$ is considered as a unary predicate and means ``$x \in A \cap M$''. If we use $\operatorname{def}_A$ in place of $\operatorname{def}$ in the definition above, we obtain $\langle L_\alpha [A] \mid \alpha \in \Ord \rangle$, which is called the \emph{hierarchy of sets constructible from $A$} (or \emph{relative to $A$}). Then the \emph{universe constructible from $A$} is $L[A] \defeq \bigcup_{\alpha \in \Ord} L_\alpha [A]$.
+
+We list some well-known facts about relative constructibility.\footnote{For a more complete list, see \cite{Dev1984}, pp.\ 102 and following.}
+\begin{enumerate}[i)]
+\item For every set $A$ and $\alpha \in \Ord$, $L_\alpha [A] \cap \Ord = \alpha$.
+\item Let $A$ be a set and let $B \defeq A \cap L[A]$. Then $B \in L[A]$, $L[A] = L[B]$ and $(V=L[B])^{L[A]}$. In particular, by the first point $A \cap L[A] = A$ if $A \sse \Ord$. So we always have $A \in L[A]$ and $L[A] \models V = L[A]$ in this case.
+\item $L[A]$ is the smallest inner model of \ZF which contains the set $A \cap L[A]$ (i.e.\ $L[A]$ is the smallest inner model $M$ of \ZF such that $A \cap M \in M$).
+\end{enumerate}
+
+The following is a very important result due to Gödel and generalized for relative constructibility:
+
+\begin{teo_custom-title_nonum}[Condensation Lemma]
+Let $A$ be a set and $\alpha > \omega$ a limit ordinal. Suppose $M \preceq L_\alpha[A]$ and let $\mos$ be the collapsing function of $(M,\in)$. Then $\mos" M = L_\beta [\mos" A]$ for some $\beta \leq \alpha$.
+\end{teo_custom-title_nonum}
+
+
+\section*{Forcing}
+
+Forcing is an extremely powerful method for producing models of set theory. The construction of this tool is rather involved, and even a general overview would require several pages. Therefore we will present here just the central results, omitting also the definitions of most objects.
+
+Let $M$ be a countable transitive model of \ZFC and let $(P, \leq, 1_P)$ be a forcing poset in $M$.
+
+\begin{teo_custom-title_nonum}[The Generic Model Theorem]
+Let $G$ be $M$-generic for $P$. Then there exists a transitive model $M[G]$ such that
+\begin{enumerate}[(i)]
+\item $M[G] \models \ZFC$;
+\item $M \sse M[G]$ and $G \in M[G]$;
+\item $\Ord^{M[G]} = \Ord^M$;
+\item if $N$ is a transitive model of \ZF such that $M \sse N$ and $G \in N$, then $M[G] \sse N$.
+\end{enumerate}
+\end{teo_custom-title_nonum}
+
+The model $M[G]$ is called \emph{generic extension} of $M$. Every element of $M[G]$ has a $P$-\emph{name} in $M$. The set of names is denoted by $M^P$. We can define in $M$ the \emph{forcing relation} $\forces$ and the \emph{forcing language}. $\forces$ is a relation between elements of $P$ and statements of the forcing language. The forcing language contains every $P$-name. If $a \in M[G]$, we usually denote with $\dot{a}$ its name in $M$. If $a$ belongs also to $M$, then we denote its name with $\check{a}$ (which is a \emph{canonical name}). Among the names, the name $\dot{G}$ is special, because it is defined in such a way that its interpretation relative to any filter $H$ is $H$ itself. Moreover, $p \forces [\check{p} \in \dot{G}]$, for any $p \in P$. If $1_P \forces \sigma$, then sometimes we simply write $\forces \sigma$. The following is the tool which enables us to control the truth in $M[G]$:
+
+\begin{teo_custom-title_nonum}[The Forcing Theorem]
+Let $\sigma$ be a sentence of the forcing language and let $G$ be $M$-generic for $P$. Then
+\[
+M[G] \models \sigma \text{ if and only if } \exists p \in G \ [p \forces \sigma].
+\]
+\end{teo_custom-title_nonum}
+
+An important property of the forcing relation is the following:
+\begin{teo_custom-title_nonum}[Maximal Principle]
+Let $\phi(x)$ be a formula of the forcing language with no free variable other than $x$. If $p \forces \exists x \, \phi(x)$, then for some $\dot{a} \in M^P$, $p \forces \phi(\dot{a})$.
+\end{teo_custom-title_nonum}
+
+In applications of forcing, it is of fundamental importance to determine the way ordinals act as cardinals in the generic extension. Let $o(M)$ denote the least ordinal not in $M$. Suppose ($\theta$ is a cardinal$)^M$. We say that $P$ \emph{preserve cardinals} $\geq \theta$ if, for all $\theta \leq \beta < o(M)$,
+\begin{center}
+($\beta$ is a cardinal$)^M$ iff ($\beta$ is a cardinal$)^{M[G]}$.
+\end{center}
+We say that $P$ \emph{preserve cofinalities} $\geq \theta$ if, for all limit $\gamma < o(M)$ such that $\cf^M (\gamma) \geq \theta$,
+\begin{center}
+$\cf^M (\gamma) = \cf^{M[G]} (\gamma)$.
+\end{center}
+Of course preserving cofinalities is a stronger condition than preserving cardinals.\\
+For a cardinal $\theta$, $P$ has the $\theta$ \emph{chain condition} ($\theta$-cc) if every antichain in $P$ has size less than $\theta$. If $\theta=\omega_1$, we say \emph{countable chain condition} (ccc). The following is a central result:
+\begin{teo_custom-title_nonum}[Fact]
+If ($\theta$ is a regular cardinal$)^M$ and ($P$ is $\theta$-cc$)^M$, then $P$ preserve cofinalities $\geq \theta$ and hence $P$ preserves cardinals $\geq \theta$.
+\end{teo_custom-title_nonum}
+It's immediate to check that if $P$ preserves all cofinalities, then $(\aleph_\alpha)^M = (\aleph_\alpha)^{M[G]}$ for all $\alpha < o(M)$.\\
+When the chain condition doesn't hold or holds only above a certain cardinal, there is another way to check if smaller cardinals are preserved. We say that $P$ is \emph{$\lambda$-closed} if whenever $\delta < \lambda$ and $\langle p_\xi : \xi < \delta \rangle$ is a (weakly) decreasing sequence in $P$, then there is a $q \in P$ such that $q \leq p_\xi$ for all $\xi < \delta$. If $\lambda=\omega_1$, then we say \emph{countably closed}.
+\begin{teo_custom-title_nonum}[Fact]
+Assume that ($P$ is $\lambda$-closed$)^M$ and $A,E \in M$ with $(|A| < \lambda)^M$. If $f \colon A \to E$ and $f \in M[G]$, then $f \in M$.
+\end{teo_custom-title_nonum}
+This means that if $P$ is $\lambda$-closed and $\omega < \lambda < o(M)$, then ${}^\delta \lambda \cap M = {}^\delta \lambda \cap M[G]$ for all ordinals $\delta < \lambda$. It follows easily that $\cf^M(\gamma) = \cf^{M[G]}(\gamma)$ for all limit $\gamma \leq \lambda$. So, in particular, countably closed posets don't add $\omega$-sequences (whose ranges are in $M$) and preserve $\aleph_1$.
+
+We now illustrate the core theorem for product forcing.
+
+\begin{teo_custom-title_nonum}[Product lemma] \label{lemma-product_lemma}
+Let $P$ and $Q$ be forcing posets in $M$. $P \times Q$ is the poset whose order is defined by $(p_1,q_1) \leq (p_2,q_2) \iff p_1 \leq p_2$ and $q_1 \leq q_2$. Let $\pi_1 \colon P \times Q \to P$ and $\pi_2 \colon P \times Q \to Q$ be the projections. The following are equivalent:
+\begin{enumerate}[(i)]
+\item $G \sse P \times Q$ is generic over $M$.
+\item $G = G_1 \times G_2$, where $G_1 = \pi_1[G]$ is $P$-generic over $M$ and $G_2 = \pi_2[G]$ is $Q$-generic over $M[G_1]$.
+\end{enumerate}
+Moreover, $M[G] = M[G_1][G_2]$.
+\end{teo_custom-title_nonum}
+
+A significant generalization of product forcing is iterated forcing. In this work we will use finite support iterations. The definition of this tool is quite technical, so we refer to \cite{Kun2013} for an in-depth presentation and for the notation. Here we just mention the important theorem which makes iterated forcing a robust method:
+
+\begin{teo_custom-title_nonum}[Fact]
+Let $P_\alpha$ be the iteration with finite support of $\langle \dot{Q}_\beta : \beta < \alpha \rangle$. Suppose that for each $\beta < \alpha$, $\forces_\beta [\dot{Q}_\beta$ is ccc$]$. Then $P_\alpha$ is ccc.
+\end{teo_custom-title_nonum}
+
+We conclude this list of preliminaries with a quick description of a special type of names, which are perhaps less standard compared to the concepts presented so far.
+
+\begin{teo_custom-title_nonum}[Definition]
+Let $\tau \in M^P$ be a name. A \emph{nice name for a subset of $\tau$} is a name of the form
+\[
+\bigcup \big\{ \{\sigma\} \times A_\sigma : \sigma \in \dom(\tau) \big\},
+\]
+where each $A_\sigma$ is a maximal antichain of $P$ in $M$.
+\end{teo_custom-title_nonum}
+
+Next lemma shows that we can in fact use nice names to name subsets of a given name.
+
+\begin{teo_custom-title_nonum}[Fact]\label{lemma-nice_names_exist}
+If $\tau, \mu \in M^P$, then there is a nice name $\theta \in M^P$ for a subset of $\tau$ such that $1 \forces (\mu \sse \tau \imp \mu = \theta)$.
+\end{teo_custom-title_nonum}
+
+Nice names relative to ccc posets are useful because it's easy to bound their size:
+
+\begin{teo_custom-title_nonum}[Fact]\label{lemma-counting_nice_names}
+Fix $\tau \in M^P$. Let $\kappa \defeq |P|$ and $\lambda \defeq |\dom(\tau)|$. Assume that $P$ is ccc and that $\kappa$ and $\lambda$ are infinite. Then the set of nice names for subsets of $\tau$ has size at most $\kappa^\lambda$. (all the statements here are meant to hold in $M$)
+\end{teo_custom-title_nonum}
+
+On a final note, we remark that our overview about forcing above takes place in the ``forcing over a countable transitive model'' setting. Of course everything can be adapted to the ``forcing over $V$'' approach. In this work, sometimes we force over a countable transitive model and sometimes we force over $V$. We assume that the reader is familiar with both the approaches.
+
+
+
+
+
+
+
+
+
+\chapter{The tree property}
+
+\pagenumbering{arabic}
+
+\section{Basic notions about trees}
+
+In this section we define trees and several basic concepts related to them.
 
 \begin{defn}
-A \emph{tree} is a partially ordered set $(T,<)$ such that for all $x \in T$ the set $\down x$ is well-ordered by $<$. The elements of $T$ are called \emph{nodes}. We define the following basic notions related to trees:
+A \emph{tree} is a partially ordered set $(T,<)$ such that for all $x \in T$ the set $\down x$ is well-ordered by $<$. The elements of $T$ are called \emph{nodes}. Moreover:
 \begin{itemize}
 \item If $x \in T$, the \emph{order} of $x$ is $o(x) \defeq \type(\down x)$.
 \item The \emph{$\alpha$th level of $T$} is $U_\alpha \defeq \{x \in T \mid o(x)=\alpha\}$.
 \item The \emph{height of $T$} is the least ordinal such that every $x \in T$ has smaller order type, i.e.\ $\height(T) \defeq \sup\{o(x)+1 \mid x \in T\}$.
-\item A \emph{chain in $T$} is a linearly ordered subset of $T$. A \emph{branch} is a maximal chain. If $b$ is a branch in $T$, of course we can define $\height(b) \defeq \type(b)$.
+\item A \emph{chain in $T$} is a linearly ordered subset of $T$. A \emph{branch} is a maximal chain. If $\mathfrak{b}$ is a branch in $T$, of course we can define $\height(\mathfrak{b}) \defeq \type(\mathfrak{b})$.
+\item A subset $S \sse T$ is \emph{cofinal in $T$} if for all $\alpha < \height(T)$ there is $x \in S$ such that $o(x) \geq \alpha$.
 \item An $\alpha$-tree is a tree of height $\alpha$, and similarly for an $\alpha$-branch.
 \item $T|\alpha$ is the subset of $T$ which contains every element of order strictly less than $\alpha$, i.e.\ $T|\alpha \defeq \cup_{\xi < \alpha} U_\xi$. Obviously $T|\alpha$ has height $\alpha$ if $\alpha \leq \height(T)$.
-\item We say that a tree $(T_2,<_2)$ is an \emph{extension} of $(T_1,<_1)$ if ${<_1} = {<_2} \cap (T_1 \times T_1)$, and \emph{end-extension} if $T_1=T_2|\alpha$ for some $\alpha$.
+\item We say that a tree $(T_2,<_2)$ is an \emph{extension} of $(T_1,<_1)$ if ${<_1} = {<_2} \cap (T_1 \times T_1)$, an \emph{end-extension} if $T_1=T_2|\alpha$ for some $\alpha$.
 \end{itemize}
 \end{defn}
 
-\begin{example}
+\begin{example}\label{example-countable_normal_trees}
 We consider the family of trees given by all $T$ which satisfy the following properties: for some $\alpha < \omega_1$,
 \begin{enumerate}[(i)]
 \item every element $t \in T$ is a function $t \colon \beta \to \omega$, with $\beta < \alpha$;
 \item $T$ is closed under initial segments, i.e.\ if $t \in T$ then $t \restr \beta$ is in $T$ as well, for any $\beta$;
 \item if $t \colon \beta \to \omega$ is in T and $\beta+1 < \alpha$, then $t \conc n \in T$ for all $n \in \omega$;
 \item if $t \colon \beta \to \omega$ is in T and $\beta \leq \gamma < \alpha$, then there exists $s \colon \gamma \to \omega$ such that $t \sse s$;
-\item $T \cap {}^{\beta} \omega$ is at most countable for all $\beta < \alpha$.
+\item $T \cap {}^{\beta} \omega$ is countable for all $\beta < \alpha$.
 \end{enumerate}
-Observe that $T$ is a countable set and the $\beta$th level consists precisely of the function whose length is $\beta$.
+Observe that $T$ is a countable set and the $\beta$th level consists precisely of the functions whose length is $\beta$.
 \end{example}
 
 \begin{defn}
@@ -272,9 +535,15 @@ Let $\alpha \leq \omega_1$. An $\alpha$-tree $T$ is \emph{normal} if:.
 \end{enumerate}
 \end{defn}
 
-It is very easy to check that the trees of last example are normal. We shall use them as forcing conditions later because of these nice properties they enjoy.
+It is very easy to check that the trees of last example are normal. We shall use them as forcing conditions later because of these nice properties they enjoy. 
 
-\section{The tree property}
+We conclude this section with a trivial remark: there exist normal $\omega_1$-trees with uncountable branches, like the following:
+
+\begin{example}\label{example-non_aronszajn_tree}
+Consider $T \defeq \{t \in {}^{<\omega_1} \omega \mid t \text{ has finitely-many $0$'s} \}$. To see that $T$ is a normal $\omega_1$-tree is immediate, and $\mathfrak{b} \defeq \{1^\alpha : \alpha < \omega_1\}$ is clearly an $\omega_1$-branch in $T$.
+\end{example}
+
+\section{The tree property at $\omega_1$}
 
 We start with an easy and well-known fact:
 
@@ -290,15 +559,15 @@ If $T$ is a $\kappa$-tree and if every level has cardinality $<\kappa$, then $T$
 \end{center}
 %
 Of course $\TP(\kappa)$ is false if $\kappa$ is singular: if $\langle \alpha_\xi \mid \xi < \lambda \rangle$ is a cofinal sequence in $\kappa$ with $\lambda < \kappa$, then take the tree given by the disjoint union of branches of length $\alpha_\xi$ for all $\xi < \lambda$, where elements of two different branches are incomparable.\\
-We will show now that the tree property fails already at $\omega_1$. This is a classical result due to Aronszajn.
+We will show now that the tree property fails already at $\omega_1$. First, a general definition:
 
 \begin{defn}
 Let $\kappa$ be a cardinal. An \emph{Aronszajn $\kappa$-tree} is a $\kappa$-tree whose levels are of power less than $\kappa$ but has no $\kappa$-branch.
 \end{defn}
 %
-Thus, there exists an Aronszajn $\kappa$-tree if and only if $\TP(\kappa)$ is false.
+Thus, there exists an Aronszajn $\kappa$-tree if and only if $\TP(\kappa)$ is false. Aronszajn trees are named for Nachman Aronszajn, who established their existence for the $\omega_1$ case in 1934. Actually, his proof appeared only in 1935 in Kurepa's thesis \cite{Kur1935}. In his work, Kurepa provided also a different proof, producing the Aronszajn $\omega_1$-tree as a subtree of the tree given by the non-empty bounded well-ordered sets of rationals under end-extension\footnote{Such tree is usually denoted by $\sigma \Q$.}. We will now present such proof.
 
-\begin{theorem}\label{thm-aronszjan}
+\begin{theorem}\label{thm-aronszajn}
 There is an Aronszajn $\omega_1$-tree.
 \begin{proof}
 We will construct the tree $T$ in such a way that
@@ -306,7 +575,7 @@ We will construct the tree $T$ in such a way that
 \begin{itemize}
 \item every $x \in T$ is a bounded and strictly increasing sequence of rational numbers;
 \item the order on $T$ is defined by: $x \leq y$ iff $y$ extends $x$, i.e.\ $x \sse y$;
-\item $T$ is closed under inital segments.
+\item $T$ is closed under initial segments.
 \end{itemize}
 %
 By last condition, the $\alpha$th level will consist precisely of the sequences of length $\alpha$ of $T$. Of course such a tree can't have an uncountable branch, since its union would yield a strictly increasing (and thus injective) sequence of length $\omega_1$ into $\Q$, which is countable. Note that $T$ must be constructed carefully: if we let any sequence be in $T$, then the $\omega$th level would be uncountable already.\\
@@ -333,7 +602,7 @@ For the limit step, let $\alpha$ be a limit ordinal and suppose we have already 
 \begin{claim}{}
 For each $x \in T|\alpha$ and each $q > \sup x$ there exists a strictly increasing $\alpha$-sequence of rationals $y$ such that $y$ extends $x$, $q \geq \sup y$ and $y \restr \beta \in T|\alpha$ for all $\beta<\alpha$.
 \begin{claimproof}
-Since $\alpha < \omega_1$, its cofinality is $\omega$. Let $\langle \alpha_n \mid n \in \omega \rangle$ be cofinal in $\alpha$ and such that $x \in U_{\alpha_0}$. Now let $\langle q_n \mid n \in \omega \rangle$ be a strictly increasing sequence of rationals such that $q_0 = \sup x$ and $\lim_n q_n \leq q$. Using the inductive hypothesis \eqref{eq:aron_cond2} at each step, we can recursively find for each $n \geq 1$ a sequence $y_n \in U_{\alpha_n}$ which extends $y_{n-1}$ and such that $\sup y_n \leq q_n$. By defining $y \defeq \cup_n y_n$ we are done.
+Since $\alpha < \omega_1$, its cofinality is $\omega$. Let $\langle \alpha_n \mid n \in \omega \rangle$ be cofinal in $\alpha$ and such that $x \in U_{\alpha_0}$. Now let $\langle q_n \mid n \in \omega \rangle$ be a strictly increasing sequence of rationals such that $q_0 = \sup x$ and $\lim_n q_n \leq q$. Set $y_0 \defeq x$. Using the inductive hypothesis \eqref{eq:aron_cond2} at each step, we can recursively find for each $n \geq 1$ a sequence $y_n \in U_{\alpha_n}$ which extends $y_{n-1}$ and such that $\sup y_n \leq q_n$. By defining $y \defeq \cup_n y_n$ we are done.
 \end{claimproof}
 \end{claim}\\[6pt]
 For all $x \in T|\alpha$ and all $q > \sup x$ we choose an $y$ as provided by the claim, and we define $U_\alpha$ as the set of all such $y$'s. It's clear that \eqref{eq:aron_cond2} holds for $U_\alpha$. Because $\Q$ and $T|\alpha = \bigcup_{\beta < \alpha} U_\beta$ are countable, also \eqref{eq:aron_cond1} is preserved.\\
@@ -341,13 +610,15 @@ Of course $T$ is an Aronszajn $\omega_1$-tree by construction.
 \end{proof}
 \end{theorem}
 
-In the proof of the claim we exploited the fact that all limit ordinals smaller than $\omega_1$ have countable cofinality. Actually, we could use the fact that for every $\alpha < \omega_1$ there is an order-embedding of $\alpha$ into any interval of $\Q$. This makes the proof more involved, but it will be the strategy to prove the following generalization \cite{Spe1951}:
+\section{The tree property at higher cardinals}
+
+We will now present a generalization of Theorem \ref{thm-aronszajn} due to Specker \cite{Spe1949}:
 
 \begin{theorem}\label{thm-aronszajn_k+_tree}
 Let $\kappa$ be an infinite cardinal. If $\kappa^{<\kappa}=\kappa$, then there exists an Aronszajn $k^+$-tree.
 \end{theorem}
 
-First we need some lemmas.
+First we need two easy lemmas.
 
 \begin{lemma}\label{lemma-cof_continua}
 Let $\alpha$ be a limit ordinal. There exists a sequence $\langle \alpha_\xi \mid \xi < \cf(\alpha) \rangle$ cofinal in $\alpha$ which is also \emph{continuous}, i.e.\ $\alpha_\gamma = \sup_{\xi<\gamma} \alpha_\xi$ for all $\gamma < \cf(\alpha)$ limit.
@@ -364,39 +635,57 @@ Of course this sequence is continuous and still cofinal in $\alpha$.
 \end{proof}
 \end{lemma}
 
+%\begin{lemma}\label{lemma-embedding_in_finite_sequences}
+%\renewcommand{\Q}{\mathcal{Q}}
+%Let $\kappa$ be an infinite cardinal. Let $\Q \defeq \{f \in {}^\omega \kappa \mid f(n) \neq 0$ for finitely-many $n \in \omega \}$. Then every $\alpha < \kappa^+$ embeds in $\Q$, ordered lexicographically.
+%\begin{proof}
+%We proceed by induction on $\alpha$. Suppose $\phi \colon \alpha \to \Q$ is an order-embedding. Then $\phi^+ \colon \alpha+1 \to \Q$ defined by
+%\[
+%\phi^+(\xi) \defeq
+%\begin{cases}
+%0 \conc \varphi(\xi), &\text{if } \xi \in \alpha\\
+%1 \conc 0^\omega, &\text{if }\xi=\alpha
+%\end{cases}
+%\]
+%is an order-embedding of $\alpha+1$. Now suppose that $\alpha$ is a limit ordinal and that each $\beta<\alpha$ can be order-embedded in $\Q$. Let $\lambda \defeq \cf(\alpha) \leq \kappa$ and let $\langle \alpha_\xi \mid \xi < \lambda \rangle$ be cofinal in $\alpha$ and such that $\alpha_0=0$. For $\xi<\lambda$ consider the interval $I_\xi=[\alpha_\xi,\alpha_{\xi+1})$; clearly $\type(I_\xi) \leq \alpha_{\xi+1} < \alpha$, so there is an order-embedding $\phi_\xi$ of $I_\xi$ into $\Q$. For $\eta \in \alpha$ let $\xi(\eta) < \lambda$ be such that $\eta\in I_{\xi(\eta)}$. Now define $\phi \colon \alpha \to \Q$ by
+%\[
+%\phi(\eta) \defeq \xi(\eta) \conc \phi_{\xi(\eta)}(\eta).
+%\]
+%Clearly $\phi$ order-embeds $\alpha$ in $\Q$.
+%\end{proof}
+%\end{lemma}
+%
+%\begin{corollary}\label{corollary-embedding_in_finite_sequences}
+%\renewcommand{\Q}{\mathcal{Q}}
+%Every $\alpha < \kappa^+$ embeds in any non-trivial open interval of $\Q$.
+%\begin{proof}
+%Let $f,g \in \Q$ be sequences with $f<g$. Let $n$ be the least such that $f(n)<g(n)$ and let $m>n$ be such that $f(m)=0$. It's immediate to check that $\Q' \defeq \{h \in \Q \mid h(i)=f(i)$ for all $i<m$ and $h(m)=1 \}$ is order-isomorphic to $\Q$. By last lemma every $\alpha < \kappa^+$ embeds in $\Q'$, and since $\Q' \sse (f,g)$ open interval we are done.
+%\end{proof}
+%\end{corollary}
+
+
+
 \begin{lemma}\label{lemma-embedding_in_finite_sequences}
 \renewcommand{\Q}{\mathcal{Q}}
-Let $\kappa$ be an infinite cardinal. Let $\Q \defeq \{f \in \kappa^\omega \mid f(n)>0$ for finitely-many $n \in \omega \}$. Then every $\alpha < \kappa^+$ embeds in $\Q$, ordered lexicographically.
+Let $\kappa$ be an infinite cardinal. Let $\Q \defeq \{f \in {}^\omega \kappa \mid f(n) \neq 0$ for finitely-many $n \in \omega \}$. Then every $\alpha \leq \kappa$ embeds in any non-trivial open interval of $\Q$, ordered lexicographically.
 \begin{proof}
-We proceed by induction on $\alpha$. Suppose $\phi \colon \alpha \to \Q$ is an order-embedding. Then $\phi^+ \colon \alpha+1 \to \Q$ defined by
+Let $f,g \in \Q$ be sequences with $f<g$. Let $n$ be the least such that $f(n)<g(n)$ and let $m>n$ be such that $f(m)=0$. For any $\alpha \leq \kappa$, define $\phi \colon \alpha \to \Q$ given by
 \[
-\phi^+(\xi) \defeq
+\phi(\beta)(i) \defeq
 \begin{cases}
-0 \conc \varphi(\xi), &\text{if } \xi \in \alpha\\
-1 \conc 0^\omega, &\text{if }\xi=\alpha
+f(i) & \text{ if $i \neq m$;}\\
+\beta+1 & \text{ if $i = m$}.
 \end{cases}
 \]
-is an order-embedding of $\alpha+1$. Now suppose that $\alpha$ is a limit ordinal and that each $\beta<\alpha$ can be order-embedded in $\Q$. Let $\lambda \defeq \cf(\alpha) \leq \kappa$ and let $\langle \alpha_\xi \mid \xi < \lambda \rangle$ be cofinal in $\alpha$ and such that $\alpha_0=0$. For $\xi<\lambda$ consider the interval $I_\xi=[\alpha_\xi,\alpha_{\xi+1})$; clearly $\type(I_\xi) \leq \alpha_{\xi+1} < \alpha$, so there is an order-embedding $\phi_\xi$ of $I_\xi$ into $\Q$. For $\eta \in \alpha$ let $\xi(\eta) < \lambda$ be such that $\eta\in I_{\xi(\eta)}$. Now define $\phi \colon \alpha \to \Q$ by
-\[
-\phi(\eta) \defeq \xi(\eta) \conc \phi_{\xi(\eta)}(\eta).
-\]
-Clearly $\phi$ order-embeds $\alpha$ in $\Q$.
+Clearly $\phi$ is an order-embedding of $\alpha$ and $\ran \phi$ is contained in the interval $(f,g)$.
 \end{proof}
 \end{lemma}
-
-\begin{corollary}\label{corollary-embedding_in_finite_sequences}
-\renewcommand{\Q}{\mathcal{Q}}
-Every $\alpha < \kappa^+$ embeds in any non-trivial open interval of $\Q$.
-\begin{proof}
-Let $f,g \in \Q$ be sequences with $f<g$. Let $n$ be the least such that $f(n)<g(n)$ and let $m>n$ be such that $f(m)=0$. It's immediate to check that $\Q' \defeq \{h \in \Q \mid h(i)=f(i)$ for all $i<m$ and $h(m)=1 \}$ is order-isomorphic to $\Q$. By last lemma every $\alpha < \kappa^+$ embeds in $\Q'$, and since $\Q' \sse (f,g)$ open interval we are done.
-\end{proof}
-\end{corollary}
 
 We can finally proceed with the
 
 \begin{proof}[Proof of Theorem \ref{thm-aronszajn_k+_tree}.]
 \renewcommand{\Q}{\mathcal{Q}}
-We will adapt the proof of Theorem \ref{thm-aronszjan}. Instead of $\mathbb Q$, we shall use $\Q$ of Lemma \ref{lemma-embedding_in_finite_sequences}. The only properties of $\Q$ we will need are that $|\Q|=\kappa$, a well-known fact, and the statement of Corollary \ref{corollary-embedding_in_finite_sequences}. Every $x \in T$ will be a bounded and strictly increasing sequence of elements of $\Q$ such that $\length(x)=\alpha$ for $\alpha < \kappa^+$. As before, $T$ will be such that $o(x)=\length(x)$ for all $x \in T$.\\
+We will adapt the proof of Theorem \ref{thm-aronszajn}. Instead of $\mathbb Q$, we shall use $\Q$ of Lemma \ref{lemma-embedding_in_finite_sequences}. The only properties of $\Q$ we will need are that $|\Q|=\kappa$, a well-known fact, and the statement of Lemma \ref{lemma-embedding_in_finite_sequences}. Every $x \in T$ will be a bounded and strictly increasing sequence of elements of $\Q$ such that $\length(x)=\alpha$ for $\alpha < \kappa^+$. As before, $T$ will be such that $o(x)=\length(x)$ for all $x \in T$.\\
 Again, we construct $T$ by induction on levels, preserving for every $\alpha < \kappa^+$ conditions \eqref{eq:aron_cond1} (of course now we require $|U_\alpha| \leq \kappa$) and \eqref{eq:aron_cond2} \footnote{Formally, the supremum here lives in the Dedekind completion of $\Q$.}, plus the following additional condition:
 \begin{equation}\label{eq:aron_cond3}
 \begin{minipage}[t]{0.8\textwidth}
@@ -412,14 +701,14 @@ For $U_\alpha$ with $\alpha$ limit, we have again the claim:
 \begin{claim}{}
 For each $x \in T|\alpha$ and each $q > \sup x$ there is a strictly increasing $\alpha$-sequence $y$ in $\Q$ such that $y$ extends $x$, $q \geq \sup y$ and $y \restr \beta \in T|\alpha$ for all $\beta<\alpha$.
 \begin{claimproof}
-Let $\lambda \defeq \cf(\alpha) \leq \kappa$. By Corollary \ref{corollary-embedding_in_finite_sequences} there exists $\langle q_\xi \mid 1 \leq \xi < \lambda \rangle$ strictly increasing and contained in the interval $(\sup x, q)$ of $\Q$ \footnote{Actually, $\sup x$ might not be in $\Q$, but in that case we can simply take $q' \in \Q$ such that $\sup x < q' < q$ and consider the interval $(q',q)$.}. By Lemma 	\ref{lemma-cof_continua}, let $\langle \alpha_\xi \mid \xi < \lambda \rangle$ cofinal in $\alpha$, continuous and such that $x \in U_{\alpha_0}$.\\
+Let $\lambda \defeq \cf(\alpha) \leq \kappa$. By Lemma \ref{lemma-embedding_in_finite_sequences} there exists $\langle q_\xi \mid 1 \leq \xi < \lambda \rangle$ strictly increasing and contained in the interval $(\sup x, q)$ of $\Q$ \footnote{Actually, $\sup x$ might not be in $\Q$, but in that case we can simply take $q' \in \Q$ such that $\sup x < q' < q$ and consider the interval $(q',q)$.}. By Lemma 	\ref{lemma-cof_continua}, let $\langle \alpha_\xi \mid \xi < \lambda \rangle$ be cofinal in $\alpha$, continuous and such that $x \in U_{\alpha_0}$.\\
 As before, we want to recursively define $\langle y_\xi \mid \xi < \lambda \rangle$ such that for all $\xi < \lambda$ the following hold:
 \begin{enumerate}[(i)]
 \item $y_\xi \in U_{\alpha_\xi}$;
 \item if $\eta < \xi$ then $y_\eta \sse y_\xi$;
 \item $\sup y_\xi \leq q_\xi$ (for $\xi \geq 1$).
 \end{enumerate}
-Let $y_0 \defeq x$. Suppose we have already defined $y_\xi$. Then there exists $y_{\xi+1}$ which satisfies our requests by the inductive hypothesis \eqref{eq:aron_cond2}, just as in Theorem \ref{thm-aronszjan}. The limit case is where we finally use the additional condition. Suppose $\xi < \lambda$ is a limit ordinal. First observe that $\cf(\alpha_\xi) \leq \xi < \lambda \leq \kappa$ because we assumed $\langle \alpha_\xi \rangle_{\xi < \lambda}$ continuous. Now suppose we have already defined $y_\gamma$ for every $\gamma < \xi$. Then it's clear that $y \defeq \bigcup_{\gamma < \xi} y_\gamma$ satisfies (ii) and (iii). Condition (i) is also true, 
+Let $y_0 \defeq x$. Suppose we have already defined $y_\xi$. Then there exists $y_{\xi+1}$ which satisfies our requests by the inductive hypothesis \eqref{eq:aron_cond2}, just as in Theorem \ref{thm-aronszajn}. The limit case is where we use the additional condition \eqref{eq:aron_cond3}. Suppose $\xi < \lambda$ is a limit ordinal. First observe that $\cf(\alpha_\xi) \leq \xi < \lambda \leq \kappa$ because we assumed $\langle \alpha_\xi \rangle_{\xi < \lambda}$ continuous. Now suppose we have already defined $y_\gamma$ for every $\gamma < \xi$. Then it's clear that $y \defeq \bigcup_{\gamma < \xi} y_\gamma$ satisfies (ii) and (iii). Condition (i) is also true, 
 %since 
 %\[
 %\height(y_\xi)=\length(y_\xi)=\sup_{\gamma < \xi} (\length(y_\gamma)) = \sup_{\gamma < \xi} \alpha_\gamma = \alpha_\xi
@@ -451,11 +740,10 @@ So $\kappa^{<\kappa} = \sup\{\kappa^\lambda \mid \lambda < \kappa = \cf(\kappa),
 \end{proof}
 \end{proposition}
 
-Hence, if we assume \GCH we have that for every $\kappa$ regular there exists an Aronszajn $\kappa^+$-tree.
+Hence, if we assume \GCH we have that for every $\kappa$ regular there exists an Aronszajn $\kappa^+$-tree. What happens at the successor of a singular cardinal (even assuming \GCH), or simply dropping \GCH, is still being investigated. However, this topic is beyond the scope of this work.
 
 
-
-\section{Suslin trees}
+\chapter{Suslin trees}
 
 \begin{defn}
 Let $(P, \leq)$ be a partially ordered set. An \emph{antichain} in $P$ is a subset $A \sse P$ such that any two distinct elements of $A$ are incomparable, i.e.\ $x,y \in A$ and $x \neq y$ implies $x \nleq y$ and $y \nleq x$. A \emph{maximal antichain} in $P$ is an antichain which is maximal in $P$ w.r.t.\ the inclusion relation between subsets of $P$.
@@ -465,50 +753,60 @@ Let $(P, \leq)$ be a partially ordered set. An \emph{antichain} in $P$ is a subs
 A \emph{Suslin tree} is an $\omega_1$-tree such that every branch is at most countable and every antichain is at most countable.
 \end{defn}
 
-Of course any Suslin tree is an Aronszjan tree. Furthermore, observe that if an $\omega_1$-tree $T$ is normal and has no uncountable antichain, then $T$ is a Suslin tree. For, suppose by contradiction that $\mathfrak{b}$ is an $\omega_1$ branch. For all $x \in \mathfrak{b}$, let $f(x)$ be an arbitrary node greater than $x$ which is not in $\mathfrak{b}$. Then $\{f(x) : x \in \mathfrak{b}\}$ would be an uncountable antichain.
+Of course any Suslin tree is an Aronszajn tree. Furthermore, observe that if an $\omega_1$-tree $T$ is normal and has no uncountable antichain, then $T$ is a Suslin tree. For, suppose by contradiction that $\mathfrak{b}$ is an $\omega_1$ branch. For all $x \in \mathfrak{b}$, let $f(x)$ be an arbitrary node greater than $x$ which is not in $\mathfrak{b}$. Then $\{f(x) : x \in \mathfrak{b}\}$ would be an uncountable antichain.
 
-\subsection{Suslin lines}
+\section{Suslin's Hypothesis}
 
-We will show later on that the existence of Suslin trees is independent of \ZFC. The first result in this direction was proven by Jech (1967), who built a forcing model where there is a Suslin tree. In 1971 Solovay and Tennenbaum provided a model where there is no Suslin tree. To do it, they introduced a technique which turned out to be of fundamental importance for set theory: iterated forcing.
+The notion of Suslin tree was originally introduced in the attempt of improving a characterization of the real line proved by Cantor (1895):
+\begin{center}
+Let $R$ be a linearly ordered set without endpoints. Suppose it is dense, Dedekind complete and separable. Then $R$ is order-isomorphic to the real line.
+\end{center}
+\emph{Suslin's hypothesis} (\SH), formulated by Suslin in 1920, states that the separability condition can be weakened to the \emph{countable chain condition} (ccc): every collection of mutually disjoint non-empty open intervals is countable.
 
-Suslin actually never talked about Suslin trees. They were introduced by Kurepa, who showed (1935) that the \emph{Suslin hypothesis} holds if and only if there exists no Suslin tree:
-\\[6pt]
-\textbf{Suslin hypothesis.} Let $R$ be a linearly ordered set without endpoints, which is dense and Dedekind complete. Assume that $R$ satisfies the \emph{countable chain condition}, that is, every collection of mutually disjoint non-empty open intervals in $R$ is countable. Then $R$ is order-isomorphic to the real line.
-\\[6pt]
-It is easily seen that the Suslin hypothesis holds if and only if there exists a \emph{Suslin line}, i.e.\ a dense linearly ordered set that satisfies the countable chain condition but is not separable.
+One can see that for a dense linear order, deleting endpoints and taking the Dedekind completion doesn't change the ccc or separability properties. Hence, Suslin's hypothesis can be stated as:
+\begin{center}
+There exists no Suslin line
+\end{center}
+where a \emph{Suslin line} is a dense linearly ordered set that satisfies the countable chain condition but is not separable.
+
+\SH is actually independent of \ZFC. This important result was one of the earliest applications of forcing. But before the advent of forcing, not much progress concerning \SH was made, except for a result proved by Kurepa \cite{Kur1935} in 1935, who came up with the purely combinatorial concept of Suslin trees and reformulated \SH in terms of them: \SH is true if and only if there is no Suslin tree. We dedicate the last part of the section to the proof of this fact.
 
 \begin{lemma}
 If there exists a Suslin tree then there exists a normal Suslin tree.
 \begin{proof}
-Let $T$ be a Suslin tree. We turn $T$ into a normal Suslin tree through progressive transformations. In the end every property of Definition \ref{def-normal_tree} will be satisfied. First, define $T_1 := \{x \in T : |\up x| > \aleph_0\}$. Observe that if $x \in T_1$ and $\alpha > o(x)$, then there is $y \in T$ above $x$ which is at level $\alpha$ and such that $|\up y| > \aleph_0$. So $T_1$ satisfies condition (iv). For every set of the form $C = \down y$ for some $y \in T_1$ at limit level, we add an extra node $a_C$ in such a way that $a_C$ is the least node above each element of $C$, i.e.\ $C < a_C$ and $a_C < x$ for all $x > C$. We call the obtained tree $T_2$. Of course any new level is still countable, so $T_2$ satisfies (ii), (iv) and (v). Call a node \emph{branching} if it has at least two immediate successor. Using that $T_2$ has no uncountable chain and satisfies (v), it's easy to see that for each $x \in T_2$, the set $\up x$ contains uncountably many branching points. So $T_3 :=\{$branching points of $T_2\}$ satisfies (ii), (iv) and (v). Also, each $x \in T_3$ is a branching point. Now let $T_4 := \{x \in T_3 : x$ belongs to a limit level of $T_3\}$, where the order in $T_4$ is just the restriction of the one in $T_3$. It's easy to verify that $T_4$ is an $\omega_1$-tree which satisfies (ii), (iii), (iv), (v). Finally, to get a normal Suslin tree we just ``glue'' together the least nodes of $T_4$.
+Let $T$ be a Suslin tree. We turn $T$ into a normal Suslin tree through progressive transformations. In the end every property of Definition \ref{def-normal_tree} will be satisfied. First, define $T_1 \defeq \{x \in T : |\up x| > \aleph_0\}$. Observe that if $x \in T_1$ and $\alpha > o(x)$, then there is $y \in T$ above $x$ which is at level $\alpha$ and such that $|\up y| > \aleph_0$. So $T_1$ satisfies condition (iv). For every set of the form $C = \down y$ for some $y \in T_1$ at limit level, we add an extra node $a_C$ in such a way that $a_C$ is the least node above each element of $C$, i.e.\ $C < a_C$ and $a_C < x$ for all $x > C$. We call the obtained tree $T_2$. Of course any new level is still countable, so $T_2$ satisfies (ii), (iv) and (v). Call a node \emph{branching} if it has at least two immediate successor. Using that $T_2$ has no uncountable chain and satisfies (v), it's easy to see that for each $x \in T_2$, the set $\up x$ contains uncountably many branching points. So $T_3 \defeq\{$branching points of $T_2\}$ satisfies (ii), (iv) and (v). Also, each $x \in T_3$ is a branching point. Now let $T_4 \defeq \{x \in T_3 : x$ belongs to a limit level of $T_3\}$, where the order in $T_4$ is just the restriction of the one in $T_3$. It's easy to verify that $T_4$ is an $\omega_1$-tree which satisfies (ii), (iii), (iv), (v). Finally, to get a normal Suslin tree we just ``glue'' together the least nodes of $T_4$.
 \end{proof}
 \end{lemma}
 
 \begin{theorem}
 There exists a Suslin line if and only if there exists a Suslin tree.
 \begin{proof}
-Suppose we have a Suslin line $L$. We want to build a Suslin tree $T$ by taking a certain family of closed nonempty intervals on $L$, ordered by reverse inclusion. The construction of $T$ proceeds by induction on $\alpha < \omega_1$. Let $I_0 := [a_0,b_0]$ be arbitrary (with $a_0 < b_0$). Assume we already defined $I_\beta = [a_\beta,b_\beta]$ for all $\beta < \alpha$. The set $C := \{a_\beta : \beta < \alpha\} \cup \{b_\beta : \beta < \alpha\}$ is countable, and thus it can't be dense since $L$ is not separable. So we choose an interval $I_\beta$ which is disjoint from $C$. Of course $T := \{I_\alpha : \alpha < \omega_1\}$ has size $\aleph_1$ and is partially ordered by $\supseteq$. Moreover, $\alpha < \beta$ implies that either $I_\alpha \supsetneq I_\beta$ or $I_\alpha \cap I_\beta = \emptyset$. This means that $I_\alpha \supsetneq I_\beta$ implies $\alpha < \beta$, so every set of the form $\{I \in T : I \supseteq I_\alpha\}$ is well-ordered by $\supseteq$. Hence $T$ is a tree.
+Suppose we have a Suslin line $S$. We want to build a Suslin tree $T$ by taking a certain family of closed nonempty intervals on $S$, ordered by reverse inclusion. The construction of $T$ proceeds by induction on $\alpha < \omega_1$. Let $I_0 \defeq [a_0,b_0]$ be arbitrary (with $a_0 < b_0$). Assume we already defined $I_\beta = [a_\beta,b_\beta]$ for all $\beta < \alpha$. The set $C \defeq \{a_\beta : \beta < \alpha\} \cup \{b_\beta : \beta < \alpha\}$ is countable, and thus it can't be dense since $S$ is not separable. So we choose an interval $I_\beta$ which is disjoint from $C$. Of course $T \defeq \{I_\alpha : \alpha < \omega_1\}$ has size $\aleph_1$ and is partially ordered by $\supseteq$. Moreover, $\alpha < \beta$ implies that either $I_\alpha \supsetneq I_\beta$ or $I_\alpha \cap I_\beta = \emptyset$. This means that $I_\alpha \supsetneq I_\beta$ implies $\alpha < \beta$, so every set of the form $\{I \in T : I \supseteq I_\alpha\}$ is well-ordered by $\supseteq$. Hence $T$ is a tree.
 
 We shall show that $T$ has no uncountable branches and no uncountable antichains. Then of course $\height(T) \leq \omega_1$; since every level is an antichain and $|T| = \aleph_1$ we obtain $\height(T) = \omega_1$.
 
-Observe that $I,J \in T$ are incomparable in $T$ if and only if they are disjoint in $L$. By the CCC in $L$ we get that antichains in $T$ are at most countable. Finally, suppose towards a contradiction that $\mathfrak{b}$ is a branch of height $\omega_1$. Then the left endpoints of the intervals $I \in \mathfrak{b}$ form a strictly increasing sequence $\{x_\alpha : \alpha < \omega_1\}$ of points of $L$. Clearly the intervals $(x_\alpha, x_{\alpha+1}), \alpha < \omega_1$ form an uncountable family of mutually disjoint open intervals in $L$, which contradicts the CCC hypothesis.\\[6pt]
+Observe that $I,J \in T$ are incomparable in $T$ if and only if they are disjoint in $S$. By the ccc in $S$ we get that antichains in $T$ are at most countable. Finally, suppose towards a contradiction that $\mathfrak{b}$ is a branch of height $\omega_1$. Then the left endpoints of the intervals $I \in \mathfrak{b}$ form a strictly increasing sequence $\{x_\alpha : \alpha < \omega_1\}$ of points of $S$. Clearly the intervals $(x_\alpha, x_{\alpha+1}), \alpha < \omega_1$ form an uncountable family of mutually disjoint open intervals in $S$, which contradicts the ccc hypothesis.\\[6pt]
 %
-\indent Let $T$ be a Suslin tree. By last lemma we can assume w.l.o.g.\ that $T$ is normal. Let $L := \{\mathfrak{b} : \mathfrak{b}$ is a branch in $T\}$. Each $x \in T$ has $\aleph_0$-many immediate successor, thus we can assume that every set of immediate successor is equipped with a ``local'' order which is isomorphic to the one of the rational numbers. This enables us to define the order on $L$: if $\alpha$ is the least level where two branches $\mathfrak{a}, \mathfrak{b} \in L$ differ, then $\alpha$ is a successor ordinal and the relative points $a_\alpha \in \mathfrak{a}$ and $b_\alpha \in \mathfrak{b}$ are both successors of the same point at level $\alpha-1$. We stipulate that $\mathfrak{a} < \mathfrak{b}$ iff $a_\alpha$ is smaller than $b_\alpha$ in the local order.
+\indent Let $T$ be a Suslin tree. By last lemma we can assume w.l.o.g.\ that $T$ is normal. Let $S \defeq \{\mathfrak{b} : \mathfrak{b}$ is a branch in $T\}$. Each $x \in T$ has $\aleph_0$-many immediate successor, thus we can assume that every set of immediate successor is equipped with a ``local'' order which is isomorphic to the one of the rational numbers. This enables us to define the order on $S$: if $\alpha$ is the least level where two branches $\mathfrak{a}, \mathfrak{b} \in S$ differ, then $\alpha$ is a successor ordinal and the relative points $a_\alpha \in \mathfrak{a}$ and $b_\alpha \in \mathfrak{b}$ are both successors of the same point at level $\alpha-1$. We stipulate that $\mathfrak{a} < \mathfrak{b}$ iff $a_\alpha$ is smaller than $b_\alpha$ in the local order.
 
-It's immediate to check that $L$ is linearly ordered and dense. Also, if $(\mathfrak{a},\mathfrak{b})$ is an open interval in $L$, one easily finds some $x \in T$ such that $B_x \sse (\mathfrak{a},\mathfrak{b})$, where $B_x$ is $B_x := \{\mathfrak{c} \in L : x \in \mathfrak{c}\}$. Observe that if $B_x$ and $B_y$ are disjoint, then $x$ and $y$ are incomparable in $T$. Hence, for some $x,y \in T$,
+It's immediate to check that $S$ is linearly ordered and dense. Also, if $(\mathfrak{a},\mathfrak{b})$ is an open interval in $S$, one easily finds some $x \in T$ such that $B_x \sse (\mathfrak{a},\mathfrak{b})$, where $B_x$ is $B_x \defeq \{\mathfrak{c} \in S : x \in \mathfrak{c}\}$. Observe that if $B_x$ and $B_y$ are disjoint, then $x$ and $y$ are incomparable in $T$. Hence, for some $x,y \in T$,
 \[
 (\mathfrak{a},\mathfrak{b}) \cap (\mathfrak{c},\mathfrak{d}) = \emptyset \imp B_x \cap B_y = \emptyset \imp x \perp y.
 \]
-Since every antichain in $T$ is at most countable, this means that $L$ satisfies the CCC.
+Since every antichain in $T$ is at most countable, this means that $S$ satisfies the ccc.
 
-Finally, let $S$ be a countable family of branches of $T$ and let $\alpha$ be a countable ordinal greater than the length of any branch $\mathfrak{b} \in S$ (which obviously exists, because every branch of $T$ is countable). Now let $x \in T$ be a node at level $\alpha$. Of course $B_x \cap S = \emptyset$, and since $B_x$ clearly contains some open interval of $L$, we have that $S$ is not dense in $L$. Thus $L$ is not separable and we are done.
+Finally, let $F$ be a countable family of branches of $T$ and let $\alpha$ be a countable ordinal greater than the length of any branch $\mathfrak{b} \in F$ (which obviously exists, because every branch of $T$ is countable). Now let $x \in T$ be a node at level $\alpha$. Of course $B_x \cap F = \emptyset$, and since $B_x$ clearly contains some open interval of $S$, we have that $F$ is not dense in $S$. Thus $S$ is not separable and we are done.
 \end{proof}
 \end{theorem}
 
 
-\subsection{Suslin trees in $L$}
+\section{Suslin trees in $L$}
 
-In this section we will prove that $V=L$ implies the existence of a Suslin tree. We start with a rather general lemma.
+In this section we will prove that $V=L$ implies the existence of a Suslin tree. This result is due to Jensen \cite{Jen1968}, and it is significant because Jensen formulated the famous diamond principle\footnote{The diamond principle asserts that there exists a sequence of sets $\langle S_\alpha : \alpha < \omega_1 \rangle$ with $S_\alpha \sse \alpha$, such that for every $X \sse \omega_1$, the set $\{\alpha < \omega_1 : X \cap \alpha = S_\alpha \}$ is a stationary subset of $\omega_1$.} $\diamondsuit$ by extracting and isolating the combinatorial fact which holds in $L$ and allows the construction of the Suslin tree. In fact, $\diamondsuit$ alone implies that there exists a Suslin tree. For this reason, the standard way to prove that if $V=L$ then a Suslin tree exists is to show that $\diamondsuit$ holds in $L$ and then construct the Suslin tree using $\diamondsuit$. In this work we decide to present the original proof and build the Suslin tree from scratch. This is a less known approach and will hopefully make clear to the reader where Jensen's intuition about $\diamondsuit$ originated from. However, in Chapter \ref{chapter-automorphisms_of_trees} we will construct two particular Suslin trees using just $\diamondsuit$.
+
+Before starting with the math, it should be mentioned that Jensen's theorem, which implies the relative consistency of \nSH, was actually proved after the independence of \SH had been established by means of forcing. Nonetheless, we will present the forcing approach in the next sections, as we believe that this will result in a clearer exposition from a mathematical point of view.
+
+We start with a rather general lemma.
 
 \begin{lemma}\label{lemma-countable_elementary_substructure_of_H(theta)}
 Let $\theta$ be a regular uncountable cardinal. Suppose that $M$ is a countable structure such that $M \preceq H_\theta$. Then the following hold:
@@ -530,23 +828,23 @@ For point (5), observe that the relation $\in$ is extensional on $H_\theta$ and 
 
 The reason why last lemma will turn out to be useful is the following:
 
-\begin{lemma}
+\begin{lemma}\label{lemma-V=L_implies_L(kappa)=H(kappa)}
 If $V=L$, then $L_\kappa = H_\kappa$ for all cardinals $\kappa \geq \omega$.
 \begin{proof}
-See \cite[p. 141]{Kun2013}.
+See \cite[p.\ 141]{Kun2013}.
 \end{proof}
 \end{lemma}
 
 Thus we can replace $H_\theta$ with $L_\theta$ in Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} if $V=L$.
 
-\begin{lemma}
+\begin{lemma}\label{lemma-maximal_antichain_end_extensions}
 Let $T$ be a tree and $A$ a maximal antichain. Suppose that $A$ is \emph{bounded in $T$}, i.e.\ there is some $\alpha < \height(T)$ such that $o(x) \leq \alpha$ for all $x \in A$. Then $A$ is maximal in every end-extension of $T$.
 \begin{proof}
 Let $T'$ be an end-extension of $T$ and let $\alpha < \height(T)$ such that every element of $A$ is at level $\leq \alpha$. Take $t' \in T' \sm T$. We want to show that $t'$ is comparable with some $a \in A$. Of course $o(t') \geq \height(T) > \alpha$ because $T'$ is an end-extension of $T$. Thus there exists $t<t'$ at level $\alpha$ of $T$. In turn, there exists $a \leq t$ which is an element of $A$.
 \end{proof}
 \end{lemma}
 
-Observe that any subset of a tree $T$ is bounded if the height of $T$ is a successor ordinal. Thus the request that $A$ is bounded in last lemma is always satisfied in that case.
+Observe that any subset of a tree $T$ is bounded if the height of $T$ is a successor ordinal. Thus the request that $A$ is bounded in last lemma is always satisfied in that case. But for the limit case, it's up to us to ensure that a maximal antichain doesn't ``grow''. Next lemma shows how to do it.
 
 \begin{lemma}[\textbf{Sealing maximal antichains}]\label{lemma-kill_countable_max_antichains}
 Let $\alpha$ be a countable limit ordinal, $T$ a normal $\alpha$-tree and $\A$ a countable family of maximal antichains in $T$. Then there exists a normal end-extension $T'$ of $T$ of height $\alpha+1$ such that every $A \in \A$ is a maximal antichain in $T'$ (and in turn in every end-extension of $T'$ by last lemma).
@@ -567,13 +865,13 @@ Finally, we define the extension $T' \defeq T \cup \{ b_t : t \in T\}$, where $b
 \begin{theorem}[Jensen]\label{thm-suslin_tree_in_L}
 If $V=L$, then there exists a Suslin tree.
 \begin{proof}
-We construct the Suslin tree $T$ by recursion on levels. As a set, $T$ will simply be the ordinal $\omega_1$. Also, the construction will proceed in such a way that $T|\alpha$ is normal, for all $\alpha < \omega_1$; $T$ will also be normal. If we have already built $U_\alpha$, for the successor level $U_{\alpha+1}$ we just put countably many nodes above each node of $U_\alpha$. We decide to be more precise, even though this wouldn't be strictly necessary. Formally, we let $U_0 \defeq \{0\}$, $U_1 \defeq \omega \sm \{0\}$, $U_{n+1} \defeq \{ \omega \cdot n + k : k \in \omega \}$ for $0<n<\omega$, and $U_\alpha \defeq \{ \omega \cdot \alpha + k : k \in \omega \}$ for $\omega \leq \alpha < \omega_1$. So now we must define the ordering of $T$, recursively. For $U_{\alpha+1}$, we arbitrarily partition $U_{\alpha+1}$ into $\aleph_0$-many countably infinite subsets. Every such set will be the set of immediate successors of one node of $U_\alpha$, so that the normality is preserved. Now comes the hard part: for the limit step, we must choose which branches to extend and which to omit. The idea is to exploit Lemma \ref{lemma-kill_countable_max_antichains} to ``seal'' every maximal antichain in the partial tree $T|\alpha$, for $\alpha$ limit. As one would expect, the viability of this method will rely on some specific properties of the constructible universe. The proof of some facts is rather technical, therefore we believe that it is more convenient to state them here as claims and provide their proofs at the end for the interested reader.\\
+We construct the Suslin tree $T$ by recursion on levels. As a set, $T$ will simply be the ordinal $\omega_1$. Also, the construction will proceed in such a way that $T|\alpha$ is normal, for all $\alpha < \omega_1$; $T$ will also be normal. If we have already built the $\alpha$th level $U_\alpha$, for the successor level $U_{\alpha+1}$ we just put countably many nodes above each node of $U_\alpha$. We decide to be more precise, even though this wouldn't be strictly necessary. Formally, we let $U_0 \defeq \{0\}$, $U_1 \defeq \omega \sm \{0\}$, $U_{n+1} \defeq \{ \omega \cdot n + k : k \in \omega \}$ for $0<n<\omega$, and $U_\alpha \defeq \{ \omega \cdot \alpha + k : k \in \omega \}$ for $\omega \leq \alpha < \omega_1$. So now we must define the ordering of $T$, recursively. For $U_{\alpha+1}$, we arbitrarily partition $U_{\alpha+1}$ into $\aleph_0$-many countably infinite subsets. Every such set will be the set of immediate successors of one node of $U_\alpha$, so that the normality is preserved. Now comes the hard part: for the limit step, we must choose which branches to extend and which to omit. The idea is to exploit Lemma \ref{lemma-kill_countable_max_antichains} to ``seal'' every maximal antichain in the partial tree $T|\alpha$, for $\alpha$ limit. As one would expect, the viability of this method will rely on some specific properties of the constructible universe. The proof of some facts is rather technical, therefore we believe that it is more convenient to state them here as claims and provide their proofs at the end for the interested reader.\\
 \begin{claim}{ 1}
 There exists a function $f \colon \omega_1 \to \omega_1$ such that for each $\alpha < \omega_1$,
 \[
-\langle L_{f(\alpha)}, \in \rangle \models \alpha \text{ is countable}.
+(L_{f(\alpha)}, \in) \models \alpha \text{ is countable}.
 \]
-Furthermore, $f$ is absolute for $L_{\omega_2}$.
+Furthermore, $f$ is absolute for $L_{\omega_2}$ (taking $f$ as the $<_L$-least such function).
 \end{claim}\\
 
 Now we can define the limit levels: we choose such a function $f$ and for every limit ordinal $\alpha$ we use Lemma \ref{lemma-kill_countable_max_antichains} to seal all maximal antichains of $T|\alpha$ which are elements of $L_{f(\alpha)}$. This is clearly possible because $L_{f(\alpha)}$ is countable. One technical detail: note that we can assume that the elements of the $\alpha$th level of the $(\alpha+1)$-tree produced by Lemma \ref{lemma-kill_countable_max_antichains} are precisely the ones of $U_\alpha \defeq \{ \omega \cdot \alpha + k : k \in \omega \}$. This is because $T|\alpha$ is countable and normal, whereby the the set $\{b_t : t \in T|\alpha\}$ in the proof of \ref{lemma-kill_countable_max_antichains} must have size precisely $\aleph_0$, like $U_\alpha$, which is the only thing we needed to check.
@@ -586,15 +884,15 @@ $T$ and $A$ belong to $L_{\omega_2}$, in which they satisfy the same definition 
 
 So we consider the structure
 \[
-\M \defeq \langle L_{\omega_2}, \in, \omega_1, T, A \rangle.
+\M \defeq (L_{\omega_2}, \in, \omega_1, T, A).
 \]
 By Löwenheim-Skolem Theorem, there exists a countable elementary substructure $\mathcal{N} \preceq \M$ such that $\omega_1, T, A \in \mathcal{N}$. Such structure has the form
 \[
-\mathcal{N} = \langle N, \in, \omega_1, T, A \rangle.
+\mathcal{N} = (N, \in, \omega_1, T, A).
 \]
 By Gödel Condensation Lemma and Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} (and using that $V=L$) it follows that its transitive realization $\mos"\mathcal{N}$ has the form
 \[
-\mathcal{N'} = \langle L_\beta, \in, \alpha, T \cap \alpha, A \cap \alpha \rangle,
+\mathcal{N'} = (L_\beta, \in, \alpha, T \cap \alpha, A \cap \alpha),
 \]
 where $\alpha = \omega_1 \cap N = (\omega_1)^{\mathcal{N'}}$ and $\beta$ is a countable ordinal.\\
 Observe that since $\mathcal{N} \preceq \M$ and $\mos \colon \mathcal{N} \to \mathcal{N'}$ is an isomorphism, we have $T \cap \alpha = T^{\mathcal{N'}}$. In particular, $\mathcal{N'} \models \height(T \cap \alpha)=\alpha$. By absoluteness, $\height(T \cap \alpha)=\alpha$ also in $V$. Looking back at the definition of the levels of $T$, this clearly implies that $T \cap \alpha = T|\alpha$. Similarly, $\mathcal{N'} \models$ ``$A \cap \alpha$ is a maximal antichain of $T \cap \alpha$'', hence by absoluteness $A \cap \alpha$ is a maximal antichain of $T|\alpha$ in $V$ as well.\\
@@ -602,17 +900,19 @@ Now, of course $\mathcal{N'} \models$ ``$\alpha$ is uncountable'', whereas $L_{f
 \end{proof}
 \end{theorem}
 
+We now prove the two claims. Since these are the first results of this kind in our thesis, we shall be a bit pedantic.
+
 \begin{proof}[Proof of Claim 1.]
 \renewcommand{\qedsymbol}{$\blacksquare$}
-Let $\alpha$ be a countable ordinal. Of course in $V$ there exists $g \colon \omega \to \alpha$ surjective. It is immediate to check that $|{\trcl(g)}| < \omega_1$, i.e.\ $g \in H_{\omega_1}$. Since $V=L$ implies $L_{\omega_1} = H_{\omega_1}$, this means that $g \in L_{\omega_1}$, and an easy absoluteness argument shows that $L_{\omega_1} \models g \colon \omega \onto \alpha$. By an easy application of the Reflection Theorem, there exists $\beta < \omega_1$ such that the formula is true in $L_\beta$. Thus we proved that the statement
+Let $\alpha$ be a countable ordinal. Of course in $V$ there exists $g \colon \omega \to \alpha$ surjective. It is immediate to check that $|{\trcl(g)}| < \omega_1$, i.e.\ $g \in H_{\omega_1}$. Since $V=L$ implies $L_{\omega_1} = H_{\omega_1}$, this means that $g \in L_{\omega_1}$, and an easy absoluteness argument shows that $L_{\omega_1} \models g \colon \omega \onto \alpha$. By an easy application of the Reflection Theorem, there exists $\beta < \omega_1$ such that the formula is true in $L_\beta$.\footnote{Of course $g$ belongs to $L_\beta$ for some $\beta < \omega_1$, but we used the Reflection Theorem to make sure that such $L_\beta$ indeed sees $g$ as a surjection $\omega \to \alpha$ ($L_\beta$ need not be a model of all $\mathsf{ZFC - P}$). This could actually be checked by an easy absoluteness argument. We will omit such details hereafter.} Thus we proved that the statement
 \[
-\forall \alpha < \omega_1 \ \exists \beta < \omega_1 \ [ \langle L_\beta, \in \rangle \models \alpha \text{ is countable}]. \tag{$\sigma$}
+\forall \alpha < \omega_1 \ \exists \beta < \omega_1 \ [ (L_\beta, \in) \models \alpha \text{ is countable}]. \tag{$\sigma$}
 \]
 holds in $V$. Now recall that the relation ``$\models$'' and the function $\gamma \mapsto L_\gamma$ are absolute for transitive models of $\mathsf{ZF-P}$. Hence every notion used in $\sigma$ is absolute for $L_{\omega_2}$, which then satisfies $\sigma$. Thus in $L_{\omega_2}$ there exists a function $f \colon \omega_1 \to \omega_1$ such that for each $\alpha < \omega_1$,
 \[
-\langle L_{f(\alpha)}, \in \rangle \models \alpha \text{ is countable},
+(L_{f(\alpha)}, \in) \models \alpha \text{ is countable}.
 \]
-and such function is absolute.
+We can suppose w.l.o.g. that $f$ is the $<_L$-least such function, so that $f$ is absolute for $L_{\omega_2}$.
 \end{proof}
 
 \begin{proof}[Proof of Claim 2.]
@@ -626,10 +926,305 @@ and $H$ is a function which takes the tree $T|\alpha$ and the countable family $
 \[
 (A \text{ is a maximal antichain of } T|\alpha)^{L_{f(\alpha)}}
 \]
-is absolute between $L_{\omega_2}$ and $V$. Therefore $(\S_\alpha)^{L_{\omega_2}} = \S_\alpha$, which in turn implies $(H(T|\alpha, \S_\alpha))^{L_{\omega_2}} = H(T|\alpha, \S_\alpha)$. Hence the induction step in the construction of $T$ is absolute, and by the absoluteness of functions defined by recursion we are done.
+is absolute between $L_{\omega_2}$ and $V$. Therefore $(\S_\alpha)^{L_{\omega_2}} = \S_\alpha$, which in turn implies that $(H(T|\alpha, \S_\alpha))^{L_{\omega_2}} = H(T|\alpha, \S_\alpha)$. Hence the induction step in the construction of $T$ is absolute, and by the absoluteness of functions defined by recursion we are done.
 \end{proof}
 
-\section{Kurepa trees}
+
+\section{Forcing and Suslin trees}
+
+\subsection{A forcing model where there is a Suslin tree}
+
+Proving the consistency of \nSH was the first breakthrough about Suslin's hypothesis since its characterization in terms of Suslin trees by Kurepa, and possibly since its very formulation. This result was achieved independently by Tennenbaum and Jech. While Jech was the first to write a publication in 1967, a letter by Solovay to Kanamori \cite{Kan2011} witnesses that Tennenbaum already proved the result in 1963 (just after Cohen's development of forcing), although he published it \cite{Ten1968} in 1968. To do that, he used a forcing poset consisting of finite trees ordered by extension. Such poset is ccc, and probably this is the reason why he came up with it: Cohen had proved that ccc orders preserve cardinals. On the other hand, Jech's forcing conditions are countable approximations to a Suslin tree, ordered by end-extension. The peculiarity of this poset is that cardinals are preserved because it is countably closed, not because it's ccc. Our choice is to present Jech's proof, because the core argument (i.e.\ the way of extending the tree at limit stages to seal the antichain) is essentially the same we've used for Jensen's Theorem \ref{thm-suslin_tree_in_L}.\\
+
+The following is an easy and well-known property of forcing. We include it here to reference it in following proofs and make the exposition clearer. For a proof see \cite[p.\ 284]{Kun2013}.
+\begin{fact}\label{fact-taking_out_of_forcing}
+Let $M$ be a countable transitive model for \ZFC and $P$ a poset. Let $\pi \in M^P$ be a name and $r \in P$. If $r \forces \exists x \in \pi \ \phi(x)$, then there is a $q \leq r$ and a $\sigma \in \dom(\pi)$ such that $q \forces [\sigma \in \pi \wedge \phi(\sigma)]$.\\
+In particular, suppose that $\pi$ is a canonical name $\check{a} \in M^P$. Then $\sigma = \check{b}$ for some $b \in M$, and we obtain that:
+\begin{center}
+If $r \forces \exists x \in \check{a} \ \phi(x)$, then there is a $q \leq r$ and a $b \in a$ such that $q \forces \phi(\check{b})$.
+\end{center}
+\end{fact}
+
+\begin{theorem}[Jech] \label{thm-forcing_a_suslin_tree}
+There is a generic extension of $V$ in which there exists a Suslin tree.
+\begin{proof}
+We let the set of forcing conditions $P$ be the family of trees described in Example \ref{example-countable_normal_trees}. We define the order on $P$ by:
+\begin{center}
+$T_1 \leq T_2$ if and only if $T_1$ is an end-extension of $T_2$.
+\end{center}
+Let $G$ be a generic filter on $P$ and let $\T \defeq \bigcup \{T : T \in G\}$. We shall prove that $V[G] \models$ ``$\T$ is a normal Suslin tree''.
+
+First, it's immediate to show by induction that any conditions $T_1, T_2 \in P$ are either comparable or incompatible. Hence $G$ consists of comparable conditions, which means that $\T$ is coherent union of trees in $P$. It follows immediately that $\T$ is a normal tree with $\height(\T) \leq \omega_1$.
+
+Similarly, if $(T_n)_{n < \omega}$ is a decreasing sequence in $P$, then $\bigcup_{n \in \omega} T_n$ is still in $P$ and is a lower bound for the sequence. So $P$ is countably closed and thus $\omega_1$ is preserved in $V[G]$.
+
+Now we want to show that the height of $\T$ is precisely $\omega_1$. We must check that for all $\alpha < \omega_1$ there is $T \in G$ such that $\height(T) \geq \alpha$. Using that $G$ is generic, if we show that
+\[
+D_\alpha \defeq \{ T \in P : \height(T) \geq \alpha \}
+\]
+is dense for all $\alpha < \omega_1$, we are done. Let $T_0 \in P$. We want to find an end-extension of $T_0$ which is in $P$ and has height $\geq \alpha$. Actually, it suffices to extend it by one more level, because then iterating the argument and taking unions at limit steps we prove the general case.\\
+If $\height(T_0)$ is a successor ordinal, the extension is trivially (and uniquely) obtained. If $\height(T_0)$ is limit, we simply apply Lemma \ref{lemma-kill_countable_max_antichains} with $\A \defeq \emptyset$\ \footnote{To be formally precise, the $b_t$'s from the proof of Lemma \ref{lemma-kill_countable_max_antichains} must be defined here as $b_t \defeq \bigcup \mathfrak{b}_t$, so that the extension is really an element of $P$.}.
+
+So it's left to show that $\T$ has no uncountable antichains. The idea is to exploit again Lemma \ref{lemma-kill_countable_max_antichains}, but here we will need a weaker version than the one we used to construct the Suslin tree in $L$. In fact, we will need to ``seal'' only one maximal antichain at a time.
+
+Suppose that, in $V[G]$, $A$ is an antichain of $\T$. Without loss of generality we can assume that $A$ is maximal. So there is $T \in G$ such that
+\begin{center}
+$T \forces \dot{A}$ is a maximal antichain in $\dot{\T}$.
+\end{center}
+We claim that the following set is dense below $T$:
+\begin{multline*}
+D \defeq \{T' \leq T \mid V \text{ models that there is a bounded maximal}\\
+\text{antichain $A'$ in $T'$ such that } T' \forces A' \sse \dot{A} \}.
+\end{multline*}
+If this is true, then some $T' \in D$ belongs to $G$, which means that in $V[G]$ there exists a bounded maximal antichain $A'$ of $T'$ such that $A' \sse A$. Since $T \in G$, we have that $\T$ is an end-extension of $T'$, and hence by Lemma \ref{lemma-maximal_antichain_end_extensions} $A'$ is maximal in $\T$. Therefore $A=A'$, which is countable, as wanted.
+%
+%
+%
+%
+%To show that $D$ is dense below $T$, take $T_0 \leq T$. We shall construct $T' \leq T_0$ such that $T' \in D$. Since $T_0 \forces T_0 \in \dot{G}$ and $T_0 \forces$ ``$\dot{A}$ is a maximal antichain in $\T$'', ***using that $\forces$ is deductively closed*** we obtain
+%\begin{center}
+%$T_0 \forces \dot{A}$ is a maximal antichain in $\T$ and $\T$ is an end-extension of $T_0$.
+%\end{center}
+%***It follows that***
+%\begin{multline*}
+%T_0 \forces \text{for any $s \in T_0$ there exist $T'_0 \leq T_0$ end-extended by $\T$ and $t_s \in T'_0$ such that}\\
+%\text{(i) $s$ and $t_s$ are comparable \ and \ (ii) $t_s \in \dot{A}$}.
+%\end{multline*}
+%So ($T_0$ forces that) we can define a sequence of end-extensions which recursively satisfy (i) for all $s \in T_0$ and which end-extend the previous ones. Since $T_0$ is countable, also the sequence is countable. So the union of the sequence (which is again in $P$ because $P$ is $\aleph_0$-closed) is a tree $T_1$. Thus we have that $T_0$ forces the following: there exists $T_1 \leq T_0$ such that $\T$ end-extends $T_1$ and
+%\[
+%(\forall s \in T_0) (\exists t_s \in T_1) \text{ $s$ and $t_s$ are comparable and $t_s \in \dot{A}$}.
+%\]
+%Again ($T_0$ forces that) by recursion we define a sequence $T_0 \geq T_1 \geq \ldots \geq T_n \geq \ldots$ such that, for each $n < \omega$, $\T$ end-extends $T_n$ and
+%\[
+%(\forall s \in T_n) (\exists t_s \in T_{n+1}) \text{ $s$ and $t_s$ are comparable and $t_s \in \dot{A}$}.
+%\]
+%***By ``extracting'' the $\Sigma_0$ notions***, we get that in $V$ there exists a sequence $T_0 \geq T_1 \geq \ldots \geq T_n \geq \ldots$ such that
+%\[
+%(\forall s \in T_n) (\exists t_s \in T_{n+1}) \text{ $s$ and $t_s$ are comparable and $T_0 \forces t_s \in \dot{A}$}. \tag{$*$}
+%\]
+%We let $T_\infty \defeq \bigcup_{n < \omega} T_n \in P$ and $A' \defeq \{t_s : s \in T_\infty\}$. By $(*)$, $A'$ is a maximal antichain in $T_\infty$ and $T_\infty \forces A' \sse A$. By Lemma \ref{lemma-kill_countable_max_antichains} we get an end-extension $T'$ of $T_\infty$ such that $A'$ is a bounded maximal antichain in $T'$. Of course $T' \forces A' \sse A$ and hence $T' \in D$.
+%
+%
+%\newpage
+%
+%
+
+To show that $D$ is dense below $T$, take $T_0 \leq T$. We shall construct $T' \leq T_0$ such that $T' \in D$. Since $T_0 \forces T_0 \in \dot{G}$, it follows that $T_0 \forces$ ``$\dot{\T}$ end-extends $T_0$''. Using also that $T_0 \forces$ ``$\dot{A}$ is a maximal antichain in $\dot{\T}$'', we obtain
+\begin{multline*}
+T_0 \forces \text{for any $s \in T_0$ there exist $T'_0 \leq T_0$ end-extended by $\dot{\T}$}\\
+\text{and $t_s \in T'_0$ such that \quad (i) $s$ and $t_s$ are comparable \ and \ (ii) $t_s \in \dot{A}$}.
+\end{multline*}
+By (many applications of) Fact \ref{fact-taking_out_of_forcing}, we have that, in $V$,
+%\begin{equation}
+%(\forall s \in T_0) (\exists T'_0 \leq T_0) (\exists t_s \in T'_0) \text{ $s$ and $t_s$ are comparable and $T'_0 \forces t_s \in \dot{A}$}.
+%\end{equation}
+\begin{multline*}
+\text{for any $s \in T_0$ there exist $T'_0 \leq T_0$ and $t_s \in T'_0$ such that}\\
+\text{(i) $s$ and $t_s$ are comparable \ and \ (ii) $T'_0 \forces t_s \in \dot{A}$}.
+\end{multline*}
+Working in $V$ and repeating this argument, we can define a sequence of end-extensions of $T_0$ which recursively satisfy (i) and (ii) for all $s \in T_0$ and which end-extend the previous ones. Being $T_0$ countable, also the sequence is countable. Since $P$ is countably closed, we obtain $T_1 \in P$ such that $T_1 \leq T_0$ and
+\[
+\forall s \in T_0 \ \exists t_s \in T_1 \ [\text{$s$ and $t_s$ are comparable and $T_1 \forces t_s \in \dot{A}$}].
+\]
+Recursively using this argument, we define a sequence $T_0 \geq T_1 \geq \ldots \geq T_n \geq \ldots$ such that, for each $n < \omega$, $T_{n+1} \leq T_n$ and
+\begin{equation}\label{eq:killing_suslin_trees}
+\forall s \in T_n \ \exists t_s \in T_{n+1} \ [\text{$s$ and $t_s$ are comparable and $T_{n+1} \forces t_s \in \dot{A}$}].
+\end{equation}
+Now we let $T_\infty \defeq \bigcup_{n < \omega} T_n \in P$ and $A' \defeq \{t_s : s \in T_\infty\}$. By \eqref{eq:killing_suslin_trees}, $A'$ is a maximal antichain in $T_\infty$ and $T_\infty \forces A' \sse A$. By Lemma \ref{lemma-kill_countable_max_antichains} we get an end-extension $T'$ of $T_\infty$ such that $A'$ is a bounded maximal antichain in $T'$. Of course $T' \forces A' \sse A$ and hence $T' \in D$.
+\end{proof}
+\end{theorem}
+
+
+\subsection{A forcing model where there are no Suslin trees}
+
+After establishing the relative consistency of $\nSH$, Tennenbaum tried to prove the consistency of $\SH$. He realized that if $T$ is a Suslin tree, then using $T$ itself as the forcing poset (with the reverse order) has the following two properties:
+\begin{itemize}
+\item[-] The fact that every antichain in $T$ is countable means precisely that $T$ is a ccc forcing poset (seen upside down). Thus cardinals are preserved.
+\item[-] A generic filter on $T$ is an uncountable branch.
+\end{itemize}
+Therefore, forcing with $T$ ``kills'' $T$, meaning that in the generic extension $T$ is not Suslin anymore (and of course once $T$ is killed it stays dead in further generic extensions). The problem is that new Suslin trees might have sprung up in the generic extension. Hence, some kind of \emph{iteration} was needed. But trying to iterate the forcing by simply taking products in the ground model has the disadvantage of possibly loosing the ccc-ness of the forcing\footnote{This can happen already with a two-step iteration. For example, note that forcing with $T \times T$ is the same as forcing with $T$ twice by the Product Lemma. Since in the first step of the iteration we obtain an uncountable branch of $T$ in a generic extension, obviously $T$ is not ccc anymore in that extension (assuming that $T$ is normal). This means that cardinals \emph{may} collapse with this forcing. In \cite[p.\ 38]{Dev1974}, a similar example is given where cardinals \emph{must} collapse.}. This issue was eventually solved thanks to the collaboration with Solovay in 1964-65, which led to the development of a groundbreaking way of iterating forcing, a technique that is still among the main tools for modern set theory. The key idea was to consider forcing notions which occur in an intermediate generic extension, rather than in the ground model. In 1971, Solovay and Tennenbaum published \cite{Sol1971} the proof of consistency of \SH, together with a presentation of their iterated forcing methods; in the same year, Tarski defined their work on Suslin's hypothesis as the most important in set theory since Cohen's work.
+
+Actually, in the final publication, the consistency of \SH was derived as an immediate consequence of other results concerning a new statement: Martin's Axiom\footnote{Martin's Axiom asserts: If $(P,<)$ is a ccc poset, $\kappa$ is an infinite cardinal and $\mathcal D$ is a collection of at most $\kappa$ dense subsets of $P$, then there exists a $\mathcal D$-generic filter on $P$. It's immediate to check that \SH follows from Martin's Axiom with $\kappa \defeq \aleph_1$.} (\MA). In 1967, Martin extracted the statement of \MA from the proof by Solovay and Tennenbaum, observed that its consistency could be proved by the same techniques used for \SH. \MA is a focal ``axiom'', which is stronger than \SH and has a wide range of consequences. For this reason, the consistency of \SH is usually presented as a corollary of the consistency of \MA (even in the original work by Solovay and Tennenbaum). Following the spirit of this work, we will prove the consistency of \SH directly, by adapting the proof for the consistency of \MA.
+
+On a final note, this proof should be read after the one of Theorem \ref{thm-killing_kurepa_trees_via_forcing}, which kills Kurepa trees by means of a more ``rudimentary'' way for iterating forcing, i.e.\ product forcing. While this is not strictly necessary, we believe that the easier setting of Theorem \ref{thm-killing_kurepa_trees_via_forcing} will offer a better intuition to proceed with this section.
+
+
+
+
+%LA DIM DEL PROSSIMO LEMMA SI PUÒ UN PO' SEMPLIFICARE SE SI USA LA DEFINIZIONE DI $P * \dot{Q}$ di Jech (perché si usa che $(p,q)$ ci sta dentro se $p \in P$ e $1 \forces q \in \dot{Q}$, non solo $p \forces ...$). Però la definizione del Kunen è diversa, quindi non so...
+
+\begin{lemma}\label{lemma-names_determined_by_antichains}
+Let $P$ be a forcing poset. Suppose that $\tau \in V^P$ is such that $1_P \Vdash [|\tau| \leq \check{\lambda}]$ for some cardinal $\lambda$. Then every $\sigma \in V^P$ which is an element of $\tau$ (i.e.\ $p \forces [\sigma \in \tau]$ for some $p \in P$) can be represented by a function from an antichain in $P$ into $\lambda$.\\
+In particular, if $P$ is ccc, $|P| \leq \aleph_2$ and $\lambda < \omega_2$, then such functions are at most ${\aleph_2}^{\aleph_0}$-many.
+\begin{proof}
+Formally, we want to show the following:
+\begin{center}
+For all $\sigma \in V^P$, if $p \forces [\sigma \in \tau]$ for some $p \in P$, then we can define a function $\phi_\sigma \colon A \to \lambda$ such that $A$ is an antichain of $P$ and the assignment $\sigma \mapsto \phi_\sigma$ is defined in such a way that $\phi_\sigma = \phi_{\sigma'}$ implies $p \forces \sigma = \sigma'$.
+\end{center}
+Since $1_P \forces |\tau| \leq \check{\lambda}$, for some $f \in V^P$ we have $1_P \forces [f \colon \tau \inj \check{\lambda}]$. Suppose that $p \forces \sigma \in \tau$. Then the set
+\[
+D_\sigma \defeq \{r : \text{ for some } \alpha_r < \lambda, \ r \forces f(\sigma) = \check{\alpha}_r \}
+\]
+is predense under $p$. Take a maximal antichain $A_\sigma$ in $\downmapsto D_\sigma$ (and thus a maximal antichain in $P \restr p$) and define the function
+\begin{align*}
+\phi_\sigma \colon A_\sigma &\to \lambda \\
+r &\mapsto \alpha_r
+\end{align*}
+(the function is well-defined because for each $r \in D$ there is obviously only one corresponding $\alpha_r$).\\
+Now suppose that $q \forces \sigma' \in \tau$. We want to show that $\phi_\sigma = \phi_{\sigma'}$ implies $p \forces \sigma = \sigma'$. Since $\dom(\phi_\sigma) = \dom(\phi_{\sigma'})$, we have that the same set (we call it $A$) is a maximal antichain under $p$ and $q$. This clearly means that, for any generic filter $G$, $p \in G \iff q \in G$.
+%%%*** (PENSARE SE SIGNIFICA ADDIRITTURA CHE $p=q$)
+Take any generic $G$ such that $p \in G$. So there is some $r \in G \cap A$, and hence $f(\sigma_G) = \phi_\sigma (r)$. Since $q \in G$, the same argument works for $\sigma'$, so that $f(\sigma'_G) = \phi_{\sigma'}(r)$, whereby $f(\sigma_G) = f(\sigma'_G)$. Because $f$ is injective, $V[G] \models \sigma_G = \sigma'_G$, and by the arbitrarity of $G$ we obtain $p \forces \sigma = \sigma'$.
+%%%***check if this really works also with this approach to forcing
+\end{proof}
+\end{lemma}
+
+%\begin{defn}
+%DIRECT LIMIT OF ALGEBRAS
+%\end{defn}
+
+%\begin{lemma}\label{lemma-counting_subsets_of_ordinals}
+%Let $\lambda$ be a cardinal in $V$. If $G$ is a $B$-generic ultrafilter over $V$, then
+%\[
+%(2^\lambda)^{V[G]} = (|B|^\lambda)^V.
+%\]
+%\begin{proof}
+%See \cite[Lemma 15.1, p.\ 225]{Jec2003}
+%\end{proof}
+%\end{lemma}
+
+%\begin{lemma}
+%CAMBIARE (?) If $T$ is a Suslin tree, then there is a c.c.c.\ algebra $B$ such that $|B| = 2^{\aleph_0}$ and $\forces_B T$ is not a Suslin tree.
+%\begin{proof}
+%We will use the Suslin tree itself as the forcing poset. Let $P$ be $T$ with the inverse ordering, i.e.\ $(P,\leq) \defeq (T,\geq)$. If $G$ is generic for $P$, then $G$ is easily seen to be an $\omega_1$-branch in $T$ (since $T$ is an $\omega_1$-tree). Of course $P$ is c.c.c., by definition of Suslin tree. Then if we let $B$ be the boolean completion of $P$ we obtain that $B$ is c.c.c.\ (TEOREMA) and $\forces_B T$ is not a Suslin tree (TEOREMA). Also, (TEOREMA) $|B| = |P|^{\aleph_0} = 2^{\aleph_0}$ by c.c.c.
+%\end{proof}
+%\end{lemma}
+
+\begin{theorem}[Solovay-Tennenbaum]
+There is a generic extension of $V$ where there exist no Suslin trees.
+\begin{proof}
+Suppose without loss of generality that $2^{\aleph_1} = \aleph_2$ in $V$. We will construct a finite support iteration $P$ of length $\omega_2$ given by a sequence $\langle \dot{Q}_\alpha : \alpha < \omega_2 \rangle$ such that
+\begin{enumerate}[(i)]
+\item $\forces_\alpha [\dot{Q}_\alpha$ is a ccc forcing poset$]$, for each $\alpha < \omega_2$;
+\item $|P_\alpha| \leq \aleph_2$ for each $\alpha \leq \omega_2$.
+\end{enumerate}
+The sequence will be defined in such a way that every Suslin tree will be killed.
+
+Note that each $P_\alpha$ for $\alpha \leq \omega_2$ is ccc by the result about iterated forcing mentioned in the preliminaries.
+
+Before proceeding with the construction of the sequence, observe that:\\[-10pt]
+\begin{claim}{}
+If we can ensure that $\forces_\alpha |\dot{Q}_\alpha| \leq \check{\omega}_1$ for each $\alpha < \omega_2$, then (ii) holds.
+\begin{claimproof}
+We show this by induction on $\alpha$. If $\alpha$ is a limit ordinal and $|P_\beta| \leq \aleph_2$ for all $\beta < \alpha$, then $|P_\alpha| \leq \aleph_2$ because the elements of $P_\alpha$ are $\alpha$-sequences with finite support. For the successor step, assume that $|P_\alpha| \leq \aleph_2$.
+%So
+%\[
+%\forces_\alpha \exists x \in \check{\omega}_2 \ [|\dot{Q}_\alpha| = x]
+%\]
+%(note that we use the canonical name $\check{\omega_2}$ because $P_\alpha$ is ccc an thus preserves $\omega_2$).\\
+%Hence the set 
+%\[
+%D \defeq \{r \in P_\alpha : \text{ for some } \gamma < \omega_2, \ r \forces |\dot{Q}_\alpha| = \check{\gamma} \}
+%\]
+%is predense in $P_\alpha$ (cf. THEOREM 14.7 Jech and Fact \ref{fact-taking_out_of_forcing}). Of course $\downmapsto D$ is dense. Take a maximal antichain $A$ in $\downmapsto D$. It's easy to show
+%%
+%%\footnote{see Problem 16 at \url{http://www.math.uni-bonn.de/ag/logik/teaching/2011SS/models_of_set_theory_1/problems04.pdf}}
+%%
+%that $A$ is a maximal antichain in $P_\alpha$ as well. In particular, $A$ is countable. If $G$ is generic for $P_\alpha$, then $a \in G$ for some $a \in A$. Of course $a$ is such that $a \forces_\alpha |\dot{Q}_\alpha| < \check{\gamma}_a$ for some $\gamma_a < \omega_2$. Since $A$ is countable, such $\gamma_a$'s are countably-many, and thus by regularity of $\omega_2$ there is $\eta < \omega_2$ greater than any $\gamma_a$.
+Also, $\forces_\alpha |\dot{Q}_\alpha| \leq \check{\omega}_1$ by hypothesis.
+%\footnote{Note: in the proof of consistency of MA, one has to show more generally that $\forces_\alpha |\dot{Q}_\alpha| < \check{\kappa}$ implies $\forces_\alpha |\dot{Q}_\alpha| \leq \check{\eta}$ for some $\eta < \kappa$, where $\kappa > \omega$ is regular and $2^{<\kappa} = \kappa$. This is slightly less trivial than our case.} QUESTA NOTA NON MI CONVINCE, QUINDI LA TOLGO
+Using Lemma \ref{lemma-names_determined_by_antichains}, we may assume w.l.o.g.\ that 
+\[
+|\{q \in V^{P_\alpha} : p \forces [q \in \dot{Q}_\alpha] \text{ for some } p \in P_\alpha \}| \leq {\aleph_2}^{\aleph_0},
+\]
+which is $\aleph_2$ by the assumption $2^{\aleph_1} = \aleph_2$. It follows immediately that $P_{\alpha+1} = P_\alpha * \dot{Q}_\alpha$ has size $\leq \aleph_2$.
+%
+%DATO QUALSIASI $p \in P_\alpha$, c'è un ordinale $\lambda_p \in V$ più piccolo di $\kappa$ tale che $p \forces_\alpha |\dot{Q}_\alpha| < \check{\lambda}$. A quel punto prendo un'anticatena massimale $A \sse P$, e ho che ogni insieme generico su $P$ 
+\end{claimproof}
+\end{claim}\\[6pt]
+%
+We define $\dot{Q}_\alpha$ by induction on $\alpha < \omega_2$. Fix a bijection $\pi \colon \omega_2 \to \omega_2 \times \omega_2$ such that if $\pi(\alpha) = (\beta,\gamma)$ then $\beta \leq \alpha$ (it's easy to find such a function). Fix $\alpha < \omega_2$ and suppose that we have already defined $\langle \dot{Q}_\beta : \beta < \alpha \rangle$. 
+%This implies that $B_\alpha \defeq B(P_\alpha)$ has size $\leq |P|^{\aleph_0} \leq \aleph_2$ (DIMOSTRARE, CFR. PAG 226). Thus, if $G$ is generic for $B_\alpha$, then in $V[G]$ there are at most $({\omega_2}^{\omega_1})^V = (\omega_2)^V$ subsets of $(\omega_1)^{V[G]}$. Since $B_\alpha$ has the c.c.c., $\omega_1$ and $\omega_2$ are absolute. Hence 
+Let $\beta < \alpha$ be arbitrary. We want to count the nice names for subsets of $\check{(\omega_1 \times \omega_1)} \in V^{P_\beta}$. Of course $|\dom(\check{(\omega_1 \times \omega_1)})| = \aleph_1$. Since $P_\beta$ is ccc and has size at most $\aleph_2$, there are no more than ${\aleph_2}^{\aleph_1} = \aleph_2$ nice names for subsets of $\check{(\omega_1 \times \omega_1)}$ in $P_\beta$ (cf.\ preliminaries). This is true for any $\beta < \alpha$. Now let $\pi(\alpha) = (\beta,\gamma)$.  So we finally define $\dot{Q}_\alpha$:
+\[
+\dot{Q}_\alpha \defeq
+\begin{cases}
+ \parbox[t]{.45\textwidth}{ the $\gamma$th nice name $\tau \in P_\beta$\\  for a subset of $\check{(\omega_1 \times \omega_1)}$} & \text{ if $\forces_\alpha [\tau$ is a ccc forcing poset$]$;} \\
+  \\
+ \text{ a $P_\beta$-name for the order on $\{0\}$ } & \text{otherwise}
+\end{cases}
+\]
+%with greatest element $1$''. 
+(observe that the condition makes sense, because $\beta \leq \alpha$ and thus $\tau$ can be seen as a $P_\alpha$-name as well).\\
+Of course then (i) holds. It remains to check that $\forces_\alpha |\dot{Q}_\alpha| \leq \check{\omega_1}$. But this is clearly true, since $\forces_\alpha \dot{Q}_\alpha \sse \check{(\omega_1 \times \omega_1)}$.\\
+Finally, let $P$ be the finite support iteration of $\langle \dot{Q}_\alpha : \alpha < \kappa \rangle$. Let $G$ be a generic filter on $P$. We claim that $V[G]$ models that there are no Suslin trees. 
+
+%For any $\alpha < \omega_2$, let $G_\alpha \defeq G \restr P_\alpha$ (DEFINIRE). 
+%\\
+%\begin{claim}{ }
+%Let $\lambda < \omega_2$ and $X \sse \lambda$. If $X \in V[G]$, then $X \in V[G_\alpha]$ for some $\alpha < \kappa$.
+%\end{claim}
+%\\
+%\\
+Let $(T,\sqsubset)$ be an $\omega_1$-tree in $V[G]$ with only countable antichains. We can suppose w.l.o.g.\ that $T \sse \omega_1$. We claim that $V[G] \models T$ is not Suslin. For simplicity, assume that $T$ ``grows downwards'' (formally we just take the inverse order), so that $(T,\sqsubset)$ is a ccc forcing poset. Also, to make the notation more intuitive, we write $T$ in place of $\sqsubset$. Let $\dot{T}$ be a nice name for a subset of $\check{(\omega_1 \times \omega_1)}$ such that $\dot{T}_G = T$. Observe that this is possible because $V[G] \models T \sse \omega_1 \times \omega_1$, and $\check{(\omega_1 \times \omega_1})_G = \omega_1 \times \omega_1 = \omega_1^{V[G]} \times \omega_1^{V[G]}$ because $P$ is ccc.
+\\[-10pt]
+\begin{claim}{}
+We can assume w.l.o.g.\ that $\forces_P [\dot{T}$ is a ccc forcing poset$]$.
+\begin{claimproof}
+Let $\phi(x)$ be the formula which asserts that ``$x$ is a ccc forcing poset''. We have that $V[G] \models \phi(T)$, so there are $\dot{T} \in V^P$ and $p \in G$ such that $\dot{T}_G = T$ and $p \forces_P \phi(\dot{T})$. We want $p$ to be $1_P$ and $\dot{T}$ to be a nice name. This need not be true in general, but we shall find a name for $T$ which satisfies such requirements. Observe that
+\[
+1_P \forces_P \exists y \ [\phi(y) \wedge [\phi(\dot{T}) \imp y = \dot{T}]],
+\]
+because we can let $y$ be any appropriate ccc forcing order (e.g.\ the inverse of the usual order on $\omega_1$, restricted to the domain of $T$) when $\neg \phi(\dot{T})$. Using that $V^P$ is full, we can fix a name $\tau \in V^P$ such that
+\[
+1_P \forces_P \phi(\tau) \wedge [\phi(\dot{T}) \imp \tau = \dot{T}]].
+\]
+Let $\sigma$ be a nice name (cf.\ Preliminaries) for a subset of $\check{(\omega_1 \times \omega_1)}$ such that
+\[
+1_P \forces \tau \sse \check{(\omega_1 \times \omega_1)} \imp \tau = \sigma.
+\]
+It's straightforward to check that $\sigma$ enjoys the required features.
+\end{claimproof}
+\end{claim}
+\\[6pt]
+To make sure that our construction works, we will need that $\dot{T}$ was ``hit'' at some step of the recursion. This will follow by the next two claims.
+\\[-10pt]
+\begin{claim}{}
+There is $\beta < \omega_2$ such that (w.l.o.g.) $\dot{T} \in V^{P_\beta}$.
+\begin{claimproof}
+This is shown by observing that, being $\dot{T}$ a nice name and $P$ a ccc poset, the elements of $P$ mentioned in $\dot{T}$ are $<\omega_2$-many. A precise argument would be almost identical to the one in the proof of Theorem \ref{thm-killing_kurepa_trees_via_forcing}.\\
+The ``w.l.o.g.''\ is just because $P_\beta$ is not formally a subset of $P$, but there is a complete embedding from the former into the latter.
+\end{claimproof}
+\end{claim}
+\\[6pt]
+So we produced a $\dot{T}$ which is a nice name in $V^{P_\beta}$ for $T$ and is such that $\forces_P [\dot{T}$ is a ccc forcing poset$]$. It is the $\gamma$th one, for some $\gamma < \omega_2$.  Let $\alpha$ be such that $\pi(\alpha) = (\beta,\gamma)$.
+ \\[-10pt]
+\begin{claim}{}
+$\dot{T}$ is a nice $P_\alpha$-name as well, and $\forces_\alpha$ ``$\dot{T}$ is a ccc forcing poset''.
+\begin{claimproof}
+To verify that $\dot{T}$ is nice also in $V^{P_\alpha}$ is easy.\\
+Let $\phi(x)$ be ``$x$ is a ccc forcing poset'' as before. Assume towards a contradiction that $\not\forces_\alpha \phi(\dot{T})$, so that there is $p \in P_\alpha$ with $p \forces_\alpha \neg\phi(\dot{T})$. Let $G$ be generic for $P$ and such that $p \in G$. Using well-known facts about iterated forcing\footnote{See also \cite[Lemma IV.4.2 and Lemma IV.4.4, pp.\ 270-71]{Kun2013}.}, it follows that $G_\alpha \defeq G \restr P_\alpha$ is generic for $P_\alpha$, $V[G_\alpha] \sse V[G]$ and $\dot{T}_G = \dot{T}_{G_\alpha} \in V[G_\alpha]$. But of course $V[G] \models \phi(\dot{T}_G)$, whereas $V[G_\alpha] \models \neg\phi(\dot{T}_G)$. An easy absoluteness argument shows that this is impossible (one uses that $P$ and $P_\alpha$ are ccc, so that $\omega_1^{V[G]} = \omega_1^{V[G_\alpha]}$).
+\end{claimproof}
+\end{claim}
+\\[6pt]
+So, by definition of $\dot{Q}_\alpha$, we have
+\[
+\dot{Q}_\alpha = \dot{T}.
+\]
+Furthermore, if we let $G_\alpha \defeq G \restr P_\alpha$, we have
+\[
+(\dot{Q}_\alpha)_{G_\alpha} = \dot{T}_{G_\alpha} = \dot{T}_G = T.
+\]
+Recall that $P_{\alpha+1} = P_\alpha * \dot{Q}_\alpha$. By the theory of iterated forcing, in $V[G_{\alpha+1}]$ there is a generic filter $H$ on $(\dot{Q}_\alpha)_{G_\alpha} = T$ over $V[G_\alpha]$. It's immediate to see that $H$ must be an $\omega_1$-branch in $T$. Of course such branch belongs to $V[G]$ as well, therefore $T$ is not a Suslin tree in $V[G]$.
+\end{proof}
+\end{theorem}
+
+One can see that the generic extension constructed in last theorem satisfies $\ZFC + \SH + \neg\CH$. In \cite{Dev1974}, Devlin shows how the failure of \CH is inherently related to the core idea of Solovay-Tennenbaum's argument: to kill the \emph{Suslinity} of a Suslin tree $T$ by adding a branch to it, which is achieved by forcing with $T$ itself. A remarkable result by Jensen shows that it's possible to obtain a model for $\ZFC + \SH + \CH$ by using a different approach. We refer the interested reader to \cite{Dev1974}.
+
+
+
+\chapter{Kurepa trees}
+
+\section{Kurepa's Hypothesis}
 
 \begin{defn}
 A \emph{Kurepa tree} is an $\omega_1$-tree which has only countable levels and at least $\aleph_2$-many uncountable branches.
@@ -644,27 +1239,35 @@ In 1942, Kurepa formulated \emph{Kurepa's Hypothesis}, which asserts that there 
 \begin{proposition}
 There exists a Kurepa tree if and only if there exists a Kurepa family.
 \begin{proof}
-Suppose we have a Kurepa tree $T$. $T$ has size $\aleph_1$, so we can assume w.l.o.g.\ that $T = \omega_1$. We can also assume that $\alpha <_T \beta$ implies $\alpha < \beta$, because a simple re-ordering defined by induction on levels gives such a tree. By defining $\F := \{ \mathfrak{b} : \mathfrak{b}$ is an $\omega_1$-branch of $T \}$ we clearly obtain a Kurepa family.
+Suppose we have a Kurepa tree $T$. $T$ has size $\aleph_1$, so we can assume w.l.o.g.\ that $T = \omega_1$. We can also assume that $\alpha <_T \beta$ implies $\alpha < \beta$, because a simple re-ordering defined by induction on levels gives such a tree. By defining $\F \defeq \{ \mathfrak{b} : \mathfrak{b}$ is an $\omega_1$-branch of $T \}$ we clearly obtain a Kurepa family.
 
-Let $\F$ be a Kurepa family. For any $X \in \F$, define $f_X \colon \omega_1 \to \PP(\omega_1)$ given by $f_X(\alpha) := X \cap \alpha$. Now let $U_\alpha := \{ f_X \restr \alpha : X \in \F \}$ for all $\alpha < \omega_1$ and $T := \bigcup_{\alpha < \omega_1} U_\alpha$. Endowing $T$ with the ``$\sse$'' order we get a tree whose $\alpha$th level is $U_\alpha$, thus countable. Also, every $f_X$ corresponds to an $\omega_1$-branch in $T$. Since there are $\geq \aleph_2$-many $f_X$'s, $T$ is a Kurepa tree.
+Let $\F$ be a Kurepa family. For any $X \in \F$, define $f_X \colon \omega_1 \to \PP(\omega_1)$ given by $f_X(\alpha) \defeq X \cap \alpha$. Now let $U_\alpha \defeq \{ f_X \restr \alpha : X \in \F \}$ for all $\alpha < \omega_1$ and $T \defeq \bigcup_{\alpha < \omega_1} U_\alpha$. Endowing $T$ with the ``$\sse$'' order we get a tree whose $\alpha$th level is $U_\alpha$, thus countable. Also, every $f_X$ corresponds to an $\omega_1$-branch in $T$. Since there are $\geq \aleph_2$-many $f_X$'s, $T$ is a Kurepa tree.
 \end{proof}
 \end{proposition}
+
+In this chapter we will present the main consistency results about Kurepa trees, organized symmetrically to the ones about Suslin trees: first we will construct a Kurepa tree (actually, a Kurepa family) in $L$, and then we will establish the independence of Kurepa's Hypothesis solely via forcing (but for the consistency of the negation of Kurepa's Hypothesis we will need to assume the existence of an inaccessible cardinal).
+
+\section{Kurepa families in $L$}
+
+The existence of a Kurepa family in $L$ was shown by Solovay around 1971, after the independence of Kurepa's hypothesis had already been proved. He was inspired by Jensen’s Suslin tree construction in $L$. Indeed, the strategy of the proof is the same, even though some details are more involved. Similarly to what happened with $\diamondsuit$, a combinatorial principle was extracted from this proof: diamond plus\footnote{$\diamondsuit^+$ says that there is a sequence $\langle \A_\alpha : \alpha < \omega_1 \rangle$, with $\A_\alpha$ a countable subset of $\PP(\alpha)$, such that the following is true: $\forall A \sse \omega_1 \ \exists C \sse \omega_1 \ [C$ is club and $\forall \alpha \in C \ [A \cap \alpha \in \A_\alpha$ and $C \cap \alpha \in \A_\alpha]]$.} ($\diamondsuit^+$). $\diamondsuit^+$ holds in $L$ and implies that there exists a Kurepa tree. It also implies $\diamondsuit$, but the reverse implication is not true.
+
+We proceed now with Solovay's proof.
 
 \begin{remark}
 Observe that by the first point of Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)}, it follows immediately that if $M \preceq H_{\omega_1}$ with $M$ countable, then $M$ is transitive.
 \end{remark}
 
-\begin{theorem}[Solovay]
+\begin{theorem}[Solovay]\label{thm-kurepa_family_in_L}
 If $V=L$ then there exists a Kurepa family.
 \begin{proof}
 The general structure of this proof will be very similar to the one of Theorem \ref{thm-suslin_tree_in_L}. Therefore we shall skip some details which were already discussed in the construction of the Suslin tree.\\
 Assume $V=L$. We define the function $f \colon \omega_1 \to \omega_1$ by
 \[
-f(\alpha) := \text{the least $\gamma$ such that } \alpha \in L_\gamma \preceq (L_{\omega_1}, \in).
+f(\alpha) \defeq \text{the least $\gamma$ such that } \alpha \in L_\gamma \preceq (L_{\omega_1}, \in).
 \]
-The function $f$ is well-defined: of course there is a smallest elementary substructure $(M,\in)$ of $(L_{\omega_1},\in)$ such that $\alpha \in M$. $M$ is clearly countable, thus by last remark $M$ is transitive\footnote{Here we are using that $V=L$ to ensure that $H_{\omega_1} = L_{\omega_1}$. Actually this is not needed: it's possible to drop the assumption $V=L$ and still prove that any elementary submodel $M \preceq L_{\omega_1}$ is transitive.} and using Gödel Condensation Lemma we obtain that $M=L_\gamma$ for some $\gamma < \omega_1$. Now consider the following family:
+The function $f$ is well-defined: of course there is a smallest elementary substructure $(M,\in)$ of $(L_{\omega_1},\in)$ such that $\alpha \in M$. $M$ is clearly countable, thus by last remark $M$ is transitive\footnote{Here we are using that $V=L$ to ensure that $H_{\omega_1} = L_{\omega_1}$.} and using Gödel Condensation Lemma we obtain that $M=L_\gamma$ for some $\gamma < \omega_1$. Now consider the following family:
 \[
-\F := \{ X \sse \omega_1 \mid X \cap \alpha \in L_{f(\alpha)} \text{ for all } \alpha < \omega_1 \}.
+\F \defeq \{ X \sse \omega_1 \mid X \cap \alpha \in L_{f(\alpha)} \text{ for all } \alpha < \omega_1 \}.
 \]
 Of course $\{ X \cap \alpha : X \in \F \}$ is countable for any $\alpha$, because $L_{f(\alpha)}$ is. If we show that $|\F| \geq \aleph_2$ then $\F$ is a Kurepa family, as wanted.\\
 Assume towards a contradiction that $|\F| \leq \aleph_1$. Then there is an enumeration $C = \langle X_\xi : \xi < \omega_1 \rangle$ of $\F$. Suppose w.l.o.g.\ that $C$ is the $<_L$-least such enumeration.
@@ -680,7 +1283,13 @@ Now we recursively define a chain of elementary substructures of $(L_{\omega_2},
 \[
 N_0 \preceq N_1 \preceq \dots \preceq N_\nu \preceq \dots \preceq (L_{\omega_2},\in)
 \]
-for $\nu < \omega_1$. The chain is defined as follows: $N_0$ is the smallest elementary substructure of $L_{\omega_2}$; $N_{\nu+1}$ is the smallest $N \preceq L_{\omega_2}$ such that $N_\nu \sse N$ and $N_\nu \in N$; for $\eta$ limit, $N_\eta := \bigcup_{\xi < \eta} N_\xi$. Observe that:
+for $\nu < \omega_1$. The chain is defined as follows: 
+\begin{align}
+& \text{$N_0$ is the smallest elementary substructure of $L_{\omega_2}$;}\\
+& \text{$N_{\nu+1}$ is the smallest $N \preceq L_{\omega_2}$ such that $N_\nu \sse N$ and $N_\nu \in N$;} \nonumber \\
+& \text{for $\eta$ limit, $N_\eta \defeq \bigcup_{\xi < \eta} N_\xi$.} \nonumber
+\end{align}
+Observe that:
 \begin{enumerate}[--]
 \item every $N_\nu$ is countable;
 \item there always exists $N$ as in the successor step, because $N_\nu \in L_{\omega_2}$ since $N_\nu$ is a countable subset of $L_{\omega_2}$ (and $L_{\omega_2} = H_{\omega_2}$);
@@ -693,7 +1302,7 @@ The sequence $\langle \alpha_\nu : \nu < \omega_1 \rangle$ is continuous and str
 \]
 It's trivial that the sequence is increasing, but the fact that it is \emph{strictly} increasing is a bit more delicate. Recall that $N_\nu \in N_{\nu+1} \preceq L_{\omega_2}$. By Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)}, also $\omega_1 \in N_{\nu+1}$. So $N_\nu \cap \omega_1 \in N_{\nu+1}$ by elementarity, i.e.\ $\alpha_\nu \in N_{\nu+1}$. But of course $\alpha_{\nu+1} = N_{\nu+1} \cap \omega_1 \not\in N_{\nu+1}$, therefore $\alpha_\nu \neq \alpha_{\nu+1}$, and we are done.
 
-Let $X := \{ \alpha_\nu : \alpha_\nu \not\in X_\nu \}$. Note that $X$ is well-defined because $\langle \alpha_\nu : \nu < \omega_1 \rangle$ is strictly increasing and thus injective. Obviously $X \neq X_\xi$ for all $\xi < \omega_1$. We claim that $X \in \F$, which contradicts the fact that $C$ enumerates all the elements of $\F$.
+Let $X \defeq \{ \alpha_\nu : \alpha_\nu \not\in X_\nu \}$. Note that $X$ is well-defined because $\langle \alpha_\nu : \nu < \omega_1 \rangle$ is strictly increasing and thus injective. Obviously $X \neq X_\xi$ for all $\xi < \omega_1$. We claim that $X \in \F$, which contradicts the fact that $C$ enumerates all the elements of $\F$.
 
 So we want to show that $X \cap \alpha \in L_{f(\alpha)}$ for all $\alpha < \omega_1$. We prove this by induction on $\alpha$. The case where $\alpha$ is not a limit point of the sequence $\langle \alpha_\nu \rangle_{\nu < \omega_1}$ is easy. For, let $\alpha_\nu$ be the greatest $a_\nu < \alpha$. Then clearly we have either $X \cap \alpha = X \cap \alpha_\nu$ or $X \cap \alpha = (X \cap \alpha_\nu) \cup \{\alpha_\nu\}$. In either case $X \cap \alpha \in L_{f(\alpha)}$, because $\alpha_\nu \in L_{f(\alpha_\nu)}$ and $X \cap \alpha_\nu \in L_{f(\alpha_\nu)} \sse L_{f(\alpha)}$ (the ``$\in$'' is by the induction hypothesis and the ``$\sse$'' is because $f$ is trivially an increasing function)\footnote{Also, note that $X \cap \alpha_\nu \in L_{f(\alpha)}$ and $\alpha_\nu \in L_{f(\alpha)}$ implies $(X \cap \alpha_\nu) \cup \{\alpha_\nu\} \in L_{f(\alpha)}$ because $L_{f(\alpha)}$ is a transitive model of $\mathsf{ZFC-P}$ by definition of $f$.}.\\
 It is left to show that $X \cap \alpha_\eta \in L_{f(\alpha_\eta)}$ if $\eta$ is a limit ordinal.
@@ -707,7 +1316,7 @@ Let's prove (ii) first. For each $\nu < \omega_1$, let $\mos_\nu$ be the Mostows
 
 Of course $\alpha_\eta$ is uncountable in $L_{\delta(\eta)}$, whereas it is countable in $L_{f(\alpha_\eta)}$. This means that $\delta(\eta) < f(\alpha_\eta)$, thus $\mos_\nu(C) \in L_{\delta(\eta)} \sse L_{f(\alpha_\eta)}$ and (ii) is proved.\\[6pt]
 %
-\indent The proof of the first point is more involved. Of course $L_{f(\alpha_\eta)}$ is a model of $\mathsf{ZFC-P}$, and we just showed that $\delta(\eta) < f(\alpha_\eta)$, whereby $L_{\delta(\eta)} \in L_{f(\alpha_\eta)}$. So, as before, we can construct inside $L_{f(\alpha_\eta)}$ a chain $\{N'_\nu\}_{\nu < \eta}$ of elementary substructures of $L_{\delta(\eta)}$: $N'_0$ is the smallest elementary substructure of $L_{\delta(\eta)}$; $N'_{\nu+1}$ is the smallest $N \preceq L_{\delta(\eta)}$ such that $N'_\nu \cup \{N'_\nu\} \sse N$; $N_\gamma := \bigcup_{\xi < \gamma} N'_\gamma$ for $\gamma$ limit. By induction one can show that for all $\nu < \eta$, $N'_\nu$ is isomorphic to $N_\nu$. Then $N'_\nu$ and $N_\nu$ must have the same transitive collapse $L_{\delta(\nu)}$, hence (also using absoluteness of $\mos$) we get 
+\indent The proof of the first point is more involved. Of course $L_{f(\alpha_\eta)}$ is a model of $\mathsf{ZFC-P}$, and we just showed that $\delta(\eta) < f(\alpha_\eta)$, whereby $L_{\delta(\eta)} \in L_{f(\alpha_\eta)}$. So, as before, we can construct inside $L_{f(\alpha_\eta)}$ a chain $\{N'_\nu\}_{\nu < \eta}$ of elementary substructures of $L_{\delta(\eta)}$: $N'_0$ is the smallest elementary substructure of $L_{\delta(\eta)}$; $N'_{\nu+1}$ is the smallest $N \preceq L_{\delta(\eta)}$ such that $N'_\nu \cup \{N'_\nu\} \sse N$; $N_\gamma \defeq \bigcup_{\xi < \gamma} N'_\gamma$ for $\gamma$ limit. By induction one can show that for all $\nu < \eta$, $N'_\nu$ is isomorphic to $N_\nu$. Then $N'_\nu$ and $N_\nu$ must have the same transitive collapse $L_{\delta(\nu)}$, hence (also using absoluteness of $\mos$) we get 
 \[
 \langle L_{\delta(\nu)} : \nu < \eta \rangle = \langle \mos "N'_\nu : \nu < \eta \rangle \in L_{f(\alpha_\eta)}.
 \]
@@ -737,27 +1346,529 @@ By last claim, this is a (absolute) definition with parameters in $L_{f(\alpha_\
 \end{theorem}
 
 
+\section{Forcing and Kurepa trees}
+
+\subsection{A forcing model where there is a Kurepa tree}
+
+In this section we will show the relative consistency of Kurepa's hypothesis. The result was developed by D. Stewart \cite{Ste1966} in his masters' thesis (1966).
+
+First, we recall the Delta System Lemma in its general form. The reader will have certainly seen the weaker version, which is often used to show that a certain poset is ccc. For a proof, see \cite{Kun1980}.
+
+\begin{teo_custom-title}[Delta System Lemma.] \label{thm-delta_system_lemma}
+Let $\kappa \geq \omega$ a cardinal. Let $\theta > \kappa$ be regular and such that $\forall \alpha < \theta \; [ |\alpha^{< \kappa}| < \theta]$. Suppose $\A$ is a family of sets such that $|\A| \geq \theta$ and $\forall x \in A \; [|x| < \kappa]$. Then there is $\B \sse \A$ such that $|\B| = \theta$ and $\B$ is a \emph{$\Delta$-system}, i.e.\ there exists a set $r$ such that $\forall x,y \in \B \; [x \neq y \imp x \cap y = r]$.
+\end{teo_custom-title}
+
+Since the statement $\forall \alpha < \omega_2 \; [|\alpha^{< \omega_1}| < \omega_2]$ is true under \CH, we obtain:
+
+\begin{corollary}\label{corollary-delta_system_lemma_aleph2}
+Assume \CH. If $\A$ is a family of countable sets which has size $\aleph_2$, then there exists $\B \sse \A$ such that $|\B| = \aleph_2$ and $\B$ is a $\Delta$-system.
+\end{corollary}
+
+\begin{theorem}[Stewart]\label{thm-forcing_a_kurepa_tree}
+There is a generic extension of $V$ in which there exists a Kurepa tree. 
+\begin{proof}
+We assume that \CH holds in $V$. The forcing poset is the set $P$ which consists of all the pairs $(T,f)$ where $T$ is a tree from Example \ref{example-countable_normal_trees} and $f \colon S \to \mathfrak{B}_T$ injective, with $S \sse \omega_2$ countable and $\mathfrak{B}_T \defeq \{\mathfrak{b} : \mathfrak{b}$ is a cofinal branch in $T \}$. We stipulate that $(T_1,f_1) \leq (T_2,f_2)$ iff $T_1$ end-extends $T_2$ and $f_1$ \emph{refines} $f_2$, that is
+\begin{center}
+$\dom(f_1) \supseteq \dom(f_2)$ \quad and \quad $f_1(s) \supseteq f_2(s)$ for all $s \in \dom(f_2)$.
+\end{center}
+Let $G$ be $P$-generic. To lighten the notation, set $G_{\text{tr}} \defeq \{T : (T,f) \in G \text{ for some } f\}$ and $G_{\text{fun}} \defeq \{f : (T,f) \in G \text{ for some } T\}$. Now define
+\[
+\T \defeq \bigcup G_{\text{tr}}
+\]
+and
+\[
+\F \defeq \big\{ (\alpha, \mathfrak{b}) : \alpha \in \dom(f) \text{ for some } f \in G_{\text{fun}} \text{ and } \mathfrak{b} = \bigcup \{f(\alpha) : \alpha \in \dom(f)\} \big\}.
+\]
+\begin{claim}{ 1}
+\begin{enumerate}
+\item $V[G] \models \T$ is a tree with $\height(\T)=\omega_1$ and only countable levels.
+\item $V[G] \models \F \colon \omega_2 \to \mathfrak{B}_{\T}$ and $\F$ is injective.
+\end{enumerate}
+\begin{claimproof}
+The fact that $\T$ is a tree with height at most $\omega_1$ and only countable levels is trivial. Showing that $\height(\T)$ is precisely $\omega_1$ is a straightforward generalization of the argument we used for the same claim in the proof of Theorem \ref{thm-forcing_a_suslin_tree} (here we must deal also with the $f$'s, but it's very easy to figure the way out).\\
+For the second point, first we want to show that
+\[
+D_s \defeq \{(T,f) : s \in \dom(f)\}
+\]
+is dense for each $s < \omega_2$. Let $(T,f) \in P$. We want to find $(T',f') \in D_s$ which extends $(T,f)$.\\
+If $\height(T)$ is a successor ordinal, this is clearly true: simply extend $T$ the usual way to a tree $T'$ which has one more level and refine $f$ to $f'$ in the obvious way (if $s \not\in \dom(f)$ then just assign $f'(s)$ to a new branch of $T'$, which is possible because every cofinal branch of $T$ splits into two -- actually infinitely-many -- cofinal branches of $T'$).\\
+If $\height(T)$ is limit, then by our usual construction (see Lemma \ref{lemma-kill_countable_max_antichains}) we extend $T$ to $T'$ which has one more level, additionally making sure that (i) each branch in $\ran(f)$ gets extended and (ii) if $s \not\in \dom(f)$, then we extend at least one branch which is not in $\ran(f)$ (both (i) and (ii) are possible because $\ran(f)$ is countable, while there are at least $2^{\aleph_0}$-many cofinal branches in $T$, since $\height(T)$ is limit). Then we refine $f$ in the obvious way.\\
+So $\dom(\F) = \omega_2$ because $G$ is generic. The fact that $\ran(\F) \sse \mathfrak{B}_{\T}$ is trivial. Finally, $\F$ is easily seen to be a function since $G$ is a filter and it's also injective because each $f$ is.
+\end{claimproof}
+\end{claim}
+\\[6pt]
+\indent To conclude that $\T$ is a Kurepa tree in $V[G]$, it remains to prove that $(\omega_1)^{V[G]} = \omega_1$ and $(\omega_2)^{V[G]} = \omega_2$. The absoluteness of $\omega_1$ follows by the fact that $P$ is clearly countably closed. If we show that any antichain in $P$ has size at most $\aleph_1$ then we can conclude that also $\omega_2$ is preserved.\\[-10pt]
+\begin{claim}{ 2}
+Let $W$ be an antichain in $P$. Then $|W| \leq \aleph_1$.
+\begin{claimproof}
+Suppose towards a contradiction that $|W| = \aleph_2$. For any subset of $P$ we use the subscripts $_{\text{tr}}$ and $_{\text{fun}}$ to indicate the relative projections, as before.
+
+First observe that $|P_{\text{tr}}| \leq \aleph_1$. For, any tree of Example \ref{example-countable_normal_trees} is a countable subset of $^{< \omega_1} \omega$, which has power $2^{\aleph_0}$, which equals $\aleph_1$ by \CH. So $P_{\text{tr}} \sse [{^{< \omega_1}} \omega]^{<\omega_1}$, which has size at most $\aleph_1$ by \CH again.
+
+So $|W_{\text{tr}}| \leq |P_{\text{tr}}| \leq \aleph_1$, hence by $|W| \leq |W_{\text{tr}} \times W_{\text{fun}}| = \max(|W_{\text{tr}}|,|W_{\text{fun}}|)$ we get $|W_{\text{fun}}| = \aleph_2$. Observe that
+\[
+W_{\text{fun}} \sse \bigcup_{\substack{T \in W_{\text{tr}} \\ X \in [\mathfrak{B}_T]^{< \omega} }} W_{\text{fun}}^{T,X},
+\]
+where $W_{\text{fun}}^{T,X}$ is the set of functions in $W_{\text{fun}}$ which are relative to the tree $T$ and whose range is $X$ (which is a countable collection of cofinal branches in $T$). Since any $T$ is countable and $\mathfrak{B}_T \sse \PP(T)$, using \CH we get $|\mathfrak{B}_T| \leq \aleph_1$. So the set of indices we run the union over has cardinality at most $\aleph_1$, thus by regularity of $\omega_2$ there exist $T \in W_{\text{tr}}$ and $X \in [\mathfrak{B}_T]^{< \omega}$ such that $|W_{\text{fun}}^{T,X}| = \aleph_2$. Now:
+\[
+W_{\text{fun}}^{T,X} \sse \bigcup_{ \big\{ {\dom(f)} \; : \; f \in W_{\text{fun}}^{T,X} \big\} } {^{\dom(f)}} X.
+\]
+Because every $X$ and every $\dom(f)$ is countable, $|{^{\dom(f)}} X| \leq \aleph_1$ by \CH, whereby
+\[
+\big| \big\{ {\dom(f)} : f \in W_{\text{fun}}^{T,X} \big\} \big| = \aleph_2.
+\]
+By Corollary \ref{corollary-delta_system_lemma_aleph2} there exists $Z \sse \big\{ {\dom(f)} : f \in W_{\text{fun}}^{T,X} \big\}$ such that $|Z| = \aleph_2$ and there is a root $S$ such that $\dom(f_1), \dom(f_2) \in Z$ with $\dom(f_1) \neq \dom(f_2)$ implies $\dom(f_1) \cap \dom(f_2) = S$. The set $\{g \mid g : S \to X\}$ has size $\aleph_1$, so there exist $f_1,f_2 \in W_{\text{fun}}^{T,X}$ distinct such that $f_1 \restr S = f_2 \restr S$. Also, by an easy regularity argument similar to the one above, we can assume w.l.o.g.\ that $\dom(f_1) \neq \dom(f_2)$, so that $\dom(f_1) \cap \dom(f_2) = S$. But then $f_1 \cup f_2$ is still a function and refines both $f_1$ and $f_2$. So $(T, f_1 \cup f_2)$ extends $(T,f_1)$ and $(T,f_2$), which contradicts $W$ being an antichain.
+\end{claimproof}
+\end{claim}
+\\[6pt]
+\indent So $\T$ is a Kurepa tree in $V[G]$, and the theorem is proved.
+\end{proof}
+\end{theorem}
+
+
+\subsection{A forcing model where there are no Kurepa trees}
+
+In 1971, Silver produced a forcing model where no Kurepa tree exists. To do this he assumed the existence 	of an inaccessible cardinal in the ground model and considered the generic extension given by the Levy collapse which makes it $\omega_2$. The inaccessible cardinal assumption cannot be dropped: it's not hard to see that if there are no Kurepa trees, then $\omega_2$ is inaccessible in $L$. Thus the existence of inaccessible cardinals is equiconsistent with the failure of Kurepa's hypothesis.\\
+
+We start with an easy fact:
+\begin{lemma}\label{lemma-preserving_inaccessible_cardinals}
+Let $M$ be a countable transitive model for \ZFC, $\kappa$ a strongly inaccessible cardinal in $M$, $P$ a forcing poset. Let $G$ be generic for $P$ over $M$. If $(|P| < \kappa)^M$, then $\kappa$ is strongly inaccessible in $M[G]$.
+\begin{proof}
+Since $|P| < \kappa$, $P$ trivially has the $\kappa$-cc. So $\kappa$ is an uncountable regular cardinal also in $M[G]$. Now let $\theta \defeq |P|$ and take $\lambda < \kappa$ arbitrary. By inaccessibility, we obtain that there are at most $\theta^\lambda < \kappa$ nice names for subsets of $\check{\lambda}$ (cf.\ Preliminaries). Since every subset of $\lambda$ which belongs to $M[G]$ has a (unique) corresponding nice name, it follows easily that $(|{\PP(\lambda)}| < \kappa)^{M[G]}$, whereby $(2^\lambda < \kappa)^{M[G]}$.
+\end{proof}
+\end{lemma}
+
+This will be the key device for killing Kurepa trees:
+
+\begin{lemma}\label{lemma-preserving_uncountable_branches}
+\renewcommand{\b}{\mathfrak{b}}
+\renewcommand{\B}{\mathfrak{B}}
+Let $M$ be a countable transitive model for \ZFC. Suppose that, in $M$, $T$ is an $\omega_1$-tree such that any level of $T$ is countable and $P$ is a countably closed poset. Let $G$ be $M$-generic for $P$. If $\mathfrak{b} \in M[G]$ is a cofinal branch in $T$, then $\mathfrak{b} \in M$.
+\begin{proof}
+In $M$, define $\B \defeq \{\b : \b$ is a cofinal branch in $T\}$.
+Assume to the contrary that $\b \in M[G] \sm M$ is a cofinal branch in $T$. Then there exist a name $\dot{\b}$ and a $p \in P$ such that 
+\[
+p \forces \dot{\b} \not\in \check{\B} \text{ and } \dot{\b} \text{ is a cofinal branch in } T.
+\]
+We will derive that some level of $T$ is uncountable. To show this, first we will build three sequences $\langle p_s : s \in 2^{<\omega} \rangle$, $\langle x_s : s \in 2^{<\omega} \rangle$ and $\langle \alpha_n : n \in \omega \rangle$ such that:
+\begin{enumerate}
+\item $0 = \alpha_0 < \alpha_1 < \alpha_2 < \ldots < \omega_1$;
+\item $p_s \in P$ and $p_s \leq p$;
+\item if $\length(s) = n$ then $x_s \in U_{\alpha_n}$ (the $\alpha_n$th level of $T$);
+\item $p_s \forces x_s \in \dot{\b}$;
+\item $p_{s \conc 0} \leq p_s$ and $p_{s \conc 1} \leq p_s$;
+\item $x_{s \conc 0} \neq x_{s \conc 1}$.
+\end{enumerate}
+%
+\begin{claim}{}
+Such sequences exist.
+\end{claim}\\
+\indent Then let $\gamma \defeq \sup\{\alpha_n : n \in \omega\}$, which is countable. Using (5) and the fact that $P$ is countably closed, for any $f \in 2^\omega$ we can find $p_f$ such that $p_f \leq p_{f \restr n}$ for all $n \in \omega$. Obviously $p_f \leq p$, so $p_f \forces [\dot{\b}$ is a cofinal branch in $T]$, whereby $p_f \forces \exists y \in U_\gamma \, [y \in \dot{\b}]$. So by Fact \ref{fact-taking_out_of_forcing} there is a $q_f \leq p_f$ and an $x_f \in U_\gamma$ such that $q_f \forces x_f \in \dot{\b}$. It follows that for each $n \in \omega$, $q_f \forces x_{f \restr n} \in \dot{\b}$ (by (4)) and $\height(x_{f \restr n}) = \alpha_n < \gamma$ (by (3)), so $x_{f \restr n} < x_f$. By (6), $f \neq g$ implies $x_f \neq x_g$. So $|U_\gamma| \geq 2^{\aleph_0}$, a contradiction.
+
+Now we shall prove the claim:
+\begin{claimproof}
+We proceed by induction on $\length(s)$, where $s \in 2^{<\omega}$. First, since $p \forces [\dot{\b}$ is a branch in $T]$, we have that by an application of Fact \ref{fact-taking_out_of_forcing} there exist $p_\emptyset \leq p$ and $x_\emptyset \in U_0$ such that $p_\emptyset \forces x_\emptyset \in \dot{\b}$.\\
+Now suppose that we have defined $\alpha_n$ and all $p_s$, $x_s$ for $\length(s)=n$. For all $s \in 2^{<\omega}$ with $\length(s)=n$, define
+\[
+E_s \defeq \{ y \in T : \exists q \leq p_s \ [q \forces y \in \dot{\b}] \}
+\]
+Of course $x_s \in E_s$. Observe that:
+\begin{enumerate}[(i)]
+\item $E_s$ is a \emph{subtree} of $T$, i.e.\ $x \in E_s$ implies $\down x \sse E_s$;
+%\item $E_s$ meets every level of $T$; MI PARE SIA UNA CONSEGUENZA DELL'ULTIMO PUNTO...
+\item $E_s \cap T|(\alpha_n + 1) = {\downmapsto x_s}$;
+\item For all $y \in E_s$, if $\height(y) < \beta < \omega_1$ then there exists $z \in E_s \cap U_\beta$.
+%The set $\{x \in E_s : x \geq y\}$ is uncountable for every $y \in E_s$.
+\end{enumerate}
+The first point is immediate to verify, using that $p_s \leq p \forces [\dot{\b}$ is a branch in $T]$. As for point (ii), the $\supseteq$ inclusion follows by the first point, and the other inclusion is an immediate consequence of $p_s \forces [x_s \in \b]$. The last point follows easily by Fact \ref{fact-taking_out_of_forcing} and the fact that a witness $q \in P$ for $y \in E_s$ is such that $q \forces [y \in \dot{\b}$ and $\dot{\b}$ is a cofinal branch in $T]$.
+
+$E_s$ cannot be a cofinal branch in $T$ (and thus, by (iii), not even just a branch). If it were, this would mean $E_s \in \B$. But $p_s \forces \dot{\b} \not\in \B$, whereby $p_s \forces \dot{\b} \neq E_s$, so $p_s \forces \dot{\b} \nsubseteq E_s$ (because they are both cofinal branches, and thus maximal). So there would be $y \in T \sm E_s$ and $q \leq p_s$ such that $q \forces y \in \dot{\b}$, which contradicts the definition of $E_s$.
+
+Of course there are only finitely-many $E_s$'s, since the binary sequences of length $n$ are finitely many. Because the $E_s$ are not branches, using (iii) we can find $\alpha_{n+1} > \alpha_n$ (fixed) such that for each $s$ of length $n$ there are $x_{s \conc 0}, x_{s \conc 1} \in E_s \cap U_{\alpha_{n+1}}$ with $x_{s \conc 0} \neq x_{s \conc 1}$. By definition of $E_s$ we obtain also $p_{s \conc 0}$ and $p_{s \conc 1}$ as wanted.
+\end{claimproof}\\
+\end{proof}
+\end{lemma}
+
+\begin{defn}
+Let $\alpha$ be an ordinal. We define $\Fn_{\omega_1}(\omega_1,\alpha) \defeq \{ f \mid f \colon S \to \alpha$ and $S \sse \omega_1$ with $|S| < \omega_1\}$.
+\end{defn}
+
+The following corollary is not strictly necessary for our aim in this section, but it will help understanding the proof of the main theorem.
+
+\begin{corollary}
+Let $M$ and $T$ be as in last lemma. In $M$, let $\theta \geq 2^{\aleph_1}$ and $P \defeq \Fn_{\omega_1} (\omega_1,\theta)$. If $G$ is $M$-generic for $P$, then $T$ is not a Kurepa tree in $M[G]$.
+\begin{proof}
+Since $P$ is countably closed, $(\omega_1)^{M[G]} = (\omega_1)^M$. Moreover, observe that $\bigcup G$ is a surjective function $(\omega_1)^{M[G]} \to \theta$, so that $M[G] \models |\theta| \leq \aleph_1$. Define $\mathfrak{B}$ as before. Of course $|\mathfrak{B}| \leq \theta$ in $M$, because $\mathfrak{B} \sse \PP(T)$. So, because by last lemma in $M[G]$ there are no new branches of $T$, we get $M[G] \models |\mathfrak{B}| \leq |\theta| \leq \aleph_1$. Thus, in $M[G]$, $T$ has at most $\aleph_1$-many uncountable branches, i.e.\ it's not a Kurepa tree.
+\end{proof}
+\end{corollary}
+
+We would like to claim that in $M[G]$ there are no Kurepa trees, but this is not quite true. While no tree in $M$ is a Kurepa tree in $M[G]$, new Kurepa trees might have come up in the generic extension. To address this issue we will need to use product forcing, but it will be necessary to assume the existence of a strongly inaccessible cardinal.
+
+
+\begin{theorem}[Silver]\label{thm-killing_kurepa_trees_via_forcing}
+\newcommand{\supt}{\operatorname{supt}}
+Let $M$ be a countable transitive model for \ZFC. Suppose that ($\kappa$ is strongly inaccessible)$^M$. Then there is a generic extension $M[G]$ such that $M[G] \models \kappa = \omega_2$ and $M[G] \models$ ``there are no Kurepa trees''.
+\begin{proof}
+Working in $M$, suppose that $S \sse \kappa$ and define
+\[
+P_S \defeq \Big\{ p \in \prod_{\alpha \in S} \Fn_{\omega_1} (\omega_1, \alpha) : |\{ \alpha : p_\alpha \neq 1 \}| \leq \aleph_0 \Big\}.
+\]
+Define also $P \defeq P_\kappa$. Observe that clearly $P \simeq P_S \times P_{\kappa \sm S}$ for all $S \sse \kappa$.
+
+Let $G$ be $P$-generic over $M$. Since $\kappa$ is strongly inaccessible, the $\Delta$-system Lemma \ref{thm-delta_system_lemma} applies. An argument similar to the one in Theorem \ref{thm-forcing_a_kurepa_tree} shows that $P$ has the $\kappa$-cc. Hence cofinalities and cardinals $\geq \kappa$ are preserved. Moreover, it's easy to show that $P$ is countably closed, whereby $(\omega_1)^{M[G]} = (\omega_1)^M$.
+\begin{claim}{}
+$(\omega_2)^{M[G]} = \kappa$.
+\begin{claimproof}
+Of course $(\omega_2)^{M[G]} \leq \kappa$ because cofinalities are preserved. For the other inequality, take $\alpha < \kappa$ arbitrary. There is an obvious embedding (defined in $M$) $i \colon (\Fn_{\omega_1} (\omega_1,\alpha))^M \to P$ which is complete. It follows easily\footnote{See \cite[Lemma IV.4.2, p.\ 270]{Kun2013}.} that the preimage $i^{-1}[G] \in M[G]$ and that $i^{-1}[G]$ is $(\Fn_{\omega_1} (\omega_1,\alpha))^M$-generic over $M$. Its union is a surjective map from $(\omega_1)^{M[G]}$ onto $\alpha$, so that $(\alpha < \omega_2)^{M[G]}$.
+\end{claimproof}
+\end{claim}\\[6pt]
+%
+\indent Suppose towards a contradiction that in $M[G]$ there is a Kurepa tree, which we may assume w.l.o.g.\ to be $(\omega_1, \sqsubset)$, where ${\sqsubset} \sse \omega_1 \times \omega_1$ is a tree order. Let $\dot{\sqsubset}$ be a nice name for a subset of $\check{(\omega_1 \times \omega_1)}$. By the result about nice names mentioned in the preliminaries, we can assume that ${\dot{\sqsubset}_G} = {\sqsubset}$. Note that this is possible also because $M[G] \models {\sqsubset} \sse \omega_1 \times \omega_1$ and $\check{(\omega_1 \times \omega_1)}_G = \omega_1 \times \omega_1 = \omega_1^{M[G]} \times \omega_1^{M[G]}$ since $\omega_1$ is preserved. So
+\[
+\dot{\sqsubset} = 
+\bigcup \big\{ \{\sigma\} \times A_\sigma : \sigma \in \dom(\check{(\omega_1 \times \omega_1)}) \big\},
+\]
+where the $A_\sigma$'s are all antichains of $P$ (in $M$). Now let 
+\[
+B \defeq \bigcup \{A_\sigma : \sigma \in \dom(\check{(\omega_1 \times \omega_1)}) \}.
+\]
+Since every $A_\sigma$ has size $<\kappa$ and $|\dom(\check{(\omega_1 \times \omega_1)})| = |\omega_1 \times \omega_1| = \aleph_1 < \kappa$, by regularity of $\kappa$ we have $|B| < \kappa$. Define
+\[
+S \defeq \bigcup \{ \supt(p) : p \in B \},
+\]
+where $\supt(p) \defeq \{\alpha : p_\alpha \neq 1\}$, which is always countable. So $|S| < \kappa$ by regularity again. Hence, $M$ models that
+\begin{equation}\label{eq:kill_kurepa_trees}
+\forall \gamma < \kappa \ \exists \alpha < \kappa \ [\alpha > \gamma \text{ and } \gamma \not\in S].
+\end{equation}
+Now define $P^- \defeq P_S$ and $P^+ \defeq P_{\kappa \sm S}$, so that $P \simeq P^- \times P^+$. By the Product Lemma, we have that $G = G^- \times G^+$, where $G^-$ is $P^-$ generic over $M$ and $G^+$ is $P^+$-generic over $M[G^-]$. Also, $M[G] = M[G^-][G^+]$. Furthermore, the definition of $S$ ensures that ${\sqsubset} \in M[G^-]$. Observe that $P^-$ is countably closed, thus it doesn't add $\omega$-sequences. Since $P^+$ is countably closed in $M$, this implies that $P^+$ is countably closed in $M[G^-]$ as well. Therefore we can apply Lemma \ref{lemma-preserving_uncountable_branches} to conclude that every cofinal branch in $(\omega_1,\sqsubset)$ that lies in $M[G]$ is already an element of $M[G^-]$. In $M[G]$ (equivalently, in $M[G^-]$), let
+\[
+\mathfrak{B} \defeq \{ \mathfrak{b} : \mathfrak{b} \text{ is a cofinal branch in } (\omega_1,\sqsubset) \}.
+\]
+\begin{claim}{ }
+$(|P^-| < \kappa)^M$.
+\begin{claimproof}
+Observe that, for each $\alpha < \kappa$, $|\Fn_{\omega_1}(\omega_1,\alpha)| \leq |\alpha^{\omega_1}| < \kappa$ by inaccessibility. Moreover, since $\kappa$ is regular and $|S| < \kappa$, there is $\beta < \kappa$ greater than any element of $S$, so that $|\Fn_{\omega_1}(\omega_1,\alpha)| < |\Fn_{\omega_1}(\omega_1,\beta)|$ for all $\alpha \in S$. So $|P^-| \leq |{^S}(\Fn_{\omega_1}(\omega_1,\beta))| < \kappa$ by inaccessibility again.
+\end{claimproof}
+\end{claim}\\[6pt]
+Using Lemma \ref{lemma-preserving_inaccessible_cardinals}, by last claim we obtain that $\kappa$ stays strongly inaccessible in $M[G^-]$. Clearly $|\mathfrak{B}| \leq 2^{\aleph_1}$ because $\mathfrak{B} \sse \PP(\omega_1)$. So $|\mathfrak{B}| < \kappa$ by inaccessibility, and thus there is $|\mathfrak{B}| < \alpha < \kappa$. Of course \eqref{eq:kill_kurepa_trees} holds also in $M[G^-]$ by absoluteness. So we can assume that $\alpha \not\in S$. This implies that $\Fn_{\omega_1} (\omega_1, \alpha)$ is a factor of the product which defines $P^+$. By repeating the argument in the proof of the first claim, we obtain that in $M[G]$
+\[
+|\mathfrak{B}| \leq |\alpha| \leq \omega_1,
+\]
+so $(\omega_1,\sqsubset)$ is not Kurepa in $M[G]$.
+%%%***MA SIAMO SICURI CHE SERVA QUESTA ROBA? A ME PARE CHE $|\alpha| \leq \omega_1$ derivi già dal fatto che $\alpha < \kappa$ e $(\omega_2)^{M[G]} = \kappa$...CONTROLLARE
+\end{proof}
+\end{theorem}
 
 
 
+\chapter{Automorphisms of trees}
+\label{chapter-automorphisms_of_trees}
+
+In this chapter we will present some less-known results concerning automorphisms of trees. Most of them are due to Jensen, who proved them in some lecture notes written in 1969. The reference we used is Devlin's book \cite{Dev1974}, which was published in 1974 and is based on those notes.
+
+\begin{defn}
+An \emph{isomorphism} of two trees $(T_1,\leq_1)$ and $(T_2,\leq_2)$ is an isomorphism of ordered sets, i.e.\ a bijection $\sigma \colon T_1 \to T_2$ such that for all $x,y \in T_1$, $x \leq_1 y$ iff $\sigma(x) \leq_2 \sigma(y)$. An \emph{automorphism} of a tree is an isomorphism with itself.
+\end{defn}
+
+\begin{defn}
+A tree $T$ is \emph{homogeneous} if for all $x,y \in T$ such that $o(x)=o(y)$, there exists an automorphism $\sigma$ of $T$ such that $\sigma(x)=y$ and $\sigma(y)=x$.
+\end{defn}
+
+Which trees are homogeneous? First, we prove that every countable normal tree is homogeneous. To do this, we will first show that any countable normal tree is completely determined by its height, up to isomorphism. This is a very easy result, but note that it is not completely trivial as it might seem at a first look. In fact, a naive approach would generalize to normal trees of height $\omega_1$. But of course not all of these are isomorphic, as, for example, some of them are Aronszajn and some are not (Theorem \ref{thm-aronszajn} and Example \ref{example-non_aronszajn_tree}).
 
 
 
+\begin{proposition}\label{prop-countable_normal_trees_isomorphic}
+If $T_1$ and $T_2$ are normal $\alpha$-trees with $\alpha < \omega_1$, then they are isomorphic.
+\begin{proof}
+\renewcommand{\b}{\mathfrak{b}}
+\renewcommand{\a}{\mathfrak{a}}
+This is proven by induction on $\alpha$. The only non-trivial case is when $\alpha$ is limit. First take $\{\a_n\}_{n \in \omega}$ and $\{\b_m\}_{m \in \omega}$ countable collections of $\alpha$-branches of $T_1$ and $T_2$ respectively, such that $T_1 = \bigcup_{n \in \omega} \a_n$ and $T_2 = \bigcup_{m \in \omega} \b_m$. Such collections exist for any countable normal tree, because applying Lemma \ref{lemma-kill_countable_max_antichains} with $\A \defeq \emptyset$ we get a normal end-extension with one more level (which is countable), and the family given by the sets of predecessors of every node in the new level is the wanted collection of cofinal branches.\\
+Now we define $\sigma_n \colon \a_n \to T_2$ by induction on $n < \omega$. We assume inductively that the $\sigma_i$'s defined previously are coherent and $\sigma_i$ is always an order-isomorphism of $\a_i$ with some (unique) $\b_{m_i}$. Now let's define $\sigma_n$. Of course we don't ``touch'' $\sigma_n$ on previously visited nodes; formally
+\[
+\sigma_n \restr \left( \a_n \cap \bigcup_{i < n} \a_i \right) \defeq \bigcup_{i < n} \sigma_i \restr \left( \a_n \cap \bigcup_{i < n} \a_i \right),
+\]
+thus $\sigma_n$ is coherent with every other $\sigma_i$.\\
+Now let $x$ be the least node of $\a_n \sm \bigcup_{i < n} \a_i$. By normality, $o(x)$ is a successor ordinal. Let $v$ be its immediate predecessor. Consider the immediate successors of $\sigma_n(v)$. Any such node lies on some $\b_m$. We assign the remaining part of $\a_n$ to $\b_m$ with $m$ minimal, in the obvious order-preserving way. Of course $\sigma_n[\a_n] = \b_m$, so that the induction hypothesis is preserved.\\
+It is straightforward to verify that $\bigcup_{n \in \omega} \sigma_n$ is an isomorphism $T_1 \to T_2$.
+\end{proof}
+\end{proposition}
+
+\begin{theorem}
+Every countable normal tree $T$ is homogeneous.
+\begin{proof}
+\renewcommand{\b}{\mathfrak{b}}
+\renewcommand{\a}{\mathfrak{a}}
+\renewcommand{\d}{\mathfrak{d}}
+We proceed by induction on $\alpha \defeq \height(T)$. For $\alpha = 0$ it's trivial. Suppose that the theorem is true for every $T|\beta$ with $\beta < \alpha$. Take $x,y \in T$ at the same level $\gamma$. We consider two cases:
+\\[6pt]
+\textsc{Case A:} $\gamma = \delta+1$ for some $\delta$. Then let $x'$ and $y'$ be the immediate predecessors of $x$ and $y$ respectively. Of course $x',y' \in T|\gamma$. By the induction hypothesis, there is some automorphism $\sigma'$ of $T|\gamma$ which swaps $x'$ and $y'$. Now, for any $z \in U_\gamma$ (the $\gamma$th level of $T$), consider $T_z \defeq \{t \in T \mid t \geq z\}$. All the $T_z$'s are trivially countable normal trees of the same height, so they are all isomorphic by Proposition \ref{prop-countable_normal_trees_isomorphic}. Of course then we can define an automorphism $\tau$ of $\bigcup_{z \in U_\gamma} T_z$ which induces a permutation of $\{T_z\}_{z \in U_\gamma}$ such that:
+\begin{enumerate}[(i)]
+\item $\tau[T_x] = T_y$ and $\tau[T_y] = T_x$;
+\item If $z \in U_\gamma$ and $z'$ is its immediate predecessors, then $\tau[T_z] = T_{\tau(z)}$ where $\tau(z)$ is an immediate successor of $\sigma'(z')$.
+\end{enumerate}
+Now define $\sigma \defeq \sigma' \cup \tau$. Condition (ii) ensures that $\sigma$ is indeed an automorphism of $T$, and by (i) it clearly swaps $x$ and $y$.
+\\[6pt]
+\textsc{Case B:} $\gamma$ is limit. Then consider $\d_0 \defeq \downarrow x$ and $\d_1 \defeq \downarrow y$. Now repeat the proof of Proposition \ref{prop-countable_normal_trees_isomorphic}, setting $T_1 = T_2 = T$, $\a_0 = \b_1 = \d_0$ and $\a_1 = \b_0 = \d_1$. If we look closely at that proof, it's immediate to see that, in our case, $\sigma_0$ maps $\a_0$ to $\b_0$ and $\sigma_1$ maps $\a_1$ to $\b_1$, and this is of course true also for the final isomorphism. Then the same argument gives us an automorphism $\sigma'$ of $T|\gamma$ which maps $\d_0$ to $\d_1$ and vice versa. Moreover, let $\{t_i : i < \omega\}$ be an enumeration of the $\gamma$th level of $T$, with $t_0 = x$ and $t_1 = y$. Define $\d_i \defeq \downarrow t_i$. Then the automorphism $\sigma'$ acts as a permutation of $\{\d_i : i < \omega\}$. If we extend $\sigma'$ by mapping every $t_i$ to the $t_j$ such that $\sigma'[\d_i] = \sigma'[\d_j]$, then we obtain an automorphism $\sigma''$ of $T|(\gamma+1)$ which swaps $t_0 = x$ and $t_1 = y$.\\
+Finally, the trees of the form $T_{t_i}$ are all isomorphic, so $\sigma''$ can be easily extended to an automorphism of $T$ by permutating them according to $\sigma''$ as we did in \textsc{Case A}.
+\end{proof}
+\end{theorem}
+
+At this point, it's natural to ask whether the result holds also for normal $\omega_1$-tree. This is however not true: assuming $\diamondsuit$, we can construct both a normal Suslin tree which is homogeneous and one which is \emph{rigid} (i.e.\ it has no non-trivial automorphisms). The following two sections will respectively show how to produce them.
+
+On a side note, we remark that \ZFC is sufficient to prove the existence of both homogeneous and rigid normal $\omega_1$-trees. Even more: we can have both the homogeneous and the rigid trees be Aronszajn. To construct the former is rather easy. The latter is a non-trivial problem, raised by Jech in 1972 \cite{Jec1972} and independently solved by Uri Abraham \cite{Abr1979} and Todorcevic \cite{Tod1979}, both in 1979 (that is, after Jensen constructed the homogeneous and rigid Suslin trees using $\diamondsuit$).
 
 
+\section{A homogeneous Suslin tree}
+
+First we introduce a slightly modified version of normal trees, which turns out to be more appropriate for the scope of this section.
+
+\begin{defn}
+A \emph{binary normal} tree is a normal tree as in Definition \ref{def-normal_tree}, but we require that each node has only two immediate successors instead of infinitely many.
+\end{defn}
+
+In the remaining part of this chapter, by normal we mean binary normal.
+
+To show that $\diamondsuit \imp$ there exists a homogeneous Suslin tree, we will need to adapt Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)}. The reason is that we always used \ref{lemma-countable_elementary_substructure_of_H(theta)} in combination with the hypothesis $V=L$, so that $L_\kappa = H_\kappa$ for all infinite cardinals. But our proof of existence of a homogeneous ST will assume only $\diamondsuit$. So we need to somehow adapt \ref{lemma-countable_elementary_substructure_of_H(theta)} to ``natively'' deal with $L_\theta$'s. The solution is simply to relativize the whole statement to $L$. Together with some easy absoluteness arguments, the result is the following:
+
+\begin{lemma}\label{lemma-countable_elementary_substructure_of_L(theta)}
+Let $\theta$ be a regular uncountable cardinal in $L$. Suppose that $M$ is a structure such that $M \preceq L_\theta$ and ($M$ is countable)$^L$. Then the following hold:
+\begin{enumerate}
+\item If $a \in M$ and $(a$ is countable$)^L$, then $a \sse M$.
+\item $M \cap \omega_1^L = \beta$, where $\beta < \omega_1^L$ and $\beta$ is a limit ordinal.
+\item If $\theta > \omega_1^L$, then $\omega_1^L \nsubseteq M$ but $\omega_1^L \in M$, and ``$\omega_1^L$ is the first uncountable ordinal'' is true in $M$.
+\item Let $T \defeq \mos"M$ and let $\beta = M \cap \omega_1^L$ by the second point. Then $\mos(\omega_1^L) = \beta$ and $\mos(\xi) = \xi$ for all $\xi < \beta$.
+\item $\beta = (\omega_1)^T$.
+\end{enumerate}
+\begin{proof}
+The statement clearly follows by Lemma \ref{lemma-countable_elementary_substructure_of_H(theta)} plus the fact that $L \models V=L$ and $V=L$ implies $H_\kappa=L_\kappa$ for all cardinals $\kappa \geq \omega$. Nevertheless, we decide to prove the first point from scratch in order to illustrate a kind of argument which will come up often hereafter. We will refer to this strategy as ``usual methods''. The main observation is essentially the following: if $L$ believes that a certain set belongs to $H_\kappa$ (which is \emph{not} absolute), then it belongs to $L_\kappa$, which \emph{is} absolute between $V$ and $L$, so that $x \in L_\kappa$ also in $V$. Let's now proceed with the proof of (1):\\
+For simplicity, we assume that $a \sse \omega_1^L$ (this assumption will always be true when we will use this point; anyway, to adapt the proof to the general case is straightforward). It's easy to see that $\omega$ and all $n \in \omega$ are definable in $L_\theta$, so $\omega \in M$ and $\omega \sse M$. Now, if $a=\emptyset$ then trivially $a \sse M$. If $a \neq \emptyset$, then in $L$ there exists $f \colon \omega \to a$ surjective. It's immediate to check that any such function is $L$-hereditarily countable, i.e.\ belongs to $(H_{\omega_1})^L$. Since $V=L \imp L_{\omega_1} = H_{\omega_1}$ by Lemma \ref{lemma-V=L_implies_L(kappa)=H(kappa)}, we have that $(f \in H_{\omega_1})^L \imp (f \in L_{\omega_1})^L$, i.e.\ $f \in L_{\omega_1^L} \sse L_\theta$. Since $M \preceq L_\theta$, at least one such $f$ belongs to $M$ as well. Observe that $f,n \in M$ implies $f(n) \in M$ (by $M \preceq L_\theta$ again), and since $a = \{f(n) : n \in \omega\}$ we have $a \sse M$, so (1) is proved.
+\end{proof}
+\end{lemma}
+
+\begin{remark}
+It's easy to see that Lemma \ref{lemma-countable_elementary_substructure_of_L(theta)} can be generalized in the obvious way to $L[A]$, where $A \sse \omega_1$.
+\end{remark}
+
+Before proceeding with the main theorem, two trivial lemmas:
+
+\begin{lemma}\label{lemma-constructibility_relative_to_initial_segment}
+Let $A \sse \Ord$. Then $L_\alpha[A] = L_\alpha [A \cap \alpha]$ for every ordinal $\beta$.
+\begin{proof}
+An easy induction.
+\end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lemma-constructibility_relative_to_different_sets}
+Let $A$ be a set. 
+%Then $L_\alpha [A \cap \beta] \sse L_\alpha[A \cap \gamma]$ for every $\alpha, \beta, \gamma \in \Ord$ with $\beta \leq \gamma$. Consequently 
+Then $L[A \cap \beta] \sse L[A \cap \gamma]$ for all $\beta, \gamma \in \Ord$ with $\beta \leq \gamma$.
+\begin{proof}
+Immediate by the characterization of $L[X]$ as the smallest inner model which contains $X$.
+%Since $A \cap \gamma, \beta \in L[A \cap \gamma]$, also $A \cap \gamma \cap \beta = A \cap \beta \in L[A \cap \gamma]$. So simply recursively define $L_\alpha[A \cap \beta]$ within $L[A \cap \gamma]$ for each $\alpha \in \Ord$, so that $L_\alpha[A \cap \beta] \sse L[A \cap \gamma]$ by transitivity. By absoluteness of recursively defined functions, we are done.
+%%%%%%%%%%%%%%%%%By induction on $\alpha$. The only case to check is the successor step.\ Recall that $L_\alpha [X] \cap \Ord = \alpha$ for any set $X$. So, if $\alpha+1 \leq \beta$ then there is nothing to check. If $\alpha+1 > \beta$, then we can simply replace every occurency of the predicate $x \in A \cap \beta$ with $x \in A \cap \gamma \wedge x < \beta$ (which is allowed since $\beta \in L_{\alpha+1}[B \cap \gamma]$)
+\end{proof}
+\end{lemma}
+
+\begin{theorem}\label{thm-homogeneous_suslin_tree}
+If $\diamondsuit$ holds, then there exists a homogeneous normal Suslin tree.
+\begin{proof}
+\renewcommand{\b}{\mathfrak{b}}
+\renewcommand{\a}{\mathfrak{a}}
+Assume $\diamondsuit$ and observe that $|H_{\omega_1}| = 2^{< \omega_1} = \omega_1$, because $\diamondsuit$ implies $\CH$. This means that $H_{\omega_1}$ can be ``coded'' by some $A \sse \omega_1$, so that $H_{\omega_1} = L_{\omega_1}[A]$.\footnote{For an exhaustive treatment of this topic, see \cite{Kan2003}, section 13.} In particular, every bijection between $\omega$ and a countable ordinal belongs to $L[A]$. This clearly implies $\omega_1^{L[A]} = \omega_1$.\\
+Now let $\langle S_\alpha \mid \alpha < \omega_1 \rangle$ be the sequence given by $\diamondsuit$. We define\footnotemark\ by recursion on $\alpha < \omega_1$ the function $\alpha \mapsto \delta_\alpha$ as follows: $\delta_\alpha$ is the least ordinal $\delta > \alpha$ such that
+\begin{enumerate}[(i)]
+\item $L_\delta[A] \prec H_{\omega_1}$;
+\item $S_\alpha, \langle \delta_\nu \mid \nu < \alpha \rangle \in L_\delta[A]$.
+\end{enumerate}
+\footnotetext{The function is well defined  by an argument very similar to the one in the proof of Theorem \ref{thm-kurepa_family_in_L}.}
+Set $M_\alpha \defeq L_{\delta_\alpha}[A]$. Of course each $M_\alpha$ is countable.\\
+%\todo{check if this is needed afterwards} By Lemma \ref{lemma-constructibility_relative_to_initial_segment} we also obtain $M_\alpha = L_{\delta_\alpha}[A \cap \delta_\alpha]$.
+To continue the proof, we need an important claim which we will prove later:
+
+\begin{standalone_claim}\label{claim-homogeneous_suslin_tree}
+Let $T$ be a normal $\omega_1$-tree with $T \sse H_{\omega_1}$ and let $C \sse \omega_1$ be a club set of limit ordinals such that for all $\alpha \in C$ the following holds:
+\begin{center}
+If $T|\alpha \in M_\alpha$ and $x \in U_\alpha$, then $\downarrow x$ is $M_\alpha$-generic\footnotemark for $T|\alpha$.
+\end{center}
+Then $T$ is a Suslin tree.
+\footnotetext{Of course here we mean generic w.r.t.\ the reverse order (but obviously $\downarrow x$ is referred to the original order).}
+\end{standalone_claim}
+
+We proceed with the construction of a homogeneous Suslin tree $T$, which we define by induction on levels $U_\alpha$ as usual. $T$ will be a set of countable binary sequences $s$ such that $o(s)=\length(s)$, ordered by $\sse$. By induction, it will also follow that for every $\alpha < \omega_1$:
+\begin{enumerate}[(a)]
+\item $T|\alpha$ is normal;
+\item $T|\alpha \in M_\alpha$;
+\item if $s,t \in T|\alpha$ and $o(s)=o(t)$, then the set $\{\xi \mid s(\xi) \neq t(\xi)\}$ is finite.
+\end{enumerate}
+
+Of course we define $U_0 \defeq \{\emptyset\}$ and 
+\begin{equation}
+\label{eq:hom_susl_tree_1}
+U_{\alpha+1} \defeq \{s \conc i \mid s \in T_\alpha \text{ and } i \in 2\}.
+\end{equation}
+The inductive hypotheses (a), (b) and (c) are trivially preserved here. So it is left to define $U_\alpha$ for $\alpha$ limit. Let $\b$ be the least (w.r.t.\ the canonical well-order of $L[A]$) $M_\alpha$-generic branch of $T|\alpha$. Such a branch exists by the Generic Filter Existence Lemma, because ($L[A]$ models that) $M_\alpha$ is countable. Define
+\begin{align}
+\label{eq:hom_susl_tree_2}
+U_\alpha \defeq \{ \textstyle \bigcup \a \mid & \a \text{ is an $\alpha$-branch through $T|\alpha$, and} \\
+& \text{$\textstyle \bigcup \a$ and $\textstyle \bigcup \b$ differ only on finitely-many entries}\}. \nonumber
+\end{align}
+To preserve the normality, we need to check that $U_\alpha$ is countable and for every $x \in T|\alpha$ there is $y \in U_\alpha$ such that $x < y$. The first claim is immediate: every sequence $\bigcup \a$ in the definition of $U_\alpha$ is completely determined by $\bigcup \b$, except for finitely-many entries. Since there are at most $\aleph_0$-many such sequences, $U_\alpha$ is countable. As for the second condition, observe that if $x \in T|\alpha$, then there is an $\alpha$-branch $\a$ of $T|\alpha$ such that $x \in \a$ and, above $x$, $\a$ has exactly the same ``shape'' of $\b$. More precisely
+\begin{center}
+If $x \in T|\alpha$, then $\{ x \restr \xi : \xi \leq o(x) \} \cup \{ x \conc (b_\xi \restr [o(x)+1, \xi)) : o(x)+1 \leq \xi < \alpha \}$ is an $\alpha$-branch in $T|\alpha$, where $b_\xi$ is the only node of $\b$ at level $\xi$.
+\end{center}
+(this is proven straightforwardly by induction showing that $x \conc (b_\xi \restr [o(x)+1, \xi)) \in T|\alpha$ for all $\xi \in [o(x)+1,\alpha)$, using that $T|\alpha$ was constructed according to \eqref{eq:hom_susl_tree_1} and \eqref{eq:hom_susl_tree_2})\\
+% per la dimostrazione vedi (9) notebook
+Since $\bigcup \a$ and $\bigcup \b$ differ only on $\dom(x)$, by the induction hypothesis (c) they differ only on a finite set. So $\bigcup \a \in T|\alpha$ and clearly $x < \bigcup \a$. Hence (a) is preserved. Conditions (b) and (c) are also easily seen to be preserved.
+\\[10pt]
+Finally, define $T \defeq \bigcup_{\alpha < \omega_1} U_\alpha$. Of course conditions (a) and (c) are still true with $T$ in place of $T|\alpha$. Now, for any finite $\Omega \sse \omega_1$ define $\sigma_\Omega \colon 2^{<\omega_1} \to 2^{<\omega_1}$ as the function which swaps the entries in each point of $\Omega$. Formally: $\dom(\sigma_\Omega(s))=\dom(s)$ and
+\[
+\sigma_\Omega(s)(\xi) \defeq
+\begin{cases}
+s(\xi) & \text{ if } \xi \not\in \Omega \\
+1-s(\xi) & \text{ if } \xi \in \Omega.
+\end{cases}
+\]
+It follows directly from its definition that $T$ is closed under the map $\sigma_\Omega$ for all finite $\Omega \sse \omega_1$. Hence, if $x,y \in T$ and $\Omega \defeq \{\xi < \omega_1 \mid x(\xi) \neq y(\xi)\}$ (which is finite), then $\sigma_\Omega$ is an automorphism of $T$ such that $\sigma_\Omega(x)=y$ and $\sigma_\Omega(y)=x$. That is, $T$ is homogeneous.\\
+\\
+Finally, note that if $\alpha$ is limit, then every $\alpha$-branch which is extended in the construction of $T$ is $M_\alpha$-generic for $T|\alpha$. To see this, let $\a$ be such a branch and take $\b$ the least $M_\alpha$-generic branch of $T|\alpha$. By definition of $T$, there is a finite $\Omega \sse \omega_1$ such that $\b = \sigma_\Omega [\a]$. Let $D \in M_\alpha$ be a dense subset of $T|\alpha$ and suppose towards a contradiction that $D \cap \a = \emptyset$. But then $\emptyset = \sigma_\Omega[D \cap \a] = \sigma_\Omega[D] \cap \b$, which is impossible because $\sigma_\Omega[D]$ is dense (and belongs to $M_\alpha$ because $\Omega$ is definable in $M_\alpha$ and thus the automorphism $\sigma_\Omega$ belongs to $M_\alpha$). Therefore Claim \ref{claim-homogeneous_suslin_tree} applies and so $T$ is Suslin.
+\end{proof}
+\end{theorem}
+
+We will now prove Claim \ref{claim-homogeneous_suslin_tree}. Some parts of the following proof are very similar to the proof of Theorem \ref{thm-kurepa_family_in_L}, which showed that there exists a Kurepa family if $V=L$. We will occasionally refer to that proof to justify some steps.
+
+\begin{proof}[Proof of Claim \ref{claim-homogeneous_suslin_tree}.]
+Let $X$ be a maximal antichain in $T$. If we show that $X$ is countable, then $T$ is Suslin by normality. Let $B \sse \omega_1$ be such that $A,C,T,X \in L[B]$ (it's easy to see that such a $B$ exists). Observe that by $\omega_1^{L[A]} = \omega_1$ and $A \in L[B]$ it follows that $\omega_1^{L[B]}=\omega_1$ as well. Define
+\[
+N^* \defeq L_{\omega_2^{L[B]}}[B].
+\]
+We recursively define a chain of elementary substructures of $(N^*,\in)$, which will look like this:
+\[
+N_0 \preceq N_1 \preceq \dots \preceq N_\nu \preceq \dots \preceq (N^*,\in)
+\]
+for $\nu < \omega_1$. The chain is defined as follows: 
+
+\begin{align}
+\label{eq:sequence_of_submodels_homogeneous_suslin_tree}
+& \text{$N_0$ is the smallest $N \preceq N^*$ such that $B,A,C,T,X \in N$;}\\
+& \text{$N_{\nu+1}$ is the smallest $N \preceq N^*$ such that $N_\nu \sse N$ and $N_\nu \in N$;} \nonumber \\ 
+& \text{$N_\eta$ is $\bigcup_{\xi < \eta} N_\xi$ for $\eta$ limit.} \nonumber
+\end{align}
+%\begin{enumerate}[ ]
+%\item $N_0$ is the smallest $N \preceq N^*$ such that $B \in N$;
+%\item $N_{\nu+1}$ is the smallest $N \preceq N^*$ such that $N_\nu \sse N$ and $N_\nu \in N$;
+%\item $N_\eta$ is $\bigcup_{\xi < \eta} N_\xi$ for $\eta$ limit.
+%\end{enumerate}
+Observe that:
+\begin{enumerate}[--]
+\item every $N_\nu$ is countable;
+\item the $\nu=0$ and the $\nu+1$ steps are well defined (i.e.\ $B,A,C,T,X \in N^*$ and $N_\nu \in N^*$). This is proved as in the proof of Theorem \ref{thm-kurepa_family_in_L}, with the following additional observation: Since $B \in L[B]$, we can define $N^*$ within $L[B]$ and the definition is absolute, i.e.\ $N^* = (L_{\omega_2}[B])^{L[B]}$. Hence we can define the sequence $\langle N_\nu \rangle_{\nu < \omega_1}$ within $L[B]$ (and it is absolute). Since $(V = L[B])^{L[B]}$, we can apply the usual methods (cf.\ proof of Lemma \ref{lemma-countable_elementary_substructure_of_L(theta)}) to repeat the argument of the proof of \ref{thm-kurepa_family_in_L}, which relied on the assumption $V=L$.
+%\item \todo{this is probably not needed. if this is the case, maybe I don't need the chain representation.} if $\nu < \mu$ then $N_\nu \preceq N_\mu$ because $N_\nu \sse N_\mu$ and both are elementary substructures of $L_{\omega_2}$;
+\item for each $\nu < \omega_1$, by Lemma \ref{lemma-countable_elementary_substructure_of_L(theta)} we have $\omega_1 \cap N_\nu = \alpha_\nu$ for some $\alpha_\nu < \omega_1$.
+\end{enumerate}
+
+For every $\nu < \omega_1$, let $\ol{N}_\nu \defeq \mos_\nu" N_\nu$ be the Mostowski collapse of $N_\nu$. By Condensation Lemma, $\ol{N}_\nu = L_{\beta_\nu}[\mos_\nu(B)] = L_{\beta_\nu}[B \cap \alpha_\nu]$ for some $\beta_\nu \leq \omega_2^{L[B]}$. Moreover, observe that
+\[
+\mos_\nu \restr L_{\alpha_\nu} [B \cap \alpha_\nu] = \id \restr L_{\alpha_\nu} [B \cap \alpha_\nu].
+\]
+This is true because $L_\gamma[B] \sse N_\nu$ for every $\gamma \leq \alpha_\nu$, which is proven by induction on $\gamma$.
+% per dimostrazione vedi quaderno, punto (3)
+But $\mos_\nu(L_{\omega_1}[B]) = L_{\mos_\nu(\omega_1)}[\mos_\nu(B)] = L_{\alpha_\nu}[B \cap \alpha_\nu]$ (observe that $L_{\omega_1}[B] \in N_\nu$ by elementarity because $L_{\omega_1}[B]$ is definable in $N^*$). So $N_\nu \cap L_{\omega_1}[B] = L_{\alpha_\nu}[B \cap \alpha_\nu]$ and hence, if $Y \in N_\nu$ and $Y \sse L_{\omega_1}[B]$, then $\mos_\nu(Y) = Y \cap L_{\alpha_\nu}[B \cap \alpha_\nu]$.
+\\[10pt]
+Now observe that $C \in N^*$ by the usual methods and ($C$ is club in $\omega_1$)$^{N^*}$. Moreover, for any $\nu < \omega_1$, $C \in N_\nu$ and $C \sse L_{\omega_1}[B]$, so that $\mos_\nu (C) = C \cap L_{\alpha_\nu}[B \cap \alpha_\nu] = C \cap \alpha_\nu$. So, by elementarity, ($C \cap \alpha_\nu$ is unbounded in $\alpha_\nu$)$^{\ol{N}_\nu}$, and of course the same holds also in $V$. Therefore $\alpha_\nu = \sup(C \cap \alpha_\nu) \in C$ for all $\nu < \omega_1$.
+% per la dimostrazione vedi retro foglio, punto (2)
+Moreover, it's immediate to check that $\{\alpha_\nu \mid \nu < \omega_1\}$ is a \emph{normal} sequence in $\omega_1$, i.e.\ continuous and strictly increasing. It is well-known that every normal function has club-many fixed points. So $\{\gamma \mid \alpha_\gamma = \gamma\}$ is a club set in $\omega_1$. By $\diamondsuit$, the set $\{\gamma : B \cap \gamma = S_\gamma\}$ is stationary in $\omega_1$. So there exists an ordinal $\zeta$ such that $\alpha_\zeta = \zeta$ and $B \cap \zeta = S_\zeta$. Since $S_\zeta \in M_\zeta$, also $B \cap \zeta \in M_\zeta$.
+\\[-10pt]
+\begin{claim}{}
+$\beta_\zeta \in M_\zeta$.
+\begin{claimproof}
+\textsc{Case A:} $\omega_1^{L[B \cap \gamma]} = \omega_1$ for some $\gamma < \omega_1$. Note that any bijection $\omega_1^{L[B \cap \gamma]} \to \omega_1$ in $L[B \cap \gamma]$ belongs to $(H_{\omega_2})^{L[B \cap \gamma]} = (L_{\omega_2}[B \cap \gamma])^{L[B \cap \gamma]} = L_{\omega_2^{L[B \cap \gamma]}}[B \cap \gamma] \sse L_{\omega_2^{L[B]}}[B] = N^*$.\\
+So, if we let $\gamma_0$ be the least ordinal such that $\omega_1^{L[B \cap \gamma]} = \omega_1$, we have that $\gamma_0$ is definable in $N^*$ by the usual methods. Since $N_\zeta \preceq N^*$, $\gamma_0 \in N_\zeta$ as well. Hence $\gamma_0 < \alpha_\zeta = \zeta$, so $\omega_1^{L[B \cap \zeta]} = \omega_1$ by Lemma \ref{lemma-constructibility_relative_to_different_sets}. Since $\zeta < \omega_1$, of course ($\zeta$ is countable)$^{L[B \cap \zeta]}$. By the usual methods, an injection $\zeta \to \omega$ already lies at some countable level of the hierarchy, i.e.\ there is $\tau < \omega_1$ such that $\zeta$ is countable in $L_\tau [B \cap \zeta]$. Of course $\tau$ is definable in $H_{\omega_1}$ using the parameter $B \cap \zeta$.
+% because H_{\omega_1} models ZFC-P and \gamma \mapsto L_\gamma is absolute
+Recalling that $B \cap \zeta \in M_\zeta \prec H_{\omega_1}$ we obtain $\tau \in M_\zeta$. But $\zeta = \alpha_\zeta = \omega_1^{\ol{N}_\zeta}$, i.e.\ $\zeta$ is uncountable in $L_{\beta_\zeta}[B \cap \zeta]$. Thus $\beta_\zeta < \tau$, whereby $\beta_\zeta \in M_\zeta$.
+\\[6pt]
+\textsc{Case B:} $\omega_1^{L[B \cap \gamma]} < \omega_1$ for all $\gamma < \omega_1$. First we claim that there exists no $\gamma$ such that $\omega_2^{L[B \cap \gamma]} = \omega_1$. For, assume to the contrary that there is such a $\gamma$, so that $\omega_1^{L[B \cap \gamma]} < \omega_1 = \omega_1^{L[B]}$. By the usual methods, there is some $\eta < \omega_1$ such that $\omega_1^{L[B \cap \gamma]}$ is countable in $L_\eta [B] = L_\eta [B \cap \eta]$, so it's clearly countable in $L[B \cap \eta]$ as well.
+%\todo[inline]{maybe insert picture (see notebook)}
+Hence we know that
+\[
+\omega_1^{L[B \cap \gamma]} < \omega_1^{L[B \cap \eta]} \leq \omega_1 = \omega_2^{L[B \cap \gamma]}.
+\]
+Because $\omega_1^{L[B \cap \eta]}$ is a cardinal in $L[B \cap \eta] \supseteq L[B \cap \gamma]$, it's a cardinal also in $L[B \cap \gamma]$, whence $\omega_1^{L[B \cap \eta]} = \omega_1$, a contradiction.\\
+%\todo[inline]{from here change *every suitable* $\alpha$ to $\zeta$}
+Thus $\omega_2^{L[B \cap \zeta]}$ is countable, and hence is $H_{\omega_1}$-definable in the parameter $B \cap \zeta$. So $\omega_2^{L[B \cap \zeta]} \in M_\zeta$. Moreover, observe that
+\begin{align*}
+L_{\omega_2^{L[B]}}[B] \models & \text{ for every ordinal $\gamma$ there is a surjection $f$}\\
+& \text{ from the first uncountable ordinal onto $\gamma$}
+\end{align*}
+(this is proven by the usual methods, observing that such $f$ clearly exists in $L[B]$ and in particular $f \in (H_{\omega_2})^{L[B]} = L_{\omega_2^{L[B]}}[B]$).\\
+By elementarity, the statement is true also in $\ol{N}_\zeta = L_{\beta_\zeta}[B \cap \zeta]$. This clearly means 
+$\omega_2^{L[B \cap \zeta]} \not\in L_{\beta_\zeta}[B \cap \zeta]$, whereby $\beta_\zeta \leq \omega_2^{L[B \cap \zeta]}$. Since we just proved that $\omega_2^{L[B \cap \zeta]} \in M_\zeta$, we can finally conclude that $\beta_\zeta \in M_\zeta$.
+\end{claimproof}
+\end{claim}
+\\[10pt]
+So $\beta_\zeta \in M_\zeta = L_{\delta_\zeta}[A]$, hence $\beta_\zeta < \delta_\zeta$. Then we obtain
+\[
+\ol{N}_\zeta = L_{\beta_\zeta}[B \cap \zeta] \sse L_{\delta_\zeta}[B \cap \zeta] \sse M_\zeta,
+\]
+where the last inclusion is true because in $M_\zeta = L_{\delta_\zeta}[A]$ we can re-define every $L_\gamma[B \cap \zeta]$ for $\gamma < \delta_\zeta$ (recall that $B \cap \zeta \in M_\zeta$). Observe that $T,X \in N_\zeta$ and $T,X \sse L_{\omega_1}[B]$, so $\mos_\zeta(T) = T|\zeta$ and $\mos_\zeta(X) = X \cap T|\zeta$. Thus
+\[
+T|\zeta \in \ol{N}_\zeta \sse M_\zeta \quad \text{and} \quad X \cap T|\zeta \in \ol{N}_\zeta \sse M_\zeta.
+\]
+Also, by elementarity $X \cap T|\zeta$ is a maximal antichain in $T|\zeta$. If $x \in U_\zeta$, then by hypothesis the branch ${\downarrow} x$ is $M_\zeta$-generic for $T|\zeta$. Hence it has non-empty intersection with $X \cap T|\zeta$, so $x$ lies above a point in $X \cap T|\zeta$. This true for every $x \in U_\zeta$, therefore $X \cap T|\zeta$ is a maximal antichain in $T|\zeta+1$ as well. By Lemma \ref{lemma-maximal_antichain_end_extensions} it is maximal also in $T$. Thus $X = X \cap T|\zeta$ and so $X$ is countable.
+\end{proof}
 
 
+\section{A rigid Suslin tree}
 
+We present now Jensen's construction of a rigid normal Suslin tree by $\diamondsuit$. In fact, the tree constructed below is the one originally defined by Jensen in his first proof of \nSH in $L$.
 
-
-
-
-
-
-
-
-
-
+\begin{theorem}
+If $\diamondsuit$ holds, then there exists a rigid normal Suslin tree.
+\begin{proof}
+\renewcommand{\b}{\mathfrak{b}}
+The proof has much in common with the proof of Theorem \ref{thm-homogeneous_suslin_tree}. Let $A \sse \omega_1$ and $M_\alpha$ for $\alpha < 	\omega_1$ be as before. The rigid Suslin tree will be a set of countable sequences ordered by $\sse$. We define it by induction on levels. As before, $U_0 \defeq \{\emptyset\}$ and $U_{\alpha+1} \defeq \{s \conc i \mid s \in U_\alpha$ and $i \in 2\}$, so it's left to deal with limit cases. Let $\alpha < \omega_1$ and suppose inductively that $T|\alpha \in M_\alpha$ (this condition is clearly preserved in the successor steps). As usual, we will define the $\alpha$th level $U_\alpha$ by extending $\alpha$-branches in $T|\alpha$. But differently from the methods we've seen so far, we will get \emph{all} the necessary branches by a single forcing over $M_\alpha$. We define (in $M_\alpha$) the forcing poset $(P,\leq_P)$ as follows:
+\[
+P \defeq \{ p \mid p \colon a \to T|\alpha, \text{ for some finite set $a \sse \omega$} \}
+\]
+and the order is given by
+\[
+p \leq_P q \Longleftrightarrow \dom(p) \supseteq \dom(q) \text{ and } \forall n \in \dom(q) \ [p_n \supseteq q_n].
+\]
+$M_\alpha$ is countable, so in $L[A]$ there exists an $M_\alpha$-generic filter for $P$. We take $G$ as the least w.r.t.\ the canonical order of $L[A]$. Observe that actually $M_\alpha \in M_{\alpha+1}$ and $M_{\alpha+1} \preceq H_{\omega_1}$, so that $M_\alpha$ is countable in $M_{\alpha+1}$ and hence $G \in M_{\alpha+1}$. This will easily ensure that the induction hypothesis $T|(\alpha+1) \in M_{\alpha+1}$ is preserved, once we complete the definition of $U_\alpha$. For all $n \in \omega$, define
+\[
+\b_n \defeq \{p_n \mid p \in G\}.
+\]
+\begin{claim}{}
+The following hold:
+\begin{enumerate}[(i)]
+\item every $\b_n$ is an $\alpha$-branch of $T|\alpha$;
+\item $n \neq m$ implies $\b_n \neq \b_m$;
+\item every $\b_n$ is $M_\alpha$-generic for $T|\alpha$;
+\item if $n \neq m$, then $b_n \times b_m$ is $M_\alpha$-generic for $T|\alpha \times T|\alpha$ with the product ordering;
+\item $T|\alpha = \bigcup_{n \in \omega} b_n$.
+\end{enumerate}
+\begin{claimproof}
+Points (i) and (iii) clearly follow from (iv). Also (ii) does: take $n \neq m$  and suppose towards a contradiction that $\b_n = \b_m = \b$. By (iv), $\b_n \times \b_m$ is $M_\alpha$-generic for $T|\alpha \times T|\alpha$. By the Product Lemma, we get that $\b$ is $M[\b]$-generic for $T|\alpha \times T|\alpha$, and this is not possible\footnote{It is a well-known and easy fact that if $M$ is a countable transitive model and $P$ is an atomless separative forcing poset, then no $M$-generic filter for $P$ belongs to $M$.} because clearly $\b \in M[\b]$. Let's prove (iv). Suppose $n \neq m$ and $D \sse T|\alpha \times T|\alpha$ is dense. The set
+\[
+D^* \defeq \{p \in P \mid (p_n,p_m) \in D\}
+\]
+is clearly dense in $P$. So take $p \in G \cap D^*$. Then $(p_n,p_m) \in b_n \times b_m \cap D$ and we are done.\\
+As for (v), let $s \in T|\alpha$ and define
+\[
+D_s \defeq \{p \in P \mid p_n \supseteq s, \text{ for some } n \in \dom(p)\}.
+\]
+$D_s$ is dense in $P$, so there is $p \in G \cap D_s$. Thus $s \sse p_n \in \b_n$ for some $n \in \dom(p)$, so $s \in \b_n$ and the claim is proved.
+\end{claimproof}
+\end{claim}\\[10pt]
+So we define $U_{\alpha+1} \defeq \{\bigcup \b_n \mid n \in \omega\}$. By point (v) of the claim, $T|(\alpha+1)$ is normal. Finally, $T \defeq \bigcup_{\alpha < \omega_1} U_\alpha$ is a normal $\omega_1$-tree. Using Claim \ref{claim-homogeneous_suslin_tree}, point (iii) of the claim ensures that $T$ is Suslin. It remains to show that $T$ is rigid. Suppose to the contrary that $\sigma$ is a non-trivial automorphism of $T$. Using essentially the same argument of the proof of Claim \ref{claim-homogeneous_suslin_tree}, we will find some $\zeta < \omega_1$ such that $\sigma \restr (T|\zeta) \in M_\zeta$. By the construction of $T$, this will be easily seen to imply the existence of two branches $\b_n$ and $\b_m$ such that $\b_n \in M_\zeta[\b_m]$, which will in turn lead to a contradiction by the Product Lemma.\\
+\\
+Let $B \sse \omega_1$ be such that $A, T, \sigma \in L[B]$. Set $N^* \defeq L_{\omega_2^{L[B]}}[B]$ and define an increasing sequence $\langle N_\nu \rangle_{\nu < \omega_1}$ of submodels of $N^*$ precisely as in \eqref{eq:sequence_of_submodels_homogeneous_suslin_tree}. For all $\nu < \omega_1$, set $\alpha_\nu \defeq \omega_1 \cap N_\nu$ and $\mos_\nu$ the collapsing function of $N_\nu$, whose image is $\ol{N}_\nu = L_{\beta_\nu}[B \cap \alpha_\nu]$. As in the proof of Claim \ref{claim-homogeneous_suslin_tree}, there is $\zeta = \alpha_\zeta$ such that $\ol{N}_\zeta \sse M_\zeta$. Therefore
+\[
+\mos_\zeta(T) = T|\zeta \in M_\alpha \quad \text{and} \quad \mos_\zeta(\sigma) = \sigma \restr (T|\zeta) \in M_\alpha.
+\]
+By elementary equivalence, $\sigma \restr (T|\zeta)$ is non-trivial. So there is $s \in T|\zeta$ such that $\sigma(s) \neq s$. Take $s' \in U_\zeta$ such that $s' \supset s$. Of course $\sigma(s') \neq s'$. Of course $\zeta$ is limit, hence by the construction of $T$ at limit levels there are $m$ and $n$ distinct such that $s' = \bigcup \b_m$ and $\sigma(s') = \bigcup \b_n$. Thus $\sigma(s') = \bigcup_{\nu < \alpha} \sigma(s' \restr \nu)$. Of course the latter belongs to any transitive models which contains $M_\zeta$ and $s'$, so that $\sigma(s') \in M_\zeta[s']$. But clearly $M_\zeta[s'] = M_\zeta[\b_m]$, hence $\b_n \in M_\zeta[\b_m]$. However, $\b_m \times \b_n$ is $M_\zeta$-generic for $T|\zeta \times T|\zeta$ by (iv) of the claim, so $\b_n$ is $M_\zeta[\b_m]$-generic for $T|\alpha$ by the Product Lemma. Thus $\b_n \not\in M_\alpha[\b_m]$, contradiction.
+\end{proof}
+\end{theorem}
 
 
 
@@ -765,12 +1876,37 @@ By last claim, this is a (absolute) definition with parameters in $L_{f(\alpha_\
 
 
 \begin{thebibliography}{9}
+\addcontentsline{toc}{chapter}{Bibliography}
 
-\bibitem{Kun2009}
-K. Kunen, \emph{The Foundations of Mathematics}, College Publications, 2009.
+\bibitem{Abr1979}
+U. Abraham, \emph{Construction of a rigid Aronszajn tree}, Proc. Amer. Math. Soc., 77(1):136–137, 1979.
 
-\bibitem{Kun2013}
-K. Kunen, \emph{Set Theory}, College Publications, 2013.
+\bibitem{Dev1974}
+K. Devlin and H. Johnsbråten, \emph{The Souslin Problem}, Lecture Notes in Mathematics (405), Springer, 1974
+
+\bibitem{Dev1984}
+K. Devlin, \emph{Constructibility}, Springer-Verlag, 1984.
+
+\bibitem{Jec1967}
+T. Jech, \emph{Non-provability of Souslin's Hypothesis}, Commentationes mathematicae Universitatis Carolinae 8, 1967.
+
+\bibitem{Jen1968}
+R. Jensen, \emph{Souslin's Hypothesis is incompatible with $V = L$}, Notices of the American Mathematical Society 16, 1968.
+
+\bibitem{Jec1971}
+T. Jech, \emph{Trees}, The Journal of Symbolic Logic, Volume 36, Number 1, March 1971.
+
+\bibitem{Jec1972}
+T. Jech, \emph{Automorphisms of $\omega_1$-trees}, Trans. Amer. Math. Soc., 173:57–70, 1972.
+
+\bibitem{Jec2003}
+Thomas J. Jech, \emph{Set Theory}, The third millennium edition, Springer-Verlag, 2003.
+
+\bibitem{Kan2003}
+A. Kanamori, \emph{The Higher Infinite}, Springer, 2003.
+
+\bibitem{Kan2011}
+A. Kanamori, \emph{Historical remarks on Suslin's Problem}, Set Theory, Arithmetic and Foundations of Mahtematics: Theorems, Philosophies, Lecture Notes in Logic, volume 36, 1-12. Association for Symbolic Logic, 2011.
 
 \bibitem{Kun1980}
 K. Kunen, \emph{Set Theory}, North-Holland Pub. Co., 1980.
@@ -778,14 +1914,33 @@ K. Kunen, \emph{Set Theory}, North-Holland Pub. Co., 1980.
 \bibitem{Kun1984}
 K. Kunen and J. Vaughan, \emph{Handbook of Set-theoretic Topology}, North-Holland, 1984.
 
-\bibitem{Jec2003}
-Thomas J. Jech, \emph{Set Theory}, The third millennium edition, Springer-Verlag, 2003.
+\bibitem{Kun2009}
+K. Kunen, \emph{The Foundations of Mathematics}, College Publications, 2009.
 
-\bibitem{Jec1971}
-Thomas J. Jech, \emph{Trees}, The Journal of Symbolic Logic, Volume 36, Number 1, March 1971.
+\bibitem{Kun2013}
+K. Kunen, \emph{Set Theory}, College Publications, 2013.
 
-\bibitem{Spe1951}
-E. Specker, \emph{Sur un problème de Sikorski}, Colloquium Mathematicum, vol. 2 (1951), pp. 9--12.
+\bibitem{Kur1935}
+G. Kurepa, \emph{Ensembles ordonnés et ramifiés}, Publ. math. Univ. Belgrade, 1935.
+
+\bibitem{Sil1971}
+J. Silver, \emph{The independence of Kurepa's conjecture and two-cardinal conjectures in model theory}, Axiomatic Set Theory, Proc. Sympos. Pure Math., XIII, Providence, R.I.: Amer. Math. Soc., pp.\ 383--390, 1971.
+
+\bibitem{Sol1971}
+R. Solovay and S. Tennenbaum, \emph{Iterated Cohen extensions
+and Souslin's problem}, Annals of Mathematics (2) 94, 201--245, 1971.
+
+\bibitem{Spe1949}
+E. Specker, \emph{Sur un problème de Sikorski}, Colloquium Mathematicum, vol. 2 (1949), pp.\ 9--12.
+
+\bibitem{Ste1966}
+D. Stewart, (title unknown), Master’s thesis, University of Bristol, 1966.
+
+\bibitem{Ten1968}
+S. Tennenbaum, \emph{Souslin's Problem}, Proceedings of the National Academy of Sciences of the United States of America 59, 60--63, 1968.
+
+\bibitem{Tod1979}
+S. Todorcevic, \emph{Rigid Aronszajn trees}, Publ. Inst. Math. (Beograd), 27(41):259–265, 1979.
 
 \end{thebibliography}
 
