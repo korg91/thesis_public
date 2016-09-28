@@ -394,10 +394,10 @@ Let $A$ be a set and $\alpha > \omega$ a limit ordinal. Suppose $M \preceq L_\al
 
 Forcing is an extremely powerful method for producing models of set theory. The construction of this tool is rather involved, and even a general overview would require several pages. Therefore we will present here just the central results, omitting also the definitions of most objects.
 
-Let $M$ be a countable transitive model of \ZFC and let $(P, \leq, 1_P)$ be a forcing poset in $M$.
+Let $M$ be a countable transitive model of \ZFC and let $(P, \leq, 1_P)$ be a forcing poset in $M$, where $1_P \in P$ is a largest element of $P$ (i.e.\ $\forall p \in P \ [p \leq 1_P]$). Let $G$ be generic for $P$ over $M$.
 
 \begin{teo_custom-title_nonum}[The Generic Model Theorem]
-Let $G$ be $M$-generic for $P$. Then there exists a transitive model $M[G]$ such that
+There exists a transitive model $M[G]$ such that
 \begin{enumerate}[(i)]
 \item $M[G] \models \ZFC$;
 \item $M \sse M[G]$ and $G \in M[G]$;
@@ -406,10 +406,10 @@ Let $G$ be $M$-generic for $P$. Then there exists a transitive model $M[G]$ such
 \end{enumerate}
 \end{teo_custom-title_nonum}
 
-The model $M[G]$ is called \emph{generic extension} of $M$. Every element of $M[G]$ has a $P$-\emph{name} in $M$. The set of names is denoted by $M^P$. We can define in $M$ the \emph{forcing relation} $\forces$ and the \emph{forcing language}. $\forces$ is a relation between elements of $P$ and statements of the forcing language. The forcing language contains every $P$-name. If $a \in M[G]$, we usually denote with $\dot{a}$ its name in $M$. If $a$ belongs also to $M$, then we denote its name with $\check{a}$ (which is a \emph{canonical name}). Among the names, the name $\dot{G}$ is special, because it is defined in such a way that its interpretation relative to any filter $H$ is $H$ itself. Moreover, $p \forces [\check{p} \in \dot{G}]$, for any $p \in P$. If $1_P \forces \sigma$, then sometimes we simply write $\forces \sigma$. The following is the tool which enables us to control the truth in $M[G]$:
+The model $M[G]$ is called \emph{generic extension} of $M$. Every element of $M[G]$ has a $P$-\emph{name} in $M$. The set of names is denoted by $M^P$. We can define in $M$ the \emph{forcing relation} $\forces$ and the \emph{forcing language}. $\forces$ is a relation between elements of $P$ and statements of the forcing language. The forcing language contains every $P$-name. If $a \in M[G]$, we usually denote with $\dot{a}$ a name in $M$ for $a$. If $a$ belongs also to $M$, then it has a \emph{canonical name} which we denote by $\check{a}$. Among the names, the name $\dot{G}$ is special, because it is defined in such a way that its interpretation relative to any filter $H$ is $H$ itself. Moreover, $p \forces [\check{p} \in \dot{G}]$, for any $p \in P$. If $1_P \forces \sigma$, then sometimes we simply write $\forces \sigma$. The following is the tool which enables us to control the truth in $M[G]$:
 
 \begin{teo_custom-title_nonum}[The Forcing Theorem]
-Let $\sigma$ be a sentence of the forcing language and let $G$ be $M$-generic for $P$. Then
+Let $\sigma$ be a sentence of the forcing language. Then
 \[
 M[G] \models \sigma \text{ if and only if } \exists p \in G \ [p \forces \sigma].
 \]
@@ -420,11 +420,11 @@ An important property of the forcing relation is the following:
 Let $\phi(x)$ be a formula of the forcing language with no free variable other than $x$. If $p \forces \exists x \, \phi(x)$, then for some $\dot{a} \in M^P$, $p \forces \phi(\dot{a})$.
 \end{teo_custom-title_nonum}
 
-In applications of forcing, it is of fundamental importance to determine the way ordinals act as cardinals in the generic extension. Let $o(M)$ denote the least ordinal not in $M$. Suppose ($\theta$ is a cardinal$)^M$. We say that $P$ \emph{preserve cardinals} $\geq \theta$ if, for all $\theta \leq \beta < o(M)$,
+In applications of forcing, it is of fundamental importance to determine the way ordinals act as cardinals in the generic extension. Let $o(M)$ denote the least ordinal not in $M$. Suppose ($\theta$ is a cardinal$)^M$. We say that $P$ \emph{preserve cardinals} $\geq \theta$ if, for any $G$ generic for $P$ over $M$ and for all $\theta \leq \beta < o(M)$,
 \begin{center}
 ($\beta$ is a cardinal$)^M$ iff ($\beta$ is a cardinal$)^{M[G]}$.
 \end{center}
-We say that $P$ \emph{preserve cofinalities} $\geq \theta$ if, for all limit $\gamma < o(M)$ such that $\cf^M (\gamma) \geq \theta$,
+We say that $P$ \emph{preserve cofinalities} $\geq \theta$ if, for any $G$ generic for $P$ over $M$ and for all limit $\gamma < o(M)$ such that $\cf^M (\gamma) \geq \theta$,
 \begin{center}
 $\cf^M (\gamma) = \cf^{M[G]} (\gamma)$.
 \end{center}
@@ -433,7 +433,7 @@ For a cardinal $\theta$, $P$ has the $\theta$ \emph{chain condition} ($\theta$-c
 \begin{teo_custom-title_nonum}[Fact]
 If ($\theta$ is a regular cardinal$)^M$ and ($P$ is $\theta$-cc$)^M$, then $P$ preserve cofinalities $\geq \theta$ and hence $P$ preserves cardinals $\geq \theta$.
 \end{teo_custom-title_nonum}
-It's immediate to check that if $P$ preserves all cofinalities, then $(\aleph_\alpha)^M = (\aleph_\alpha)^{M[G]}$ for all $\alpha < o(M)$.\\
+Let $G$ be generic for $P$ over $M$. It's immediate to check that if $P$ preserves all cofinalities, then $(\aleph_\alpha)^M = (\aleph_\alpha)^{M[G]}$ for all $\alpha < o(M)$.\\
 When the chain condition doesn't hold or holds only above a certain cardinal, there is another way to check if smaller cardinals are preserved. We say that $P$ is \emph{$\lambda$-closed} if whenever $\delta < \lambda$ and $\langle p_\xi : \xi < \delta \rangle$ is a (weakly) decreasing sequence in $P$, then there is a $q \in P$ such that $q \leq p_\xi$ for all $\xi < \delta$. If $\lambda=\omega_1$, then we say \emph{countably closed}.
 \begin{teo_custom-title_nonum}[Fact]
 Assume that ($P$ is $\lambda$-closed$)^M$ and $A,E \in M$ with $(|A| < \lambda)^M$. If $f \colon A \to E$ and $f \in M[G]$, then $f \in M$.
@@ -464,7 +464,7 @@ Let $\tau \in M^P$ be a name. A \emph{nice name for a subset of $\tau$} is a nam
 \[
 \bigcup \big\{ \{\sigma\} \times A_\sigma : \sigma \in \dom(\tau) \big\},
 \]
-where each $A_\sigma$ is a maximal antichain of $P$ in $M$.
+where each $A_\sigma$ is an antichain of $P$ in $M$.
 \end{teo_custom-title_nonum}
 
 Next lemma shows that we can in fact use nice names to name subsets of a given name.
@@ -520,7 +520,7 @@ We consider the family of trees given by all $T$ which satisfy the following pro
 \item if $t \colon \beta \to \omega$ is in T and $\beta \leq \gamma < \alpha$, then there exists $s \colon \gamma \to \omega$ such that $t \sse s$;
 \item $T \cap {}^{\beta} \omega$ is countable for all $\beta < \alpha$.
 \end{enumerate}
-Observe that $T$ is a countable set and the $\beta$th level consists precisely of the functions whose length is $\beta$.
+Observe that $T$ is a countable set and the $\beta$th level consists precisely of the functions in $T$ whose length is $\beta$.
 \end{example}
 
 \begin{defn}
@@ -615,7 +615,7 @@ Of course $T$ is an Aronszajn $\omega_1$-tree by construction.
 We will now present a generalization of Theorem \ref{thm-aronszajn} due to Specker \cite{Spe1949}:
 
 \begin{theorem}\label{thm-aronszajn_k+_tree}
-Let $\kappa$ be an infinite cardinal. If $\kappa^{<\kappa}=\kappa$, then there exists an Aronszajn $k^+$-tree.
+Let $\kappa$ be an infinite cardinal. If $\kappa^{<\kappa}=\kappa$, then there exists an Aronszajn $\kappa^+$-tree.
 \end{theorem}
 
 First we need two easy lemmas.
@@ -871,13 +871,13 @@ There exists a function $f \colon \omega_1 \to \omega_1$ such that for each $\al
 \[
 (L_{f(\alpha)}, \in) \models \alpha \text{ is countable}.
 \]
-Furthermore, $f$ is absolute for $L_{\omega_2}$ (taking $f$ as the $<_L$-least such function).
+Furthermore, $f$ is definable $L_{\omega_2}$ (taking $f$ as the $<_L$-least such function).
 \end{claim}\\
 
 Now we can define the limit levels: we choose such a function $f$ and for every limit ordinal $\alpha$ we use Lemma \ref{lemma-kill_countable_max_antichains} to seal all maximal antichains of $T|\alpha$ which are elements of $L_{f(\alpha)}$. This is clearly possible because $L_{f(\alpha)}$ is countable. One technical detail: note that we can assume that the elements of the $\alpha$th level of the $(\alpha+1)$-tree produced by Lemma \ref{lemma-kill_countable_max_antichains} are precisely the ones of $U_\alpha \defeq \{ \omega \cdot \alpha + k : k \in \omega \}$. This is because $T|\alpha$ is countable and normal, whereby the the set $\{b_t : t \in T|\alpha\}$ in the proof of \ref{lemma-kill_countable_max_antichains} must have size precisely $\aleph_0$, like $U_\alpha$, which is the only thing we needed to check.
 
 Finally, $T \defeq \cup_{\gamma < \omega_1} U_\gamma$, and the order of $T$ is the one we just defined by recursion.\\
-It's clear that $T$ is an $\omega_1$-tree, so it remains to show that $T$ has no uncountable antichain. Let $A$ be a maximal antichain of $T$.\\[-7pt]
+It's clear that $T$ is an $\omega_1$-tree, so it remains to show that $T$ has no uncountable antichain. Suppose to the contrary that this is not true. Let $A$ be the $<_L$-least uncountable maximal antichain of $T$.\\[-7pt]
 \begin{claim}{ 2}
 $T$ and $A$ belong to $L_{\omega_2}$, in which they satisfy the same definition as in $V$.
 \end{claim}\\[-7pt]
@@ -1044,7 +1044,7 @@ After establishing the relative consistency of $\nSH$, Tennenbaum tried to prove
 \end{itemize}
 Therefore, forcing with $T$ ``kills'' $T$, meaning that in the generic extension $T$ is not Suslin anymore (and of course once $T$ is killed it stays dead in further generic extensions). The problem is that new Suslin trees might have sprung up in the generic extension. Hence, some kind of \emph{iteration} was needed. But trying to iterate the forcing by simply taking products in the ground model has the disadvantage of possibly loosing the ccc-ness of the forcing\footnote{This can happen already with a two-step iteration. For example, note that forcing with $T \times T$ is the same as forcing with $T$ twice by the Product Lemma. Since in the first step of the iteration we obtain an uncountable branch of $T$ in a generic extension, obviously $T$ is not ccc anymore in that extension (assuming that $T$ is normal). This means that cardinals \emph{may} collapse with this forcing. In \cite[p.\ 38]{Dev1974}, a similar example is given where cardinals \emph{must} collapse.}. This issue was eventually solved thanks to the collaboration with Solovay in 1964-65, which led to the development of a groundbreaking way of iterating forcing, a technique that is still among the main tools for modern set theory. The key idea was to consider forcing notions which occur in an intermediate generic extension, rather than in the ground model. In 1971, Solovay and Tennenbaum published \cite{Sol1971} the proof of consistency of \SH, together with a presentation of their iterated forcing methods; in the same year, Tarski defined their work on Suslin's hypothesis as the most important in set theory since Cohen's work.
 
-Actually, in the final publication, the consistency of \SH was derived as an immediate consequence of other results concerning a new statement: Martin's Axiom\footnote{Martin's Axiom asserts: If $(P,<)$ is a ccc poset, $\kappa$ is an infinite cardinal and $\mathcal D$ is a collection of at most $\kappa$ dense subsets of $P$, then there exists a $\mathcal D$-generic filter on $P$. It's immediate to check that \SH follows from Martin's Axiom with $\kappa \defeq \aleph_1$.} (\MA). In 1967, Martin extracted the statement of \MA from the proof by Solovay and Tennenbaum, observed that its consistency could be proved by the same techniques used for \SH. \MA is a focal ``axiom'', which is stronger than \SH and has a wide range of consequences. For this reason, the consistency of \SH is usually presented as a corollary of the consistency of \MA (even in the original work by Solovay and Tennenbaum). Following the spirit of this work, we will prove the consistency of \SH directly, by adapting the proof for the consistency of \MA.
+Actually, in the final publication, the consistency of \SH was derived as an immediate consequence of other results concerning a new statement: Martin's Axiom\footnote{Martin's Axiom asserts: If $(P,<)$ is a ccc poset, $\kappa < 2^{\aleph_0}$ is an infinite cardinal and $\mathcal D$ is a collection of at most $\kappa$ dense subsets of $P$, then there exists a $\mathcal D$-generic filter on $P$. It's immediate to check that \SH follows from Martin's Axiom plus $\neg \CH$.} (\MA). In 1967, Martin extracted the statement of \MA from the proof by Solovay and Tennenbaum, observed that its consistency could be proved by the same techniques used for \SH. \MA is a focal ``axiom'', which is stronger than \SH and has a wide range of consequences. For this reason, the consistency of \SH is usually presented as a corollary of the consistency of \MA (even in the original work by Solovay and Tennenbaum). Following the spirit of this work, we will prove the consistency of \SH directly, by adapting the proof for the consistency of \MA.
 
 On a final note, this proof should be read after the one of Theorem \ref{thm-killing_kurepa_trees_via_forcing}, which kills Kurepa trees by means of a more ``rudimentary'' way for iterating forcing, i.e.\ product forcing. While this is not strictly necessary, we believe that the easier setting of Theorem \ref{thm-killing_kurepa_trees_via_forcing} will offer a better intuition to proceed with this section.
 
@@ -1174,7 +1174,7 @@ Let $\phi(x)$ be the formula which asserts that ``$x$ is a ccc forcing poset''. 
 \[
 1_P \forces_P \exists y \ [\phi(y) \wedge [\phi(\dot{T}) \imp y = \dot{T}]],
 \]
-because we can let $y$ be any appropriate ccc forcing order (e.g.\ the inverse of the usual order on $\omega_1$, restricted to the domain of $T$) when $\neg \phi(\dot{T})$. Using that $V^P$ is full, we can fix a name $\tau \in V^P$ such that
+because we can let $y$ be any appropriate ccc forcing order (e.g.\ the inverse of the usual order on $\omega_1$, restricted to the domain of $T$) when $\neg \phi(\dot{T})$. Using the Maximal Principle (cf.\ Preliminaries), we can fix a name $\tau \in V^P$ such that
 \[
 1_P \forces_P \phi(\tau) \wedge [\phi(\dot{T}) \imp \tau = \dot{T}]].
 \]
@@ -1273,9 +1273,9 @@ Of course $\{ X \cap \alpha : X \in \F \}$ is countable for any $\alpha$, becaus
 Assume towards a contradiction that $|\F| \leq \aleph_1$. Then there is an enumeration $C = \langle X_\xi : \xi < \omega_1 \rangle$ of $\F$. Suppose w.l.o.g.\ that $C$ is the $<_L$-least such enumeration.
 
 \begin{claim}{ 1}
-$C$ is absolute for $L_{\omega_2}$.
+$C$ belongs to $L_{\omega_2}$, in which it satisfies the same definition as in $V$.
 \begin{claimproof}
-The fact that $C \in L_{\omega_2}$ is immediate using that $L_{\omega_2} = H_{\omega_2}$. Recalling that the function $\theta \mapsto L_\theta$ and the relation ``$\preceq$'' are absolute (for $L_{\omega_2}$), it's easy to check that $f$ and, in turn, $\F$ are absolute for $L_{\omega_2}$. Thus $L_{\omega_2} \models C \colon \omega_1 \onto \F$.
+The fact that $C \in L_{\omega_2}$ is immediate using that $L_{\omega_2} = H_{\omega_2}$. Recalling that the function $\theta \mapsto L_\theta$ and the relation ``$\preceq$'' are absolute (for $L_{\omega_2}$), it's easy to check that $f$ and, in turn, $\F$ are absolute for $L_{\omega_2}$. Thus $L_{\omega_2} \models C \colon \omega_1 \onto \F$, and we conclude by the absoluteness of $<_L$.
 \end{claimproof}
 \end{claim}
 
@@ -1367,18 +1367,20 @@ Assume \CH. If $\A$ is a family of countable sets which has size $\aleph_2$, the
 \begin{theorem}[Stewart]\label{thm-forcing_a_kurepa_tree}
 There is a generic extension of $V$ in which there exists a Kurepa tree. 
 \begin{proof}
-We assume that \CH holds in $V$. The forcing poset is the set $P$ which consists of all the pairs $(T,f)$ where $T$ is a tree from Example \ref{example-countable_normal_trees} and $f \colon S \to \mathfrak{B}_T$ injective, with $S \sse \omega_2$ countable and $\mathfrak{B}_T \defeq \{\mathfrak{b} : \mathfrak{b}$ is a cofinal branch in $T \}$. We stipulate that $(T_1,f_1) \leq (T_2,f_2)$ iff $T_1$ end-extends $T_2$ and $f_1$ \emph{refines} $f_2$, that is
+We assume that \CH holds in $V$. The forcing poset is the set $P$ which consists of all the pairs $(T,f)$ where $T$ is a tree from Example \ref{example-countable_normal_trees} and $f \colon S \to \mathfrak{B}_T$, with $S \sse \omega_2$ countable and $\mathfrak{B}_T \defeq \{\mathfrak{b} : \mathfrak{b}$ is a cofinal branch in $T \}$. We stipulate that $(T_1,f_1) \leq (T_2,f_2)$ iff $T_1$ end-extends $T_2$ and $f_1$ \emph{refines} $f_2$, that is
 \begin{center}
-$\dom(f_1) \supseteq \dom(f_2)$ \quad and \quad $f_1(s) \supseteq f_2(s)$ for all $s \in \dom(f_2)$.
+$\dom(f_1) \supseteq \dom(f_2)$ \quad and \quad $f_1(\alpha) \supseteq f_2(\alpha)$ for all $\alpha \in \dom(f_2)$.
 \end{center}
 Let $G$ be $P$-generic. To lighten the notation, set $G_{\text{tr}} \defeq \{T : (T,f) \in G \text{ for some } f\}$ and $G_{\text{fun}} \defeq \{f : (T,f) \in G \text{ for some } T\}$. Now define
 \[
 \T \defeq \bigcup G_{\text{tr}}
 \]
 and
-\[
-\F \defeq \big\{ (\alpha, \mathfrak{b}) : \alpha \in \dom(f) \text{ for some } f \in G_{\text{fun}} \text{ and } \mathfrak{b} = \bigcup \{f(\alpha) : \alpha \in \dom(f)\} \big\}.
-\]
+\begin{multline*}
+\F \defeq \big\{ (\alpha, \mathfrak{b}) : \alpha \in \dom(f) \text{ for some } f \in G_{\text{fun}} \text{ and } \\
+\mathfrak{b} = \bigcup \{f(\alpha) : f \in G_{\text{fun}} \text{ is such that } \alpha \in \dom(f)\} \big\}.
+\end{multline*}
+
 \begin{claim}{ 1}
 \begin{enumerate}
 \item $V[G] \models \T$ is a tree with $\height(\T)=\omega_1$ and only countable levels.
@@ -1386,14 +1388,15 @@ and
 \end{enumerate}
 \begin{claimproof}
 The fact that $\T$ is a tree with height at most $\omega_1$ and only countable levels is trivial. Showing that $\height(\T)$ is precisely $\omega_1$ is a straightforward generalization of the argument we used for the same claim in the proof of Theorem \ref{thm-forcing_a_suslin_tree} (here we must deal also with the $f$'s, but it's very easy to figure the way out).\\
-For the second point, first we want to show that
+For the second point, first observe that $\F$ is easily seen to be a function since $G$ is a filter. The fact that $\ran(\F) \sse \mathfrak{B}_{\T}$ is trivial. It remains to check that $\dom(\F) = \omega_2$ and $\F$ is injective. To see this, we will show that
 \[
-D_s \defeq \{(T,f) : s \in \dom(f)\}
+D_\alpha \defeq \{(T,f) : \alpha \in \dom(f)\} \quad \text{and} \quad
+E_{\alpha,\beta} \defeq \{(T,f) : \alpha, \beta \in \dom(f) \text{ and } f(\alpha) \neq f(\beta)\}
 \]
-is dense for each $s < \omega_2$. Let $(T,f) \in P$. We want to find $(T',f') \in D_s$ which extends $(T,f)$.\\
-If $\height(T)$ is a successor ordinal, this is clearly true: simply extend $T$ the usual way to a tree $T'$ which has one more level and refine $f$ to $f'$ in the obvious way (if $s \not\in \dom(f)$ then just assign $f'(s)$ to a new branch of $T'$, which is possible because every cofinal branch of $T$ splits into two -- actually infinitely-many -- cofinal branches of $T'$).\\
-If $\height(T)$ is limit, then by our usual construction (see Lemma \ref{lemma-kill_countable_max_antichains}) we extend $T$ to $T'$ which has one more level, additionally making sure that (i) each branch in $\ran(f)$ gets extended and (ii) if $s \not\in \dom(f)$, then we extend at least one branch which is not in $\ran(f)$ (both (i) and (ii) are possible because $\ran(f)$ is countable, while there are at least $2^{\aleph_0}$-many cofinal branches in $T$, since $\height(T)$ is limit). Then we refine $f$ in the obvious way.\\
-So $\dom(\F) = \omega_2$ because $G$ is generic. The fact that $\ran(\F) \sse \mathfrak{B}_{\T}$ is trivial. Finally, $\F$ is easily seen to be a function since $G$ is a filter and it's also injective because each $f$ is.
+are dense for each $\alpha,\beta < \omega_2$ with $\alpha \neq \beta$. Obviously it suffices to show that $E_{\alpha,\beta}$ is dense for each $\alpha,\beta < \omega_2$ distinct. Let $(T,f) \in P$. We want to find $(T',f') \in E_{\alpha,\beta}$ which extends $(T,f)$.\\
+\textsc{Case A:} If $\height(T)$ is a successor ordinal, simply extend $T$ the usual way to a tree $T'$ which has one more level and refine $f$ to $f'$ in the obvious way. In particular, if $\alpha,\beta \in \dom(f)$ and $f(\alpha)=f(\beta)$, then assign $f'(\alpha)$ and $f'(\beta)$ to two distinct branches of $T'$ that extend $f(\alpha)$, which is possible because every cofinal branch of $T$ splits into two -- actually infinitely-many -- cofinal branches of $T'$. Using the last observation, it's immediate to extend $(T,f)$ even in case one or both of $\alpha,\beta$ are not in $\dom(f)$.\\
+\textsc{Case B:} If $\height(T)$ is limit, then by our usual construction (see Lemma \ref{lemma-kill_countable_max_antichains}) we extend $T$ to $T'$ which has one more level, additionally making sure that each branch in $\ran(f)$ gets extended (this is possible because $\ran(f)$ is countable). Then we refine $f$ in the obvious way to a function $f'$ with the same domain. So we obtain an extension $(T',f')$ where $\height(T')$ is a successor ordinal. We now apply \textsc{Case A} to $(T',f')$ and obtain $(T'',f'') \in E_{\alpha,\beta}$ which extends $(T,f)$.\\
+Using that $G$ is generic, it follows immediately that $\dom(\F) = \omega_2$ and $\F$ is injective.
 \end{claimproof}
 \end{claim}
 \\[6pt]
@@ -1407,9 +1410,9 @@ First observe that $|P_{\text{tr}}| \leq \aleph_1$. For, any tree of Example \re
 
 So $|W_{\text{tr}}| \leq |P_{\text{tr}}| \leq \aleph_1$, hence by $|W| \leq |W_{\text{tr}} \times W_{\text{fun}}| = \max(|W_{\text{tr}}|,|W_{\text{fun}}|)$ we get $|W_{\text{fun}}| = \aleph_2$. Observe that
 \[
-W_{\text{fun}} \sse \bigcup_{\substack{T \in W_{\text{tr}} \\ X \in [\mathfrak{B}_T]^{< \omega} }} W_{\text{fun}}^{T,X},
+W_{\text{fun}} \sse \bigcup_{\substack{T \in W_{\text{tr}} \\ X \in [\mathfrak{B}_T]^{< \omega_1} }} W_{\text{fun}}^{T,X},
 \]
-where $W_{\text{fun}}^{T,X}$ is the set of functions in $W_{\text{fun}}$ which are relative to the tree $T$ and whose range is $X$ (which is a countable collection of cofinal branches in $T$). Since any $T$ is countable and $\mathfrak{B}_T \sse \PP(T)$, using \CH we get $|\mathfrak{B}_T| \leq \aleph_1$. So the set of indices we run the union over has cardinality at most $\aleph_1$, thus by regularity of $\omega_2$ there exist $T \in W_{\text{tr}}$ and $X \in [\mathfrak{B}_T]^{< \omega}$ such that $|W_{\text{fun}}^{T,X}| = \aleph_2$. Now:
+where $W_{\text{fun}}^{T,X}$ is the set of functions in $W_{\text{fun}}$ which are relative to the tree $T$ (i.e.\ $\ran(f) \sse \mathfrak{B}_T$) and whose range is $X$ (which then is a countable collection of cofinal branches in $T$). Since any $T$ is countable and $\mathfrak{B}_T \sse \PP(T)$, using \CH we get $|\mathfrak{B}_T| \leq \aleph_1$. So the set of indices we run the union over has cardinality at most $\aleph_1$, thus by regularity of $\omega_2$ there exist $T \in W_{\text{tr}}$ and $X \in [\mathfrak{B}_T]^{< \omega_1}$ such that $|W_{\text{fun}}^{T,X}| = \aleph_2$. Now:
 \[
 W_{\text{fun}}^{T,X} \sse \bigcup_{ \big\{ {\dom(f)} \; : \; f \in W_{\text{fun}}^{T,X} \big\} } {^{\dom(f)}} X.
 \]
@@ -1538,7 +1541,7 @@ S \defeq \bigcup \{ \supt(p) : p \in B \},
 \]
 where $\supt(p) \defeq \{\alpha : p_\alpha \neq 1\}$, which is always countable. So $|S| < \kappa$ by regularity again. Hence, $M$ models that
 \begin{equation}\label{eq:kill_kurepa_trees}
-\forall \gamma < \kappa \ \exists \alpha < \kappa \ [\alpha > \gamma \text{ and } \gamma \not\in S].
+\forall \gamma < \kappa \ \exists \alpha < \kappa \ [\alpha > \gamma \text{ and } \alpha \not\in S].
 \end{equation}
 Now define $P^- \defeq P_S$ and $P^+ \defeq P_{\kappa \sm S}$, so that $P \simeq P^- \times P^+$. By the Product Lemma, we have that $G = G^- \times G^+$, where $G^-$ is $P^-$ generic over $M$ and $G^+$ is $P^+$-generic over $M[G^-]$. Also, $M[G] = M[G^-][G^+]$. Furthermore, the definition of $S$ ensures that ${\sqsubset} \in M[G^-]$. Observe that $P^-$ is countably closed, thus it doesn't add $\omega$-sequences. Since $P^+$ is countably closed in $M$, this implies that $P^+$ is countably closed in $M[G^-]$ as well. Therefore we can apply Lemma \ref{lemma-preserving_uncountable_branches} to conclude that every cofinal branch in $(\omega_1,\sqsubset)$ that lies in $M[G]$ is already an element of $M[G^-]$. In $M[G]$ (equivalently, in $M[G^-]$), let
 \[
@@ -1653,7 +1656,7 @@ It's easy to see that Lemma \ref{lemma-countable_elementary_substructure_of_L(th
 Before proceeding with the main theorem, two trivial lemmas:
 
 \begin{lemma}\label{lemma-constructibility_relative_to_initial_segment}
-Let $A \sse \Ord$. Then $L_\alpha[A] = L_\alpha [A \cap \alpha]$ for every ordinal $\beta$.
+Let $A \sse \Ord$. Then $L_\alpha[A] = L_\alpha [A \cap \alpha]$ for every ordinal $\alpha$.
 \begin{proof}
 An easy induction.
 \end{proof}
@@ -1783,7 +1786,7 @@ Moreover, it's immediate to check that $\{\alpha_\nu \mid \nu < \omega_1\}$ is a
 $\beta_\zeta \in M_\zeta$.
 \begin{claimproof}
 \textsc{Case A:} $\omega_1^{L[B \cap \gamma]} = \omega_1$ for some $\gamma < \omega_1$. Note that any bijection $\omega_1^{L[B \cap \gamma]} \to \omega_1$ in $L[B \cap \gamma]$ belongs to $(H_{\omega_2})^{L[B \cap \gamma]} = (L_{\omega_2}[B \cap \gamma])^{L[B \cap \gamma]} = L_{\omega_2^{L[B \cap \gamma]}}[B \cap \gamma] \sse L_{\omega_2^{L[B]}}[B] = N^*$.\\
-So, if we let $\gamma_0$ be the least ordinal such that $\omega_1^{L[B \cap \gamma]} = \omega_1$, we have that $\gamma_0$ is definable in $N^*$ by the usual methods. Since $N_\zeta \preceq N^*$, $\gamma_0 \in N_\zeta$ as well. Hence $\gamma_0 < \alpha_\zeta = \zeta$, so $\omega_1^{L[B \cap \zeta]} = \omega_1$ by Lemma \ref{lemma-constructibility_relative_to_different_sets}. Since $\zeta < \omega_1$, of course ($\zeta$ is countable)$^{L[B \cap \zeta]}$. By the usual methods, an injection $\zeta \to \omega$ already lies at some countable level of the hierarchy, i.e.\ there is $\tau < \omega_1$ such that $\zeta$ is countable in $L_\tau [B \cap \zeta]$. Of course $\tau$ is definable in $H_{\omega_1}$ using the parameter $B \cap \zeta$.
+So, if we let $\gamma_0$ be the least ordinal such that $\omega_1^{L[B \cap \gamma_0]} = \omega_1$, we have that $\gamma_0$ is definable in $N^*$ by the usual methods. Since $N_\zeta \preceq N^*$, $\gamma_0 \in N_\zeta$ as well. Hence $\gamma_0 < \alpha_\zeta = \zeta$, so $\omega_1^{L[B \cap \zeta]} = \omega_1$ by Lemma \ref{lemma-constructibility_relative_to_different_sets}. Since $\zeta < \omega_1$, of course ($\zeta$ is countable)$^{L[B \cap \zeta]}$. By the usual methods, an injection $\zeta \to \omega$ already lies at some countable level of the hierarchy, i.e.\ there is $\tau < \omega_1$ such that $\zeta$ is countable in $L_\tau [B \cap \zeta]$. Of course $\tau$ is definable in $H_{\omega_1}$ using the parameter $B \cap \zeta$.
 % because H_{\omega_1} models ZFC-P and \gamma \mapsto L_\gamma is absolute
 Recalling that $B \cap \zeta \in M_\zeta \prec H_{\omega_1}$ we obtain $\tau \in M_\zeta$. But $\zeta = \alpha_\zeta = \omega_1^{\ol{N}_\zeta}$, i.e.\ $\zeta$ is uncountable in $L_{\beta_\zeta}[B \cap \zeta]$. Thus $\beta_\zeta < \tau$, whereby $\beta_\zeta \in M_\zeta$.
 \\[6pt]
@@ -1832,11 +1835,11 @@ P \defeq \{ p \mid p \colon a \to T|\alpha, \text{ for some finite set $a \sse \
 \]
 and the order is given by
 \[
-p \leq_P q \Longleftrightarrow \dom(p) \supseteq \dom(q) \text{ and } \forall n \in \dom(q) \ [p_n \supseteq q_n].
+p \leq_P q \Longleftrightarrow \dom(p) \supseteq \dom(q) \text{ and } \forall n \in \dom(q) \ [p(n) \supseteq q(n)].
 \]
 $M_\alpha$ is countable, so in $L[A]$ there exists an $M_\alpha$-generic filter for $P$. We take $G$ as the least w.r.t.\ the canonical order of $L[A]$. Observe that actually $M_\alpha \in M_{\alpha+1}$ and $M_{\alpha+1} \preceq H_{\omega_1}$, so that $M_\alpha$ is countable in $M_{\alpha+1}$ and hence $G \in M_{\alpha+1}$. This will easily ensure that the induction hypothesis $T|(\alpha+1) \in M_{\alpha+1}$ is preserved, once we complete the definition of $U_\alpha$. For all $n \in \omega$, define
 \[
-\b_n \defeq \{p_n \mid p \in G\}.
+\b_n \defeq \{p(n) \mid p \in G\}.
 \]
 \begin{claim}{}
 The following hold:
@@ -1850,14 +1853,14 @@ The following hold:
 \begin{claimproof}
 Points (i) and (iii) clearly follow from (iv). Also (ii) does: take $n \neq m$  and suppose towards a contradiction that $\b_n = \b_m = \b$. By (iv), $\b_n \times \b_m$ is $M_\alpha$-generic for $T|\alpha \times T|\alpha$. By the Product Lemma, we get that $\b$ is $M[\b]$-generic for $T|\alpha \times T|\alpha$, and this is not possible\footnote{It is a well-known and easy fact that if $M$ is a countable transitive model and $P$ is an atomless separative forcing poset, then no $M$-generic filter for $P$ belongs to $M$.} because clearly $\b \in M[\b]$. Let's prove (iv). Suppose $n \neq m$ and $D \sse T|\alpha \times T|\alpha$ is dense. The set
 \[
-D^* \defeq \{p \in P \mid (p_n,p_m) \in D\}
+D^* \defeq \{p \in P \mid (p(n),p(m)) \in D\}
 \]
-is clearly dense in $P$. So take $p \in G \cap D^*$. Then $(p_n,p_m) \in b_n \times b_m \cap D$ and we are done.\\
+is clearly dense in $P$. So take $p \in G \cap D^*$. Then $(p(n),p(m)) \in b_n \times b_m \cap D$ and we are done.\\
 As for (v), let $s \in T|\alpha$ and define
 \[
-D_s \defeq \{p \in P \mid p_n \supseteq s, \text{ for some } n \in \dom(p)\}.
+D_s \defeq \{p \in P \mid p(n) \supseteq s, \text{ for some } n \in \dom(p)\}.
 \]
-$D_s$ is dense in $P$, so there is $p \in G \cap D_s$. Thus $s \sse p_n \in \b_n$ for some $n \in \dom(p)$, so $s \in \b_n$ and the claim is proved.
+$D_s$ is dense in $P$, so there is $p \in G \cap D_s$. Thus $s \sse p(n) \in \b_n$ for some $n \in \dom(p)$, so $s \in \b_n$ and the claim is proved.
 \end{claimproof}
 \end{claim}\\[10pt]
 So we define $U_{\alpha+1} \defeq \{\bigcup \b_n \mid n \in \omega\}$. By point (v) of the claim, $T|(\alpha+1)$ is normal. Finally, $T \defeq \bigcup_{\alpha < \omega_1} U_\alpha$ is a normal $\omega_1$-tree. Using Claim \ref{claim-homogeneous_suslin_tree}, point (iii) of the claim ensures that $T$ is Suslin. It remains to show that $T$ is rigid. Suppose to the contrary that $\sigma$ is a non-trivial automorphism of $T$. Using essentially the same argument of the proof of Claim \ref{claim-homogeneous_suslin_tree}, we will find some $\zeta < \omega_1$ such that $\sigma \restr (T|\zeta) \in M_\zeta$. By the construction of $T$, this will be easily seen to imply the existence of two branches $\b_n$ and $\b_m$ such that $\b_n \in M_\zeta[\b_m]$, which will in turn lead to a contradiction by the Product Lemma.\\
@@ -1866,7 +1869,7 @@ Let $B \sse \omega_1$ be such that $A, T, \sigma \in L[B]$. Set $N^* \defeq L_{\
 \[
 \mos_\zeta(T) = T|\zeta \in M_\alpha \quad \text{and} \quad \mos_\zeta(\sigma) = \sigma \restr (T|\zeta) \in M_\alpha.
 \]
-By elementary equivalence, $\sigma \restr (T|\zeta)$ is non-trivial. So there is $s \in T|\zeta$ such that $\sigma(s) \neq s$. Take $s' \in U_\zeta$ such that $s' \supset s$. Of course $\sigma(s') \neq s'$. Of course $\zeta$ is limit, hence by the construction of $T$ at limit levels there are $m$ and $n$ distinct such that $s' = \bigcup \b_m$ and $\sigma(s') = \bigcup \b_n$. Thus $\sigma(s') = \bigcup_{\nu < \alpha} \sigma(s' \restr \nu)$. Of course the latter belongs to any transitive models which contains $M_\zeta$ and $s'$, so that $\sigma(s') \in M_\zeta[s']$. But clearly $M_\zeta[s'] = M_\zeta[\b_m]$, hence $\b_n \in M_\zeta[\b_m]$. However, $\b_m \times \b_n$ is $M_\zeta$-generic for $T|\zeta \times T|\zeta$ by (iv) of the claim, so $\b_n$ is $M_\zeta[\b_m]$-generic for $T|\alpha$ by the Product Lemma. Thus $\b_n \not\in M_\alpha[\b_m]$, contradiction.
+By elementarity, $\sigma \restr (T|\zeta)$ is non-trivial. So there is $s \in T|\zeta$ such that $\sigma(s) \neq s$. Take $s' \in U_\zeta$ such that $s' \supset s$. Of course $\sigma(s') \neq s'$. Of course $\zeta$ is limit, hence by the construction of $T$ at limit levels there are $m$ and $n$ distinct such that $s' = \bigcup \b_m$ and $\sigma(s') = \bigcup \b_n$. Thus $\sigma(s') = \bigcup_{\nu < \alpha} \sigma(s' \restr \nu)$. Of course the latter belongs to any transitive models which contains $M_\zeta$ and $s'$, so that $\sigma(s') \in M_\zeta[s']$. But clearly $M_\zeta[s'] = M_\zeta[\b_m]$, hence $\b_n \in M_\zeta[\b_m]$. However, $\b_m \times \b_n$ is $M_\zeta$-generic for $T|\zeta \times T|\zeta$ by (iv) of the claim, so $\b_n$ is $M_\zeta[\b_m]$-generic for $T|\alpha$ by the Product Lemma. Thus $\b_n \not\in M_\alpha[\b_m]$, contradiction.
 \end{proof}
 \end{theorem}
 
