@@ -92,7 +92,6 @@
 \DeclareMathOperator{\PP}{\mathcal{P}}
 \DeclareMathOperator{\LL}{\mathcal{L}}
 \DeclareMathOperator{\Hrtg}{\text{Hrtg}}
-\DeclareMathOperator{\Ord}{\text{Ord}}
 \DeclareMathOperator{\J}{\mathcal{J}}
 \DeclareMathOperator{\N}{\mathbb{N}}
 \DeclareMathOperator{\R}{\mathbb{R}}
@@ -163,6 +162,7 @@
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\X}{\mathbf{X}}
 \newcommand{\x}{\mathbf{x}}
+\newcommand{\Ord}{\mathrm{Ord}}
 %\newcommand{\b}{\mathfrak{b}}
 \newcommand{\IFF}{\Longleftrightarrow}
 \newcommand{\conc}{^\frown}
@@ -280,19 +280,71 @@ Correlatore: Prof.\ Sy David Friedman
 
 \centerline{ANNO ACCADEMICO 2015/16}
 
+\setcounter{page}{0}
 
 
-\newpage\null\thispagestyle{empty}\newpage
-
-\setcounter{page}{1}
+\newpage\null\thispagestyle{empty}
 
 \pagenumbering{roman}
 
 
+\newpage
+
+
+
+
+%%% BEGIN DEDICATION %%%
+{
+\clearpage           % we want a new page
+\thispagestyle{empty}% no header and footer
+\vspace*{\stretch{3}}% some space at the top 
+\itshape             % the text is in italics
+\raggedleft
+
+To my parents
+
+\par % end the paragraph
+\vspace{\stretch{1}} % space at bottom is three times that at the top
+\clearpage 
+}
+%%% END DEDICATION %%%
+
+\newpage\null\thispagestyle{empty}\newpage
+
+
+\chapter*{Acknowledgements}
+
+\thispagestyle{empty}
+
+I wish to thank Prof.\ Sy D.\ Friedman for advising this work and hosting me at the Kurt Gödel Research Center for the past months. I am very grateful for living in an academic, social and historical context which could give me this opportunity.\\
+
+I need to thank Prof.\ Matteo Viale, who supported my wish to write the thesis in Vienna.\\
+
+I sincerely thank Stefan Hoffelner for helping me promptly whenever I asked and for putting up with my mathematical immaturity.\\
+
+Ringrazio la mia famiglia per la libertà che mi ha donato. Un pensiero particolare va ai miei genitori: le loro scelte e il loro affetto mi hanno assicurato il privilegio di pensare al mio futuro sempre con ottimismo e serenità.\\
+
+Ringrazio i miei amici: per quanto distanti ci troviamo, il legame che ci unisce non si spezza mai.
+%
+%Ringrazio i vecchi amici, che sono sempre lì: Edoardo, Matteo, Nicolò, Laura, Lucia, Leonardo, Michele e Stefania.\\
+%
+%Ringrazio Simone, Giulia, Marcella e Mattia. La mia personalità ora riflette anche la loro.
+%
+%Ringrazio Simona e Annamaria: adesso so cosa significa sentirsi a casa.
+
+
+\newpage\null\thispagestyle{empty}\newpage
+
+
 \tableofcontents
+
+
+\newpage\null\thispagestyle{empty}\newpage
+
 
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
+
 
 Trees play an important role in set theory, mainly because of their rather \emph{concrete} nature. This is probably the reason why many fundamental tools and concepts in set theory (most notably, iterated forcing) originated from the study of trees. The starting point can be identified with the following well-known elementary fact, known as König's lemma:
 \begin{center}
@@ -306,9 +358,9 @@ Any counterexample to $\TP(\kappa)$ is called \emph{Aronszajn $\kappa$-tree}. So
 
 In 1935, Kurepa conducted the first systematic study of trees, which included the first construction of an Aronszajn tree of height $\omega_1$. In the same work, he introduced the notions of \emph{Suslin tree} and \emph{Kurepa tree}. A Suslin tree (\ST) is an $\omega_1$-tree with no uncountable antichains and no uncountable branches. A Kurepa tree (\KT) is an $\omega_1$-tree with countable levels and at least $\aleph_2$-many uncountable branches. Kurepa's hypothesis (\KH) is the conjecture ``There exists a \KT''. Kurepa characterized in terms of Suslin trees a famous problem originally formulated by Suslin, called \emph{Suslin hypothesis} (\SH), which states:
 \begin{center}
-Every dense linearly ordered set without endpoints which is Dedekind complete and satisfies the countable chain condition\footnote{The \emph{countable chain condition} says that every collection of mutually disjoint non-empty open intervals is countable.} is order-isomorphic to the real line.
+\emph{Every dense linearly ordered set without endpoints which is Dedekind complete and satisfies the countable chain condition\footnote{The \emph{countable chain condition} says that every collection of mutually disjoint non-empty open intervals is countable.} is order-isomorphic to the real line.}
 \end{center}
-Kurepa translated \SH into a purely combinatorial problem, by showing that \SH holds iff there exists no \ST. However, he couldn't prove nor refute the existence of Suslin and Kurepa trees. In fact, no much progress was made about this problem until the advent of forcing. But after Cohen established the relative consistency of $\neg\CH$ introducing the method of forcing in 1963, many people began to explore the possibility of applying the same techniques to \SH and \KH. Within a few years, the problem was settled, as both \SH and \KH were proven to be independent of \ZFC. This thesis offers a detailed presentation of such consistency results, together with other interesting theorems about trees.
+Kurepa translated \SH into a purely combinatorial problem, by showing that \SH holds iff there exists no \ST. However, he couldn't prove nor refute the existence of Suslin and Kurepa trees. In fact, no much progress was made about this problem until the advent of forcing. But after Cohen established the relative consistency of $\neg\CH$ introducing the method of forcing in 1963, many people began to explore the possibility of applying the same techniques to \SH and \KH. Within a few years, the problem was settled, as both \SH and \KH were proved to be independent of \ZFC. This thesis offers a detailed presentation of such consistency results, together with other interesting theorems about trees.
 \\[10pt]
 \indent In the first chapter we present Kurepa's construction of an Aronszajn $\omega_1$-tree. Then we generalize this result to Aronszajn trees of height the successor of any regular cardinal, under the assumption that \GCH holds.
 
@@ -316,13 +368,14 @@ The second chapter is the core of our work. After discussing some easy propertie
 
 The third chapter is symmetrical to the second, but relative to Kurepa's hypothesis and Kurepa trees. We shall mention that to ``kill'' Kurepa trees via forcing, we will need to assume that inaccessible cardinals exist. In fact, $\neg\KH$ is equiconsistent with the existence of an inaccessible cardinal.
 
-The last chapter contains two ``bonus'' results: we show that using the diamond principle ($\diamondsuit$), one can construct a \emph{homogeneous} \ST (i.e.\ a \ST where any two nodes can be swapped by some automorphism) and a \emph{rigid} \ST (i.e.\ a \ST with no non-trivial automorphisms). These are two enthralling theorems which are also interesting from a historical point of view, although they are much less known compared to the other results presented in the thesis.
+The last chapter contains two ``bonus'' results: we show that using the diamond principle ($\diamondsuit$), one can construct a \emph{homogeneous} \ST (i.e.\ a \ST where any two nodes of the same height can be swapped by some automorphism) and a \emph{rigid} \ST (i.e.\ a \ST with no non-trivial automorphisms). These are two enthralling theorems which are also interesting from a historical point of view, although they are much less known compared to the other results presented in the thesis.
 \\[10pt]
-\indent Our work is inspired by Jech's review about trees \cite{Jec1971}. We expand both the mathematical and the historical content of Jech's article, where proofs are explicitly defined as ``sketched'' by the author. This thesis is meant to be a clear and exhaustive introduction to trees, and proofs are filled with details. A peculiarity of our work is the historical perspective we adopted: although modern tools and notation are used, the main theorems are presented and proven in their original form, whereas the standard approach in textbooks is to derive them from later results. More specifically, some technical \emph{focal} principles were formulated to generalize and strengthen the results presented in our thesis. This is for example the case of the diamond principle, introduced by Jensen and extracted from his proof that $V=L$ implies the existence of a \ST. Usually, in textbooks it is proved that $\diamondsuit$ holds in $L$, and then it is noted that $\nSH$ easily follows from $\diamondsuit$. Similarly, Martin's axiom was formulated and studied by Martin by generalizing the methods (i.e.\ iterated forcing) introduced for the first time in the original work of Solovay and Tennenbaum (never published) which produced a model where no \ST exists. The consistency of \SH is usually derived from the one of Martin's axiom. While this approach totally makes sense, we believe that our exposition may result pleasant especially to students who saw only the application of forcing to \CH, because of the good intuition that trees tend to offer.
+\indent Our work is inspired by Jech's review about trees \cite{Jec1971}. We expand both the mathematical and the historical content of Jech's article, where proofs are explicitly defined as ``sketched'' by the author. This thesis is meant to be a clear and exhaustive introduction to trees, and proofs are filled with details. A peculiarity of our work is the historical perspective we adopted: although modern tools and notation are used, the main theorems are presented and proved in their original form, whereas the standard approach in textbooks is to derive them from later results. More specifically, some technical \emph{focal} principles were formulated to generalize and strengthen the results presented in our thesis. This is for example the case of the diamond principle, introduced by Jensen and extracted from his proof that $V=L$ implies the existence of a \ST. Usually, in textbooks it is proved that $\diamondsuit$ holds in $L$, and then it is noted that $\nSH$ easily follows from $\diamondsuit$. Similarly, Martin's axiom was formulated and studied by Martin by generalizing the methods (i.e.\ iterated forcing) introduced for the first time in the original work of Solovay and Tennenbaum (never published) which produced a model where no \ST exists. The consistency of \SH is usually derived from the one of Martin's axiom. While this approach totally makes sense, we believe that our exposition may result pleasant especially to students who saw only the application of forcing to \CH, because of the good intuition that trees tend to offer.
 
 
 \chapter*{Notation}
 \addcontentsline{toc}{chapter}{Notation}
+
 
 We list here some elementary definitions with the only purpose to fix non-standard notation.\\
 \\
@@ -484,16 +537,16 @@ On a final note, we remark that our overview about forcing above takes place in 
 
 
 
-
+\newpage\null\thispagestyle{empty}\newpage
 
 
 
 
 \chapter{The tree property}
 
-\pagenumbering{arabic}
-
 \section{Basic notions about trees}
+
+\pagenumbering{arabic}
 
 In this section we define trees and several basic concepts related to them.
 
@@ -516,8 +569,8 @@ We consider the family of trees given by all $T$ which satisfy the following pro
 \begin{enumerate}[(i)]
 \item every element $t \in T$ is a function $t \colon \beta \to \omega$, with $\beta < \alpha$;
 \item $T$ is closed under initial segments, i.e.\ if $t \in T$ then $t \restr \beta$ is in $T$ as well, for any $\beta$;
-\item if $t \colon \beta \to \omega$ is in T and $\beta+1 < \alpha$, then $t \conc n \in T$ for all $n \in \omega$;
-\item if $t \colon \beta \to \omega$ is in T and $\beta \leq \gamma < \alpha$, then there exists $s \colon \gamma \to \omega$ such that $t \sse s$;
+\item if $t \colon \beta \to \omega$ is in $T$ and $\beta+1 < \alpha$, then $t \conc n \in T$ for all $n \in \omega$;
+\item if $t \colon \beta \to \omega$ is in $T$ and $\beta \leq \gamma < \alpha$, then there exists $s \colon \gamma \to \omega$ such that $t \sse s$;
 \item $T \cap {}^{\beta} \omega$ is countable for all $\beta < \alpha$.
 \end{enumerate}
 Observe that $T$ is a countable set and the $\beta$th level consists precisely of the functions in $T$ whose length is $\beta$.
@@ -941,7 +994,7 @@ The following is an easy and well-known property of forcing. We include it here 
 Let $M$ be a countable transitive model for \ZFC and $P$ a poset. Let $\pi \in M^P$ be a name and $r \in P$. If $r \forces \exists x \in \pi \ \phi(x)$, then there is a $q \leq r$ and a $\sigma \in \dom(\pi)$ such that $q \forces [\sigma \in \pi \wedge \phi(\sigma)]$.\\
 In particular, suppose that $\pi$ is a canonical name $\check{a} \in M^P$. Then $\sigma = \check{b}$ for some $b \in M$, and we obtain that:
 \begin{center}
-If $r \forces \exists x \in \check{a} \ \phi(x)$, then there is a $q \leq r$ and a $b \in a$ such that $q \forces \phi(\check{b})$.
+If $r \forces \exists x \in \check{a} \ \phi(x)$, then there are some $q \leq r$ and some $b \in a$ such that $q \forces \phi(\check{b})$.
 \end{center}
 \end{fact}
 
@@ -1030,7 +1083,7 @@ Recursively using this argument, we define a sequence $T_0 \geq T_1 \geq \ldots 
 \begin{equation}\label{eq:killing_suslin_trees}
 \forall s \in T_n \ \exists t_s \in T_{n+1} \ [\text{$s$ and $t_s$ are comparable and $T_{n+1} \forces t_s \in \dot{A}$}].
 \end{equation}
-Now we let $T_\infty \defeq \bigcup_{n < \omega} T_n \in P$ and $A' \defeq \{t_s : s \in T_\infty\}$. By \eqref{eq:killing_suslin_trees}, $A'$ is a maximal antichain in $T_\infty$ and $T_\infty \forces A' \sse A$. By Lemma \ref{lemma-kill_countable_max_antichains} we get an end-extension $T'$ of $T_\infty$ such that $A'$ is a bounded maximal antichain in $T'$. Of course $T' \forces A' \sse A$ and hence $T' \in D$.
+Now we let $T_\infty \defeq \bigcup_{n < \omega} T_n \in P$ and $A' \defeq \{t_s : s \in T_\infty\}$. By \eqref{eq:killing_suslin_trees}, $A'$ is a maximal antichain in $T_\infty$ and $T_\infty \forces A' \sse \dot{A}$. By Lemma \ref{lemma-kill_countable_max_antichains} we get an end-extension $T'$ of $T_\infty$ such that $A'$ is a bounded maximal antichain in $T'$. Of course $T' \forces A' \sse \dot{A}$ and hence $T' \in D$.
 \end{proof}
 \end{theorem}
 
@@ -1227,7 +1280,7 @@ One can see that the generic extension constructed in last theorem satisfies $\Z
 \section{Kurepa's Hypothesis}
 
 \begin{defn}
-A \emph{Kurepa tree} is an $\omega_1$-tree which has only countable levels and at least $\aleph_2$-many uncountable branches.
+A \emph{Kurepa tree} is an $\omega_1$-tree which has only levels of countable size and at least $\aleph_2$-many uncountable branches.
 \end{defn}
 
 \begin{defn}
@@ -1673,6 +1726,13 @@ Immediate by the characterization of $L[X]$ as the smallest inner model which co
 \end{proof}
 \end{lemma}
 
+Recall that the Diamond Principle ($\diamondsuit$) asserts: 
+\begin{center}
+There exists a sequence of sets $\langle S_\alpha : \alpha < \omega_1 \rangle$ with $S_\alpha \sse \alpha$, such that for every $X \sse \omega_1$, the set $\{\alpha < \omega_1 : X \cap \alpha = S_\alpha \}$ is a stationary subset of $\omega_1$.
+\end{center}
+
+We can now present the main result of this section:
+
 \begin{theorem}\label{thm-homogeneous_suslin_tree}
 If $\diamondsuit$ holds, then there exists a homogeneous normal Suslin tree.
 \begin{proof}
@@ -1692,7 +1752,7 @@ To continue the proof, we need an important claim which we will prove later:
 \begin{standalone_claim}\label{claim-homogeneous_suslin_tree}
 Let $T$ be a normal $\omega_1$-tree with $T \sse H_{\omega_1}$ and let $C \sse \omega_1$ be a club set of limit ordinals such that for all $\alpha \in C$ the following holds:
 \begin{center}
-If $T|\alpha \in M_\alpha$ and $x \in U_\alpha$, then $\downarrow x$ is $M_\alpha$-generic\footnotemark for $T|\alpha$.
+If $T|\alpha \in M_\alpha$ and $x$ belongs to the $\alpha$th level of $T$, then $\downarrow x$ is $M_\alpha$-generic\footnotemark\ for $T|\alpha$.
 \end{center}
 Then $T$ is a Suslin tree.
 \footnotetext{Of course here we mean generic w.r.t.\ the reverse order (but obviously $\downarrow x$ is referred to the original order).}
@@ -1784,7 +1844,22 @@ Moreover, it's immediate to check that $\{\alpha_\nu \mid \nu < \omega_1\}$ is a
 \\[-10pt]
 \begin{claim}{}
 $\beta_\zeta \in M_\zeta$.
+\end{claim}
+\\[7pt]
+The proof of last claim is very technical, so we will present it at the end.\\
+So $\beta_\zeta \in M_\zeta = L_{\delta_\zeta}[A]$, hence $\beta_\zeta < \delta_\zeta$. Then we obtain
+\[
+\ol{N}_\zeta = L_{\beta_\zeta}[B \cap \zeta] \sse L_{\delta_\zeta}[B \cap \zeta] \sse M_\zeta,
+\]
+where the last inclusion is true because in $M_\zeta = L_{\delta_\zeta}[A]$ we can re-define every $L_\gamma[B \cap \zeta]$ for $\gamma < \delta_\zeta$ (recall that $B \cap \zeta \in M_\zeta$). Observe that $T,X \in N_\zeta$ and $T,X \sse L_{\omega_1}[B]$, so $\mos_\zeta(T) = T|\zeta$ and $\mos_\zeta(X) = X \cap T|\zeta$. Thus
+\[
+T|\zeta \in \ol{N}_\zeta \sse M_\zeta \quad \text{and} \quad X \cap T|\zeta \in \ol{N}_\zeta \sse M_\zeta.
+\]
+Also, by elementarity $X \cap T|\zeta$ is a maximal antichain in $T|\zeta$. If $x \in T$ is of height $\zeta$, then by hypothesis the branch ${\downarrow} x$ is $M_\zeta$-generic for $T|\zeta$. Hence it has non-empty intersection with $X \cap T|\zeta$, so $x$ lies above a point in $X \cap T|\zeta$. This true for every $x$ at level $\zeta$, therefore $X \cap T|\zeta$ is a maximal antichain in $T|\zeta+1$ as well. By Lemma \ref{lemma-maximal_antichain_end_extensions} it is maximal also in $T$. Thus $X = X \cap T|\zeta$ and so $X$ is countable.\\
+\\
+It remains to prove the claim:
 \begin{claimproof}
+We have to show that $\beta_\zeta \in M_\zeta$. We consider two cases.\\[6pt]
 \textsc{Case A:} $\omega_1^{L[B \cap \gamma]} = \omega_1$ for some $\gamma < \omega_1$. Note that any bijection $\omega_1^{L[B \cap \gamma]} \to \omega_1$ in $L[B \cap \gamma]$ belongs to $(H_{\omega_2})^{L[B \cap \gamma]} = (L_{\omega_2}[B \cap \gamma])^{L[B \cap \gamma]} = L_{\omega_2^{L[B \cap \gamma]}}[B \cap \gamma] \sse L_{\omega_2^{L[B]}}[B] = N^*$.\\
 So, if we let $\gamma_0$ be the least ordinal such that $\omega_1^{L[B \cap \gamma_0]} = \omega_1$, we have that $\gamma_0$ is definable in $N^*$ by the usual methods. Since $N_\zeta \preceq N^*$, $\gamma_0 \in N_\zeta$ as well. Hence $\gamma_0 < \alpha_\zeta = \zeta$, so $\omega_1^{L[B \cap \zeta]} = \omega_1$ by Lemma \ref{lemma-constructibility_relative_to_different_sets}. Since $\zeta < \omega_1$, of course ($\zeta$ is countable)$^{L[B \cap \zeta]}$. By the usual methods, an injection $\zeta \to \omega$ already lies at some countable level of the hierarchy, i.e.\ there is $\tau < \omega_1$ such that $\zeta$ is countable in $L_\tau [B \cap \zeta]$. Of course $\tau$ is definable in $H_{\omega_1}$ using the parameter $B \cap \zeta$.
 % because H_{\omega_1} models ZFC-P and \gamma \mapsto L_\gamma is absolute
@@ -1806,18 +1881,7 @@ L_{\omega_2^{L[B]}}[B] \models & \text{ for every ordinal $\gamma$ there is a su
 (this is proven by the usual methods, observing that such $f$ clearly exists in $L[B]$ and in particular $f \in (H_{\omega_2})^{L[B]} = L_{\omega_2^{L[B]}}[B]$).\\
 By elementarity, the statement is true also in $\ol{N}_\zeta = L_{\beta_\zeta}[B \cap \zeta]$. This clearly means 
 $\omega_2^{L[B \cap \zeta]} \not\in L_{\beta_\zeta}[B \cap \zeta]$, whereby $\beta_\zeta \leq \omega_2^{L[B \cap \zeta]}$. Since we just proved that $\omega_2^{L[B \cap \zeta]} \in M_\zeta$, we can finally conclude that $\beta_\zeta \in M_\zeta$.
-\end{claimproof}
-\end{claim}
-\\[10pt]
-So $\beta_\zeta \in M_\zeta = L_{\delta_\zeta}[A]$, hence $\beta_\zeta < \delta_\zeta$. Then we obtain
-\[
-\ol{N}_\zeta = L_{\beta_\zeta}[B \cap \zeta] \sse L_{\delta_\zeta}[B \cap \zeta] \sse M_\zeta,
-\]
-where the last inclusion is true because in $M_\zeta = L_{\delta_\zeta}[A]$ we can re-define every $L_\gamma[B \cap \zeta]$ for $\gamma < \delta_\zeta$ (recall that $B \cap \zeta \in M_\zeta$). Observe that $T,X \in N_\zeta$ and $T,X \sse L_{\omega_1}[B]$, so $\mos_\zeta(T) = T|\zeta$ and $\mos_\zeta(X) = X \cap T|\zeta$. Thus
-\[
-T|\zeta \in \ol{N}_\zeta \sse M_\zeta \quad \text{and} \quad X \cap T|\zeta \in \ol{N}_\zeta \sse M_\zeta.
-\]
-Also, by elementarity $X \cap T|\zeta$ is a maximal antichain in $T|\zeta$. If $x \in U_\zeta$, then by hypothesis the branch ${\downarrow} x$ is $M_\zeta$-generic for $T|\zeta$. Hence it has non-empty intersection with $X \cap T|\zeta$, so $x$ lies above a point in $X \cap T|\zeta$. This true for every $x \in U_\zeta$, therefore $X \cap T|\zeta$ is a maximal antichain in $T|\zeta+1$ as well. By Lemma \ref{lemma-maximal_antichain_end_extensions} it is maximal also in $T$. Thus $X = X \cap T|\zeta$ and so $X$ is countable.
+\end{claimproof}\\
 \end{proof}
 
 
@@ -1847,8 +1911,8 @@ The following hold:
 \item every $\b_n$ is an $\alpha$-branch of $T|\alpha$;
 \item $n \neq m$ implies $\b_n \neq \b_m$;
 \item every $\b_n$ is $M_\alpha$-generic for $T|\alpha$;
-\item if $n \neq m$, then $b_n \times b_m$ is $M_\alpha$-generic for $T|\alpha \times T|\alpha$ with the product ordering;
-\item $T|\alpha = \bigcup_{n \in \omega} b_n$.
+\item if $n \neq m$, then $\b_n \times \b_m$ is $M_\alpha$-generic for $T|\alpha \times T|\alpha$ with the product ordering;
+\item $T|\alpha = \bigcup_{n \in \omega} \b_n$.
 \end{enumerate}
 \begin{claimproof}
 Points (i) and (iii) clearly follow from (iv). Also (ii) does: take $n \neq m$  and suppose towards a contradiction that $\b_n = \b_m = \b$. By (iv), $\b_n \times \b_m$ is $M_\alpha$-generic for $T|\alpha \times T|\alpha$. By the Product Lemma, we get that $\b$ is $M[\b]$-generic for $T|\alpha \times T|\alpha$, and this is not possible\footnote{It is a well-known and easy fact that if $M$ is a countable transitive model and $P$ is an atomless separative forcing poset, then no $M$-generic filter for $P$ belongs to $M$.} because clearly $\b \in M[\b]$. Let's prove (iv). Suppose $n \neq m$ and $D \sse T|\alpha \times T|\alpha$ is dense. The set
@@ -1863,8 +1927,7 @@ D_s \defeq \{p \in P \mid p(n) \supseteq s, \text{ for some } n \in \dom(p)\}.
 $D_s$ is dense in $P$, so there is $p \in G \cap D_s$. Thus $s \sse p(n) \in \b_n$ for some $n \in \dom(p)$, so $s \in \b_n$ and the claim is proved.
 \end{claimproof}
 \end{claim}\\[10pt]
-So we define $U_{\alpha+1} \defeq \{\bigcup \b_n \mid n \in \omega\}$. By point (v) of the claim, $T|(\alpha+1)$ is normal. Finally, $T \defeq \bigcup_{\alpha < \omega_1} U_\alpha$ is a normal $\omega_1$-tree. Using Claim \ref{claim-homogeneous_suslin_tree}, point (iii) of the claim ensures that $T$ is Suslin. It remains to show that $T$ is rigid. Suppose to the contrary that $\sigma$ is a non-trivial automorphism of $T$. Using essentially the same argument of the proof of Claim \ref{claim-homogeneous_suslin_tree}, we will find some $\zeta < \omega_1$ such that $\sigma \restr (T|\zeta) \in M_\zeta$. By the construction of $T$, this will be easily seen to imply the existence of two branches $\b_n$ and $\b_m$ such that $\b_n \in M_\zeta[\b_m]$, which will in turn lead to a contradiction by the Product Lemma.\\
-\\
+So we define $U_{\alpha+1} \defeq \{\bigcup \b_n \mid n \in \omega\}$. By point (v) of the claim, $T|(\alpha+1)$ is normal. Finally, $T \defeq \bigcup_{\alpha < \omega_1} U_\alpha$ is a normal $\omega_1$-tree. Using Claim \ref{claim-homogeneous_suslin_tree}, point (iii) of the claim ensures that $T$ is Suslin. It remains to show that $T$ is rigid. Suppose to the contrary that $\sigma$ is a non-trivial automorphism of $T$. Using essentially the same argument of the proof of Claim \ref{claim-homogeneous_suslin_tree}, we will find some $\zeta < \omega_1$ such that $\sigma \restr (T|\zeta) \in M_\zeta$. By the construction of $T$, this will be easily seen to imply the existence of two branches $\b_n$ and $\b_m$ such that $\b_n \in M_\zeta[\b_m]$, which will in turn lead to a contradiction by the Product Lemma. We now give the full details.\\
 Let $B \sse \omega_1$ be such that $A, T, \sigma \in L[B]$. Set $N^* \defeq L_{\omega_2^{L[B]}}[B]$ and define an increasing sequence $\langle N_\nu \rangle_{\nu < \omega_1}$ of submodels of $N^*$ precisely as in \eqref{eq:sequence_of_submodels_homogeneous_suslin_tree}. For all $\nu < \omega_1$, set $\alpha_\nu \defeq \omega_1 \cap N_\nu$ and $\mos_\nu$ the collapsing function of $N_\nu$, whose image is $\ol{N}_\nu = L_{\beta_\nu}[B \cap \alpha_\nu]$. As in the proof of Claim \ref{claim-homogeneous_suslin_tree}, there is $\zeta = \alpha_\zeta$ such that $\ol{N}_\zeta \sse M_\zeta$. Therefore
 \[
 \mos_\zeta(T) = T|\zeta \in M_\alpha \quad \text{and} \quad \mos_\zeta(\sigma) = \sigma \restr (T|\zeta) \in M_\alpha.
